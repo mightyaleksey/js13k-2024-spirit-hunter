@@ -1,0 +1,14 @@
+[ignore]
+
+[include]
+
+[libs]
+./types/engine.flow
+
+[lints]
+
+[options]
+enums=false
+server.max_workers=2
+
+[strict]

@@ -1,0 +1,43 @@
+{
+  "name": "web-template",
+  "devDependencies": {
+    "@bunchtogether/vite-plugin-flow": "1.0.2",
+    "clean-css": "5.3.3",
+    "ect-bin": "1.4.1",
+    "flow-bin": "0.241.0",
+    "hermes-eslint": "0.23.0",
+    "html-minifier": "4.0.0",
+    "roadroller": "2.1.0",
+    "standard": "17.1.0",
+    "vite": "5.3.4"
+  },
+  "standard": {
+    "globals": [
+      "$Diff",
+      "$Exact",
+      "$Exports",
+      "$KeyMirror",
+      "$Keys",
+      "$NonMaybeType",
+      "$ReadOnly",
+      "$Rest",
+      "$TupleMap",
+      "$Values",
+      "CanvasRenderingContext2D",
+      "HTMLCanvasElement",
+      "circle",
+      "rect",
+      "setColor"
+    ],
+    "parser": "hermes-eslint",
+    "parserOptions": {
+      "sourceType": "module"
+    }
+  },
+  "scripts": {
+    "build": "vite build --config ./vite.config.mjs --emptyOutDir --outDir ../dist src",
+    "dev": "vite --config ./vite.config.mjs --port 1234 src",
+    "format": "standard src",
+    "preview": "vite preview --port 1234"
+  }
+}
