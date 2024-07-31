@@ -19,15 +19,21 @@
       "$KeyMirror",
       "$Keys",
       "$NonMaybeType",
+      "$ReadOnlyArray",
       "$ReadOnly",
       "$Rest",
       "$TupleMap",
       "$Values",
+      "Class",
       "CanvasRenderingContext2D",
       "HTMLCanvasElement",
+      "HTMLImageElement",
+      "KeyboardEvent",
       "circle",
+      "draw",
       "rect",
-      "setColor"
+      "setColor",
+      "gTextures"
     ],
     "parser": "hermes-eslint",
     "parserOptions": {

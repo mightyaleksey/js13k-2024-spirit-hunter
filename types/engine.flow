@@ -1,8 +1,0 @@
-/* @flow */
-/* eslint-disable no-unused-vars */
-
-type DrawMode = 'fill' | 'line'
-
-declare function circle (mode: DrawMode, x: number, y: number, radius: number): void
-declare function rect(mode: DrawMode, x: number, y: number, width: number, height: number): void
-declare function setColor(color: string): void
