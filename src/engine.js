@@ -113,6 +113,14 @@ function normalizeCanvas (
 }
 
 /**
+ * Provides canvas virtual resolution
+ */
+export const Dimentions = {
+  width: 0,
+  height: 0
+}
+
+/**
  * Handles I/O
  */
 export const Keys = {
@@ -142,6 +150,8 @@ export async function createEngine (
   updateGame?: ?(dt) => void,
   renderGame?: ?() => void
 ) {
+  updateDimentions()
+
   if (initGame != null) {
     await initGame()
   }
@@ -186,6 +196,7 @@ export async function createEngine (
         window.innerHeight,
         scale
       )
+      updateDimentions()
       clear(localState)
       render()
 
@@ -221,6 +232,11 @@ export async function createEngine (
 
   function getTime (): number {
     return Date.now() / 1000
+  }
+
+  function updateDimentions () {
+    Dimentions.width = Math.ceil(window.innerWidth / scale)
+    Dimentions.height = Math.ceil(window.innerHeight / scale)
   }
 }
 
