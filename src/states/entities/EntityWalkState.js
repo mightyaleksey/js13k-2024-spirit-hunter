@@ -14,11 +14,9 @@ export class EntityWalkState extends BaseState {
     this.velocity = 30
   }
 
-  enter () {
-    this.entity.changeAnimation(this.entity.direction + 4)
-  }
-
   update (dt: number) {
+    this.entity.changeAnimation(this.entity.direction + 4)
+
     const direction = this.entity.direction
 
     switch (direction) {

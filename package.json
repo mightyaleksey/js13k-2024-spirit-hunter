@@ -31,8 +31,12 @@
       "KeyboardEvent",
       "circle",
       "draw",
+      "printf",
       "rect",
       "setColor",
+      "setFont",
+      "gStateMachine",
+      "gStateStack",
       "gTextures"
     ],
     "parser": "hermes-eslint",

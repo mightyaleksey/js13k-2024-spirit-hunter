@@ -7,11 +7,12 @@ export type StateFactoryType = {
   [string]: () => State
 }
 
-export class StateMachine {
+export class StateMachine extends BaseState {
   current: State
   states: StateFactoryType
 
   constructor (states: StateFactoryType) {
+    super()
     this.current = new BaseState()
     this.states = states
   }

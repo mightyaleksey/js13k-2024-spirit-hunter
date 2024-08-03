@@ -26,7 +26,7 @@ export class Entity implements GameEntity {
       entityDefinitions[entityName].frames,
       entityDefinitions[entityName].frameTime
     )
-    this.currentAnimation = this.animations[0]
+    this.currentAnimation = this.animations[2]
 
     this.direction = Direction.Bottom
     this.state = new StateMachine({
@@ -58,13 +58,15 @@ export class Entity implements GameEntity {
 
   render () {
     this.state.render()
-
-    const currentFrame = this.currentAnimation.getCurrentFrame()
-    draw(gTextures.tiles[currentFrame], this.x, this.y)
+    draw(
+      gTextures.tiles[this.currentAnimation.getCurrentFrame()],
+      this.x,
+      this.y
+    )
   }
 
   update (dt: number) {
-    this.currentAnimation.update(dt)
     this.state.update(dt)
+    this.currentAnimation.update(dt)
   }
 }

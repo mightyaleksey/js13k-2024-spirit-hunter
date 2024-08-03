@@ -2,6 +2,7 @@
 
 import { GamePlayState } from './states/game/GamePlayState'
 import { StateMachine } from './states/StateMachine'
+import { StateStack } from './states/StateStack'
 import { createEngine, genQuads, newImage } from './engine'
 
 async function initGame () {
@@ -9,21 +10,21 @@ async function initGame () {
     tiles: genQuads(await newImage('/tilemap_packed.png'), 16, 16)
   }
 
+  window.gStateStack = new StateStack()
   window.gStateMachine = new StateMachine({
     play: () => new GamePlayState()
   })
-  // eslint-disable-next-line no-undef
+
   gStateMachine.change('play')
+  gStateStack.push(gStateMachine)
 }
 
 function updateGame (dt: number) {
-  // eslint-disable-next-line no-undef
-  gStateMachine.update(dt)
+  gStateStack.update(dt)
 }
 
 function renderGame () {
-  // eslint-disable-next-line no-undef
-  gStateMachine.render()
+  gStateStack.render()
 }
 
 createEngine(initGame, updateGame, renderGame)

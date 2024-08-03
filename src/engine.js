@@ -60,9 +60,21 @@ function printf (
   limit?: number,
   align?: AlignMode
 ) {
-  // E.context.textAlign = align ?? 'left'
-  // E.context.textBaseline = 'top'
-  // E.context.fillText(text, x, y, limit)
+  const width = E.context.measureText(text).width
+  limit = limit ?? width
+
+  const dx = align === 'right'
+    ? limit - width
+    : align === 'center'
+      ? 0.5 * (limit - width)
+      : 0
+
+  E.context.fillText(
+    text,
+    Math.floor(x + dx),
+    Math.floor(y),
+    limit
+  )
 }
 
 function rect (
@@ -71,16 +83,27 @@ function rect (
   x: number,
   y: number,
   width: number,
-  height: number
+  height: number,
+  r?: number
 ) {
   E.context.beginPath()
-  E.context.rect(
+  E.context.roundRect(
     Math.floor(x),
     Math.floor(y),
     Math.floor(width),
-    Math.floor(height)
+    Math.floor(height),
+    r ?? 0
   )
   mode === 'fill' ? E.context.fill() : E.context.stroke()
+}
+
+function setColor (E: EngineState, color: string) {
+  E.context.fillStyle = color
+  E.context.strokeStyle = color
+}
+
+function setFont (E: EngineState, font: string) {
+  E.context.font = font
 }
 
 function createCanvas (
@@ -109,6 +132,7 @@ function normalizeCanvas (
   canvas.width = width
   canvas.height = height
   canvasContext.imageSmoothingEnabled = false
+  canvasContext.textBaseline = 'top'
   canvasContext.scale(scale, scale)
 }
 
@@ -174,6 +198,8 @@ export async function createEngine (
   window.draw = exposeHelper(draw)
   window.printf = exposeHelper(printf)
   window.rect = exposeHelper(rect)
+  window.setColor = exposeHelper(setColor)
+  window.setFont = exposeHelper(setFont)
 
   // starts engine
   // throttles rendering & update calls according to the current fps

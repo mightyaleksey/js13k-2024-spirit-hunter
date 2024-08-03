@@ -1,23 +1,21 @@
 /* @flow */
 
-import { Direction } from '../../constants'
 import { EntityIdleState } from './EntityIdleState'
 import { Keys } from '../../engine'
+import { MovementKeys } from '../../constants'
 
 export class PlayerIdleState extends EntityIdleState {
-  update () {
-    if (Keys.wasPressed('w')) {
-      this.entity.direction = Direction.Top
-      this.entity.changeState('walk')
-    } else if (Keys.wasPressed('d')) {
-      this.entity.direction = Direction.Right
-      this.entity.changeState('walk')
-    } else if (Keys.wasPressed('s')) {
-      this.entity.direction = Direction.Bottom
-      this.entity.changeState('walk')
-    } else if (Keys.wasPressed('a')) {
-      this.entity.direction = Direction.Left
-      this.entity.changeState('walk')
-    }
+  update (dt: number) {
+    super.update(dt)
+
+    MovementKeys.some((key, direction) => {
+      if (Keys.wasPressed(key)) {
+        this.entity.direction = direction
+        this.entity.changeState('walk')
+        return true
+      }
+
+      return false
+    })
   }
 }

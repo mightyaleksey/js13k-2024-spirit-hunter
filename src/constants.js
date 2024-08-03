@@ -33,3 +33,6 @@ export const EntityState: {[EntityStateType]: number} = {
   WalkRight: 5,
   WalkTop: 4
 }
+
+// array index reflects corresponding direction
+export const MovementKeys = ['w', 'd', 's', 'a']
