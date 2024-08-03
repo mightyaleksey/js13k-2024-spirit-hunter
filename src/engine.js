@@ -89,12 +89,27 @@ function createCanvas (
   scale: number = 1
 ): [HTMLCanvasElement, CanvasRenderingContext2D] {
   const canvas = document.createElement('canvas')
+  const canvasContext = canvas.getContext('2d')
+  normalizeCanvas(canvas, canvasContext, width, height, scale)
+  return [canvas, canvasContext]
+}
+
+function normalizeCanvas (
+  canvas: HTMLCanvasElement,
+  canvasContext: CanvasRenderingContext2D,
+  width: number,
+  height: number,
+  scale: number = 1
+) {
+  if (
+    canvas.width === width &&
+    canvas.height === height
+  ) return
+
   canvas.width = width
   canvas.height = height
-  const canvasContext = canvas.getContext('2d')
   canvasContext.imageSmoothingEnabled = false
   canvasContext.scale(scale, scale)
-  return [canvas, canvasContext]
 }
 
 /**
@@ -164,6 +179,13 @@ export async function createEngine (
 
       // update game
       update(elapsed)
+      normalizeCanvas(
+        canvas,
+        canvasContext,
+        window.innerWidth,
+        window.innerHeight,
+        scale
+      )
       clear(localState)
       render()
 
