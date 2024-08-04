@@ -211,7 +211,7 @@ export async function createEngine (
       // skip updates if it took too long
       previous = current
     } else if (elapsed >= frameTime) {
-      previous += frameTime
+      previous = current
 
       // update game
       update(elapsed)
@@ -301,5 +301,31 @@ export function newImage (url: string): Promise<HTMLImageElement> {
     image.onload = () => resolve(image)
     image.onerror = () => reject(new Error(`Failed to load image: '${url}'`))
     image.src = url
+  })
+}
+
+export function renderQuadsForDebug (
+  quads: $ReadOnlyArray<HTMLImageElement>,
+  size?: number = 16
+) {
+  const columns = Math.floor(window.innerWidth / scale / (size + 1))
+
+  let x = 0
+  let y = 0
+
+  setColor(localState, '#1b1b1b')
+  setFont(localState, '8px sans-serif')
+
+  quads.forEach((quad, index) => {
+    const tx = x * (size + 1) + 1
+    const ty = y * (size + 1) + 1
+    draw(localState, quad, tx, ty)
+    printf(localState, String(index), tx, ty)
+
+    x += 1
+    if (x === columns) {
+      x = 0
+      y += 1
+    }
   })
 }

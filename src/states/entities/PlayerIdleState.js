@@ -8,6 +8,11 @@ export class PlayerIdleState extends EntityIdleState {
   update (dt: number) {
     super.update(dt)
 
+    if (Keys.wasPressed(' ')) {
+      this.entity.changeState('shooting')
+      return
+    }
+
     MovementKeys.some((key, direction) => {
       if (Keys.wasPressed(key)) {
         this.entity.direction = direction

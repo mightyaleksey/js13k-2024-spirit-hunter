@@ -2,6 +2,7 @@
 
 import type { Entity } from '../../entities/Entity'
 import { BaseState } from '../BaseState'
+import { Dimentions } from '../../engine'
 import { Direction } from '../../constants'
 
 export class EntityWalkState extends BaseState {
@@ -11,7 +12,7 @@ export class EntityWalkState extends BaseState {
   constructor (entity: Entity) {
     super()
     this.entity = entity
-    this.velocity = 30
+    this.velocity = 60
   }
 
   update (dt: number) {
@@ -21,19 +22,25 @@ export class EntityWalkState extends BaseState {
 
     switch (direction) {
       case Direction.Top:
-        this.entity.y -= this.velocity * dt
+        this.entity.y = Math.max(this.entity.y - this.velocity * dt, 0)
         break
 
       case Direction.Right:
-        this.entity.x += this.velocity * dt
+        this.entity.x = Math.min(
+          this.entity.x + this.velocity * dt,
+          Dimentions.width - this.entity.width
+        )
         break
 
       case Direction.Bottom:
-        this.entity.y += this.velocity * dt
+        this.entity.y = Math.min(
+          this.entity.y + this.velocity * dt,
+          Dimentions.height - this.entity.height
+        )
         break
 
       case Direction.Left:
-        this.entity.x -= this.velocity * dt
+        this.entity.x = Math.max(this.entity.x - this.velocity * dt, 0)
         break
     }
   }

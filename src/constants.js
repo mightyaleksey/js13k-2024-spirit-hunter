@@ -15,6 +15,10 @@ export type EntityStateType =
   | 'WalkLeft'
   | 'WalkRight'
   | 'WalkTop'
+  | 'ShootingBottom'
+  | 'ShootingLeft'
+  | 'ShootingRight'
+  | 'ShootingTop'
 
 export const Direction: {[DirectionType]: number} = {
   Bottom: 2,
@@ -31,8 +35,14 @@ export const EntityState: {[EntityStateType]: number} = {
   WalkBottom: 6,
   WalkLeft: 7,
   WalkRight: 5,
-  WalkTop: 4
+  WalkTop: 4,
+  ShootingBottom: 10,
+  ShootingLeft: 11,
+  ShootingRight: 9,
+  ShootingTop: 8
 }
 
 // array index reflects corresponding direction
 export const MovementKeys = ['w', 'd', 's', 'a']
+
+export const TileSize = 16

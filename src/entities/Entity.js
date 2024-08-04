@@ -21,6 +21,9 @@ export class Entity implements GameEntity {
   width: number
   height: number
 
+  collidable: boolean
+  remove: boolean
+
   constructor (entityName: string) {
     this.animations = this.genAnimations(
       entityDefinitions[entityName].frames,
@@ -39,6 +42,9 @@ export class Entity implements GameEntity {
     this.y = 0
     this.width = 16
     this.height = 16
+
+    this.collidable = true
+    this.remove = false
   }
 
   changeAnimation (animation: number) {
@@ -57,16 +63,17 @@ export class Entity implements GameEntity {
   }
 
   render () {
-    this.state.render()
     draw(
       gTextures.tiles[this.currentAnimation.getCurrentFrame()],
       this.x,
       this.y
     )
+
+    this.state.render()
   }
 
   update (dt: number) {
-    this.state.update(dt)
     this.currentAnimation.update(dt)
+    this.state.update(dt)
   }
 }

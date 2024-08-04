@@ -8,6 +8,11 @@ export class PlayerWalkState extends EntityWalkState {
   update (dt: number) {
     super.update(dt)
 
+    if (Keys.wasPressed(' ')) {
+      this.entity.changeState('shooting')
+      return
+    }
+
     MovementKeys.some((key, direction) => {
       if (Keys.wasHolding(key)) {
         this.entity.direction = direction
