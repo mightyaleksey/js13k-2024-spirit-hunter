@@ -1,7 +1,8 @@
 /* @flow */
 
-import { TileSize } from './constants'
+import { TileSize } from './shared/constants'
 import { draw } from './engine'
+import { gameTiles } from './shared/game'
 
 export class TileMap {
   mapWidth: number
@@ -16,7 +17,7 @@ export class TileMap {
     for (let y = 0; y < this.mapHeight; y++) {
       for (let x = 0; x < this.mapWidth; x++) {
         draw(
-          gTextures.tiles[28],
+          gameTiles[28],
           x * TileSize,
           y * TileSize
         )

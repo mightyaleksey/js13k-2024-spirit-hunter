@@ -44,5 +44,3 @@ export const EntityState: {[EntityStateType]: number} = {
 
 // array index reflects corresponding direction
 export const MovementKeys = ['w', 'd', 's', 'a']
-
-export const TileSize = 16

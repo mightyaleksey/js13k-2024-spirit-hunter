@@ -3,28 +3,29 @@
 import { GamePlayState } from './states/game/GamePlayState'
 import { StateMachine } from './states/StateMachine'
 import { StateStack } from './states/StateStack'
+import { appendElements, gameStates, gameTiles } from './shared/game'
 import { createEngine, genQuads, newImage } from './engine'
 
 async function initGame () {
-  window.gTextures = {
-    tiles: genQuads(await newImage('/tilemap_packed.png'), 16, 16)
-  }
+  appendElements(gameTiles,
+    genQuads(await newImage('/tilemap_packed.png'), 16, 16))
+  appendElements(gameStates, [
+    new StateStack(),
+    new StateMachine({
+      play: () => new GamePlayState()
+    })
+  ])
 
-  window.gStateStack = new StateStack()
-  window.gStateMachine = new StateMachine({
-    play: () => new GamePlayState()
-  })
-
-  gStateMachine.change('play')
-  gStateStack.push(gStateMachine)
+  gameStates[0].push(gameStates[1])
+  gameStates[1].change('play')
 }
 
 function updateGame (dt: number) {
-  gStateStack.update(dt)
+  gameStates[0].update(dt)
 }
 
 function renderGame () {
-  gStateStack.render()
+  gameStates[0].render()
 }
 
 createEngine(initGame, updateGame, renderGame)

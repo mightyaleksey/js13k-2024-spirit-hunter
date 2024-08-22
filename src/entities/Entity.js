@@ -8,6 +8,7 @@ import { EntityIdleState } from '../states/entities/EntityIdleState'
 import { EntityWalkState } from '../states/entities/EntityWalkState'
 import { entityDefinitions } from '../definitions/entityDefinitions'
 import { draw } from '../engine'
+import { gameTiles } from '../shared/game'
 
 export class Entity {
   animations: $ReadOnlyArray<Animation>
@@ -64,7 +65,7 @@ export class Entity {
 
   render () {
     draw(
-      gTextures.tiles[this.currentAnimation.getCurrentFrame()],
+      gameTiles[this.currentAnimation.getCurrentFrame()],
       this.x,
       this.y
     )

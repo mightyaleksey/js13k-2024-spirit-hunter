@@ -1,11 +1,6 @@
 /* @flow */
 
-export interface State {
-  enter (input: mixed): void;
-  exit (): void;
-  render (): void;
-  update (dt: number): void;
-}
+import type { State } from '../shared/game'
 
 export class BaseState implements State {
   enter (input: mixed) {}

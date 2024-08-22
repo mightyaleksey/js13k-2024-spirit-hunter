@@ -1,6 +1,6 @@
 /* @flow */
 
-import type { State } from './BaseState'
+import type { State } from '../shared/game'
 
 export class StateStack {
   stack: Array<State>
