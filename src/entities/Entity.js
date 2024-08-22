@@ -1,7 +1,6 @@
 /* @flow */
 
 import type { EntityDefinitionType } from '../definitions/entityDefinitions'
-import type { GameEntity } from '../engine'
 import { Animation } from './Animation'
 import { Direction } from '../constants'
 import { StateMachine } from '../states/StateMachine'
@@ -9,7 +8,7 @@ import { entityDefinitions } from '../definitions/entityDefinitions'
 import { EntityIdleState } from '../states/entities/EntityIdleState'
 import { EntityWalkState } from '../states/entities/EntityWalkState'
 
-export class Entity implements GameEntity {
+export class Entity {
   animations: $ReadOnlyArray<Animation>
   currentAnimation: Animation
 

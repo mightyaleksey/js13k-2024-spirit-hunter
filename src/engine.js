@@ -17,11 +17,6 @@ type EngineState = {
 // Time since the last update in seconds.
 type dt = number
 
-export interface GameEntity {
-  render(): void;
-  update(dt): void;
-}
-
 const frameRate = 60
 const frameTime = 1 / frameRate
 const maxFrameTime = 1
