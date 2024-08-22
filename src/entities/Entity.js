@@ -49,6 +49,8 @@ export class Entity {
     this.tileID = props.tileID
   }
 
+  collided (target: Entity) {}
+
   render () {
     if (this.tileID != null) {
       draw(

@@ -1,6 +1,9 @@
 /* @flow */
 
+import type { Entity } from './Entity'
+
 import { Character } from './Character'
+import { Enemy } from './Enemy'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { StateMachine } from '../states/StateMachine'
@@ -18,6 +21,12 @@ export class Player extends Character {
       walk: () => new PlayerWalkState(this)
     })
     this.state.change('idle')
+  }
+
+  collided (entity: Entity) {
+    if (entity instanceof Enemy) {
+      // handle impact
+    }
   }
 
   render () {

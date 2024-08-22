@@ -28,6 +28,16 @@ export function collides (
 
 export function emptyFunction () {}
 
+export function forEachRight <T> (
+  collection: $ReadOnlyArray<T>,
+  iterator: (T, number, $ReadOnlyArray<T>) => void
+) {
+  for (let index = collection.length; index--;) {
+    iterator(collection[index], index, collection)
+  }
+}
+
+// returns integers
 export function random (lo: number, hi?: number): number {
   if (hi == null) {
     hi = lo

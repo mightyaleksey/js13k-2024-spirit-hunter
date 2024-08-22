@@ -5,31 +5,46 @@ import type { Entity } from '../../entities/Entity'
 import { BaseState } from '../BaseState'
 import { Enemy } from '../../entities/Enemy'
 import { Player } from '../../entities/Player'
+import { collides, forEachRight } from '../../util'
 
 export class GamePlayState extends BaseState {
   entities: Array<Entity>
   player: Player
 
   enter () {
-    this.entities = [new Enemy()]
-    this.player = new Player()
+    // keep player first, so we can render it after all entities
+    this.entities = [new Player(), new Enemy()]
   }
 
   render () {
-    this.entities.forEach(entity => entity.render())
-    this.player.render()
+    forEachRight(this.entities, entity => entity.render())
   }
 
   update (dt: number) {
-    for (let id = this.entities.length; id--;) {
-      const entity = this.entities[id]
+    forEachRight(this.entities, (entity, j) => {
       entity.update(dt)
 
       if (entity.isDestroyed) {
-        this.entities.splice(id, 1)
+        this.entities.splice(j, 1)
       }
-    }
+    })
 
-    this.player.update(dt)
+    // check collision (time complexity O(n*n))
+    // (try Spatial Partition if any perf issues)
+    // https://gameprogrammingpatterns.com/spatial-partition.html
+    const collidable = this.entities.filter(entity => entity.isCollidable)
+    collidable.forEach((left, j) => {
+      for (let k = j + 1; k < collidable.length; ++k) {
+        const right = collidable[k]
+        if (!collides(left, right)) continue
+
+        left.collided(right)
+        right.collided(left)
+
+        if (left.isSolid && right.isSolid) {
+          // fix position
+        }
+      }
+    })
   }
 }
