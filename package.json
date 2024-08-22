@@ -12,6 +12,7 @@
     "vite": "5.3.4"
   },
   "standard": {
+    "envs": ["browser"],
     "globals": [
       "$Diff",
       "$Exact",
@@ -25,16 +26,6 @@
       "$TupleMap",
       "$Values",
       "Class",
-      "CanvasRenderingContext2D",
-      "HTMLCanvasElement",
-      "HTMLImageElement",
-      "KeyboardEvent",
-      "circle",
-      "draw",
-      "printf",
-      "rect",
-      "setColor",
-      "setFont",
       "gStateMachine",
       "gStateStack",
       "gTextures"
