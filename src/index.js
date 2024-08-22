@@ -1,5 +1,6 @@
 /* @flow */
 
+import type { GameState } from './shared/game'
 import { GamePlayState } from './states/game/GamePlayState'
 import { StateMachine } from './states/StateMachine'
 import { StateStack } from './states/StateStack'
@@ -11,7 +12,7 @@ async function initGame () {
     genQuads(await newImage('/tilemap_packed.png'), 16, 16))
   appendElements(gameStates, [
     new StateStack(),
-    new StateMachine({
+    new StateMachine<GameState>({
       play: () => new GamePlayState()
     })
   ])

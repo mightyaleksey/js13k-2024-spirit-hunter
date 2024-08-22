@@ -1,20 +1,10 @@
 # js13k
 
 ## Open questions
-- [x] Engine
-  - [x] assets loading
-  - [x] drawing helpers
-  - [x] fps throttling
-- [x] Input / Output
-  - [x] keyboard handler
-- [x] Entity
-  - [x] generic class with rendering
-  - [x] state machine to switch between states
-- [ ] Game
-  - [ ] generate enemies
-  - [ ] add simple AI (behavioral trees?)
-  - [ ] add shooting
-  - [ ] check collisions
-  - [ ] generate map
-- [ ] Follow ups
-  - [ ] check need of GameEntity
+- [ ] Phase 1: MVP
+  - [x] Add Entity class
+  - [x] Add Enemy, Player
+  - [ ] Add GameObject
+  - [ ] Generate two rooms
+  - [ ] Add camera movement
+  - [ ] Handle touch events

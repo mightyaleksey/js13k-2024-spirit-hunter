@@ -1,26 +1,7 @@
 /* @flow */
 
-import { EntityIdleState } from './EntityIdleState'
-import { Keys } from '../../engine'
-import { MovementKeys } from '../../constants'
+import { CharacterIdleState } from './CharacterIdleState'
 
-export class PlayerIdleState extends EntityIdleState {
-  update (dt: number) {
-    super.update(dt)
-
-    if (Keys.wasPressed(' ')) {
-      this.entity.changeState('shooting')
-      return
-    }
-
-    MovementKeys.some((key, direction) => {
-      if (Keys.wasPressed(key)) {
-        this.entity.direction = direction
-        this.entity.changeState('walk')
-        return true
-      }
-
-      return false
-    })
-  }
+export class PlayerIdleState extends CharacterIdleState {
+  update (dt: number) {}
 }

@@ -1,80 +1,66 @@
 /* @flow */
 
-import type { EntityDefinitionType } from '../definitions/entityDefinitions'
-import { Animation } from './Animation'
-import { Direction } from '../constants'
-import { StateMachine } from '../states/StateMachine'
-import { EntityIdleState } from '../states/entities/EntityIdleState'
-import { EntityWalkState } from '../states/entities/EntityWalkState'
-import { entityDefinitions } from '../definitions/entityDefinitions'
+import { TileSize } from '../shared/constants'
 import { draw } from '../engine'
-import { gameTiles } from '../shared/game'
+
+export type EntityProps = $ReadOnly<{
+  x?: number,
+  y?: number,
+  width?: number,
+  height?: number,
+
+  isCollidable?: boolean,
+  isSolid?: boolean,
+
+  tileID?: HTMLImageElement
+}>
 
 export class Entity {
-  animations: $ReadOnlyArray<Animation>
-  currentAnimation: Animation
-
-  direction: number
-  state: StateMachine
-
+  // dimentions
   x: number
   y: number
   width: number
   height: number
 
-  collidable: boolean
-  remove: boolean
+  // movement
+  dx: number
+  dy: number
 
-  constructor (entityName: string) {
-    this.animations = this.genAnimations(
-      entityDefinitions[entityName].frames,
-      entityDefinitions[entityName].frameTime
-    )
-    this.currentAnimation = this.animations[2]
+  // states
+  isCollidable: boolean
+  isDestroyed: boolean
+  isSolid: boolean
 
-    this.direction = Direction.Bottom
-    this.state = new StateMachine({
-      idle: () => new EntityIdleState(this),
-      walk: () => new EntityWalkState(this)
-    })
-    this.state.change('idle')
+  tileID: ?HTMLImageElement
 
-    this.x = 0
-    this.y = 0
-    this.width = 16
-    this.height = 16
+  constructor (props: EntityProps) {
+    this.x = props.x ?? 0
+    this.y = props.y ?? 0
+    this.width = props.width ?? TileSize
+    this.height = props.height ?? TileSize
 
-    this.collidable = true
-    this.remove = false
-  }
+    this.dx = 0
+    this.dy = 0
 
-  changeAnimation (animation: number) {
-    this.currentAnimation = this.animations[animation]
-  }
+    this.isCollidable = Boolean(props.isCollidable)
+    this.isDestroyed = false
+    this.isSolid = Boolean(props.isSolid)
 
-  changeState (stateName: string) {
-    this.state.change(stateName)
-  }
-
-  genAnimations (
-    animations: EntityDefinitionType['frames'],
-    frameTime: number
-  ): $ReadOnlyArray<Animation> {
-    return animations.map(frames => new Animation(frames, frameTime))
+    this.tileID = props.tileID
   }
 
   render () {
-    draw(
-      gameTiles[this.currentAnimation.getCurrentFrame()],
-      this.x,
-      this.y
-    )
-
-    this.state.render()
+    if (this.tileID != null) {
+      draw(
+        this.tileID,
+        this.x,
+        this.y
+      )
+    }
   }
 
   update (dt: number) {
-    this.currentAnimation.update(dt)
-    this.state.update(dt)
+    this.x += this.dx * dt
+    this.y += this.dy * dt
   }
 }

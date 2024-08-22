@@ -1,25 +1,27 @@
 /* @flow */
 
-import type { GamePlayState } from '../states/game/GamePlayState'
-import { Entity } from './Entity'
+import { Character } from './Character'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
-import { PlayerShootingState } from '../states/entities/PlayerShootingState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { StateMachine } from '../states/StateMachine'
+import { rect, setColor } from '../engine'
 
-export class Player extends Entity {
-  game: GamePlayState
-
-  constructor (game: GamePlayState) {
-    super('player')
+export class Player extends Character {
+  constructor () {
+    super({
+      isCollidable: true,
+      isSolid: true
+    })
 
     this.state = new StateMachine({
       idle: () => new PlayerIdleState(this),
-      shooting: () => new PlayerShootingState(this),
       walk: () => new PlayerWalkState(this)
     })
     this.state.change('idle')
+  }
 
-    this.game = game
+  render () {
+    setColor('blue')
+    rect('fill', this.x, this.y, this.width, this.height)
   }
 }

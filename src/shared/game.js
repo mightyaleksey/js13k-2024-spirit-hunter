@@ -3,6 +3,9 @@
 import type { StateMachine } from '../states/StateMachine'
 import type { StateStack } from '../states/StateStack'
 
+export type GameState =
+  | 'play'
+
 export interface State {
   enter (input: mixed): void;
   exit (): void;
@@ -11,7 +14,7 @@ export interface State {
 }
 
 // $FlowExpectedError[invalid-tuple-arity]
-export const gameStates: [StateStack, StateMachine] = []
+export const gameStates: [StateStack, StateMachine<GameState>] = []
 
 export const gameTiles: $ReadOnlyArray<HTMLImageElement> = []
 
