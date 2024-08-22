@@ -1,12 +1,19 @@
 import { Packer } from 'roadroller'
 import { defineConfig } from 'vite'
 import { execFileSync } from 'child_process'
-import { flowPlugin, esbuildFlowPlugin } from '@bunchtogether/vite-plugin-flow'
 import CleanCSS from 'clean-css'
+import babel from 'vite-plugin-babel'
 import ect from 'ect-bin'
 import fs from 'fs'
 import htmlMinify from 'html-minifier'
 import path from 'path'
+
+const babelConfig = {
+  babelrc: false,
+  configFile: false,
+  plugins: ['babel-plugin-syntax-hermes-parser'],
+  presets: ['@babel/preset-flow']
+}
 
 export default defineConfig(({ command }) => {
   switch (command) {
@@ -28,26 +35,12 @@ export default defineConfig(({ command }) => {
           }
         },
         esbuild: true,
-        optimizeDeps: {
-          esbuildOptions: {
-            // plugin removes only types, however, enums are left intact
-            // (additional transformation is required).
-            plugins: [esbuildFlowPlugin()]
-          }
-        },
-        plugins: [flowPlugin(), roadrollerPlugin(), ectPlugin()]
+        plugins: [babel({ babelConfig }), roadrollerPlugin(), ectPlugin()]
       }
 
     default:
       return {
-        optimizeDeps: {
-          esbuildOptions: {
-            // plugin removes only types, however, enums are left intact
-            // (additional transformation is required).
-            plugins: [esbuildFlowPlugin()]
-          }
-        },
-        plugins: [flowPlugin()]
+        plugins: [babel({ babelConfig })]
       }
   }
 })
