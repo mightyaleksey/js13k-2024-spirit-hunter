@@ -4,9 +4,10 @@ import type { EntityDefinitionType } from '../definitions/entityDefinitions'
 import { Animation } from './Animation'
 import { Direction } from '../constants'
 import { StateMachine } from '../states/StateMachine'
-import { entityDefinitions } from '../definitions/entityDefinitions'
 import { EntityIdleState } from '../states/entities/EntityIdleState'
 import { EntityWalkState } from '../states/entities/EntityWalkState'
+import { entityDefinitions } from '../definitions/entityDefinitions'
+import { draw } from '../engine'
 
 export class Entity {
   animations: $ReadOnlyArray<Animation>

@@ -1,6 +1,7 @@
 /* @flow */
 
 import { TileSize } from './constants'
+import { draw } from './engine'
 
 export class TileMap {
   mapWidth: number

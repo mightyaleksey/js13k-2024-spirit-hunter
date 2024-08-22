@@ -34,28 +34,29 @@ const localState: EngineState = {
   pressed: {}
 }
 
-function clear (E: EngineState) {
-  E.context.clearRect(0, 0, E.context.canvas.width, E.context.canvas.height)
+export function clear () {
+  const c = localState.context
+  c.clearRect(0, 0, c.canvas.width, c.canvas.height)
 }
 
-function draw (
-  E: EngineState,
+export function draw (
   drawable: HTMLImageElement,
   x: number,
   y: number
 ) {
-  E.context.drawImage(drawable, Math.floor(x), Math.floor(y))
+  const c = localState.context
+  c.drawImage(drawable, Math.floor(x), Math.floor(y))
 }
 
-function printf (
-  E: EngineState,
+export function printf (
   text: string,
   x: number,
   y: number,
   limit?: number,
   align?: AlignMode
 ) {
-  const width = E.context.measureText(text).width
+  const c = localState.context
+  const width = c.measureText(text).width
   limit = limit ?? width
 
   const dx = align === 'right'
@@ -64,7 +65,7 @@ function printf (
       ? 0.5 * (limit - width)
       : 0
 
-  E.context.fillText(
+  c.fillText(
     text,
     Math.floor(x + dx),
     Math.floor(y),
@@ -72,8 +73,7 @@ function printf (
   )
 }
 
-function rect (
-  E: EngineState,
+export function rect (
   mode: DrawMode,
   x: number,
   y: number,
@@ -81,24 +81,27 @@ function rect (
   height: number,
   r?: number
 ) {
-  E.context.beginPath()
-  E.context.roundRect(
+  const c = localState.context
+  c.beginPath()
+  c.roundRect(
     Math.floor(x),
     Math.floor(y),
     Math.floor(width),
     Math.floor(height),
     r ?? 0
   )
-  mode === 'fill' ? E.context.fill() : E.context.stroke()
+  mode === 'fill' ? c.fill() : c.stroke()
 }
 
-function setColor (E: EngineState, color: string) {
-  E.context.fillStyle = color
-  E.context.strokeStyle = color
+export function setColor (color: string) {
+  const c = localState.context
+  c.fillStyle = color
+  c.strokeStyle = color
 }
 
-function setFont (E: EngineState, font: string) {
-  E.context.font = font
+export function setFont (font: string) {
+  const c = localState.context
+  c.font = font
 }
 
 function createCanvas (
@@ -188,14 +191,6 @@ export async function createEngine (
   // update local engine state
   localState.context = canvasContext
 
-  // expose rendering api
-  window.clear = exposeHelper(clear)
-  window.draw = exposeHelper(draw)
-  window.printf = exposeHelper(printf)
-  window.rect = exposeHelper(rect)
-  window.setColor = exposeHelper(setColor)
-  window.setFont = exposeHelper(setFont)
-
   // starts engine
   // throttles rendering & update calls according to the current fps
   ;(function gameLoop (previous: number = getTime()) {
@@ -218,7 +213,7 @@ export async function createEngine (
         scale
       )
       updateDimentions()
-      clear(localState)
+      clear()
       render()
 
       // reset I/O
@@ -244,12 +239,6 @@ export async function createEngine (
     delete localState.holding[key]
     delete localState.pressed[key]
   })
-
-  function exposeHelper (
-    drawHelper: (EngineState, ...args: Array<empty>) => void
-  ): (...args: Array<empty>) => void {
-    return drawHelper.bind(null, localState)
-  }
 
   function getTime (): number {
     return Date.now() / 1000
@@ -308,14 +297,14 @@ export function renderQuadsForDebug (
   let x = 0
   let y = 0
 
-  setColor(localState, '#1b1b1b')
-  setFont(localState, '8px sans-serif')
+  setColor('#1b1b1b')
+  setFont('8px sans-serif')
 
   quads.forEach((quad, index) => {
     const tx = x * (size + 1) + 1
     const ty = y * (size + 1) + 1
-    draw(localState, quad, tx, ty)
-    printf(localState, String(index), tx, ty)
+    draw(quad, tx, ty)
+    printf(String(index), tx, ty)
 
     x += 1
     if (x === columns) {

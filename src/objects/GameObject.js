@@ -1,6 +1,7 @@
 /* @flow */
 
 import type { Enemy } from '../entities/Enemy'
+import { printf, setFont } from '../engine'
 
 export class GameObject {
   x: number
