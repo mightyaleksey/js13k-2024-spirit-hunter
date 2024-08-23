@@ -4,9 +4,9 @@ import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
 import { Enemy } from '../../entities/Enemy'
-import { Element } from '../../entities/Element'
 import { Player } from '../../entities/Player'
 import { TileSize } from '../../shared/constants'
+import { Wall } from '../../entities/Wall'
 import { collides, forEachRight } from '../../util'
 
 export class GamePlayState extends BaseState {
@@ -58,19 +58,19 @@ export class GamePlayState extends BaseState {
     const size = 20
 
     for (let k = 0; k < size; ++k) {
-      this.entities.push(new Element({
+      this.entities.push(new Wall({
         x: k * TileSize,
         y: 0
       }))
-      this.entities.push(new Element({
+      this.entities.push(new Wall({
         x: 0,
         y: k * TileSize
       }))
-      this.entities.push(new Element({
+      this.entities.push(new Wall({
         x: k * TileSize,
         y: (size - 1) * TileSize
       }))
-      this.entities.push(new Element({
+      this.entities.push(new Wall({
         x: (size - 1) * TileSize,
         y: k * TileSize
       }))

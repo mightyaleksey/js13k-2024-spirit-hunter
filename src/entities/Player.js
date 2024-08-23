@@ -3,11 +3,11 @@
 import type { Entity } from './Entity'
 
 import { Character } from './Character'
-import { Element } from './Element'
 import { Enemy } from './Enemy'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { StateMachine } from '../states/StateMachine'
+import { Thing } from './Thing'
 import { UnitVectors } from '../shared/constants'
 import { rect, setColor } from '../engine'
 
@@ -38,7 +38,7 @@ export class Player extends Character {
 
   collided (entity: Entity) {
     if (
-      (entity instanceof Element) &&
+      (entity instanceof Thing) &&
       entity.isSolid
     ) {
       // fix player position

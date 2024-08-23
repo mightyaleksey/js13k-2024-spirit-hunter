@@ -11,6 +11,11 @@
 
 ## Specs
 
+Archetypes:
+- `Entity` — universal class that defines dimentions, statuses and handles rendering
+- `Character` — base class for the interactive characters (enemies, player and etc)
+- `Thing` — base class for the environment objects (walls)
+
 Update sequence:
 - entity update
   - custom logic (I/O handlers for example)

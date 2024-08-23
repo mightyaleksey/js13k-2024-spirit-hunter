@@ -2,10 +2,10 @@
 
 import type { EntityProps } from './Entity'
 
-import { Entity } from './Entity'
+import { Thing } from './Thing'
 import { rect, setColor } from '../engine'
 
-export class Element extends Entity {
+export class Wall extends Thing {
   constructor (props: EntityProps) {
     super({
       x: props.x,
