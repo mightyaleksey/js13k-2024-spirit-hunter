@@ -40,14 +40,10 @@ export class GamePlayState extends BaseState {
     collidable.forEach((left, j) => {
       for (let k = j + 1; k < collidable.length; ++k) {
         const right = collidable[k]
-        if (!collides(left, right)) continue
+        if (!collides(left, right, 1)) continue
 
         left.collided(right)
         right.collided(left)
-
-        if (left.isSolid && right.isSolid) {
-          // fix position
-        }
       }
     })
   }

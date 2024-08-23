@@ -16,6 +16,6 @@ export class Enemy extends Character {
 
   render () {
     setColor('green')
-    rect('fill', this.x, this.y, this.width, this.height)
+    rect('fill', this.x, this.y, this.width, this.height, 2)
   }
 }
