@@ -4,7 +4,9 @@ import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
 import { Enemy } from '../../entities/Enemy'
+import { Element } from '../../entities/Element'
 import { Player } from '../../entities/Player'
+import { TileSize } from '../../shared/constants'
 import { collides, forEachRight } from '../../util'
 
 export class GamePlayState extends BaseState {
@@ -13,7 +15,9 @@ export class GamePlayState extends BaseState {
 
   enter () {
     // keep player first, so we can render it after all entities
-    this.entities = [new Player(), new Enemy()]
+    this.entities = [new Player(32, 32)]
+    this.genWalls()
+    this.genEnemies()
   }
 
   render () {
@@ -46,5 +50,34 @@ export class GamePlayState extends BaseState {
         }
       }
     })
+  }
+
+  /* helpers */
+
+  genEnemies () {
+    this.entities.push(new Enemy())
+  }
+
+  genWalls () {
+    const size = 20
+
+    for (let k = 0; k < size; ++k) {
+      this.entities.push(new Element({
+        x: k * TileSize,
+        y: 0
+      }))
+      this.entities.push(new Element({
+        x: 0,
+        y: k * TileSize
+      }))
+      this.entities.push(new Element({
+        x: k * TileSize,
+        y: (size - 1) * TileSize
+      }))
+      this.entities.push(new Element({
+        x: (size - 1) * TileSize,
+        y: k * TileSize
+      }))
+    }
   }
 }
