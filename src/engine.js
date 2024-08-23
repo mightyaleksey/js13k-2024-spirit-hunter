@@ -104,6 +104,14 @@ export function setFont (font: string) {
   c.font = font
 }
 
+export function translate (dx: number, dy: number) {
+  const c = localState.context
+  c.translate(
+    Math.floor(dx),
+    Math.floor(dy)
+  )
+}
+
 function createCanvas (
   width: number,
   height: number,
@@ -214,7 +222,11 @@ export async function createEngine (
       )
       updateDimentions()
       clear()
+
+      // save and restore helps to restore "translate" changes
+      canvasContext.save()
       render()
+      canvasContext.restore()
 
       // reset I/O
       Object.keys(localState.checked).forEach(key => {

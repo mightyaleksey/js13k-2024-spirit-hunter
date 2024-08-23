@@ -4,9 +4,10 @@
 - [ ] Phase 1: MVP
   - [x] Add Entity class
   - [x] Add Enemy, Player
-  - [ ] Add GameObject
+  - [x] Add GameObject
+  - [x] Add camera movement
   - [ ] Generate two rooms
-  - [ ] Add camera movement
+  - [ ] Add transition between rooms
   - [ ] Handle touch events
 
 ## Specs
