@@ -8,7 +8,19 @@
   - [x] Add camera movement
   - [ ] Generate two rooms
   - [ ] Add transition between rooms
+  - [ ] Add enemy generation
+  - [ ] Basic AI
+  - [ ] Add shooting
+- [ ] Phase 2: Gameplay
+  - [ ] Level progression
+  - [ ] Shop and consumables & Income
+  - [ ] Status effects
   - [ ] Handle touch events
+- [ ] Phase 3: Polish
+  - [ ] Main plot, Theme
+  - [ ] Graphics
+  - [ ] Bosses
+  - [ ] Second hero
 
 ## Specs
 
