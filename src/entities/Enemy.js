@@ -4,10 +4,11 @@ import { Character } from './Character'
 import { rect, setColor } from '../engine'
 
 export class Enemy extends Character {
-  constructor () {
+  constructor (x?: number, y?: number) {
     super({
-      x: 16,
-      y: 16,
+      x: x ?? 16,
+      y: y ?? 16,
+      width: 10,
 
       isCollidable: true
     })

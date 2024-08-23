@@ -10,8 +10,12 @@ import { StateMachine } from '../states/StateMachine'
 import { rect, setColor } from '../engine'
 
 export class Player extends Character {
-  constructor () {
+  constructor (x?: number, y?: number) {
     super({
+      x,
+      y,
+      width: 10,
+
       isCollidable: true,
       isSolid: true
     })
@@ -23,14 +27,16 @@ export class Player extends Character {
     this.state.change('idle')
   }
 
+  render () {
+    setColor('blue')
+    rect('fill', this.x, this.y, this.width, this.height)
+  }
+
+  /* helpers */
+
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
       // handle impact
     }
-  }
-
-  render () {
-    setColor('blue')
-    rect('fill', this.x, this.y, this.width, this.height)
   }
 }

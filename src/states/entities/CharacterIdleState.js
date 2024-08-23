@@ -13,6 +13,7 @@ export class CharacterIdleState extends BaseState {
   }
 
   enter () {
-    this.entity.changeAnimation(0)
+    this.entity.dx = 0
+    this.entity.dy = 0
   }
 }

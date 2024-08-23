@@ -32,6 +32,15 @@ export class Character extends Entity {
     this.state.change('idle')
   }
 
+  update (dt: number) {
+    // handle i/o
+    this.state.update(dt)
+    // update position
+    super.update(dt)
+  }
+
+  /* helpers */
+
   changeAnimation (animationID: number) {
     this.currentAnimation = this.animations[animationID]
   }
