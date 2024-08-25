@@ -6,11 +6,11 @@
   - [x] Add Enemy, Player
   - [x] Add GameObject
   - [x] Add camera movement
-  - [ ] Generate two rooms
-  - [ ] Add transition between rooms
+  - [x] Add shooting
   - [ ] Add enemy generation
   - [ ] Basic AI
-  - [ ] Add shooting
+  - [ ] Generate two rooms
+  - [ ] Add transition between rooms
 - [ ] Phase 2: Gameplay
   - [ ] Level progression
   - [ ] Shop and consumables & Income

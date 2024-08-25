@@ -48,6 +48,19 @@ export function draw (
   c.drawImage(drawable, Math.floor(x), Math.floor(y))
 }
 
+export function line (
+  x0: number,
+  y0: number,
+  x1: number,
+  y1: number
+) {
+  const c = localState.context
+  c.beginPath()
+  c.moveTo(x0, y0)
+  c.lineTo(x1, y1)
+  c.stroke()
+}
+
 export function printf (
   text: string,
   x: number,

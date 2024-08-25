@@ -66,5 +66,15 @@ export class Entity {
 
   /* helpers */
 
-  collided (target: Entity) {}
+  centerX (): number {
+    return this.x + 0.5 * this.width
+  }
+
+  centerY (): number {
+    return this.y + 0.5 * this.height
+  }
+
+  collided (target: Entity) {
+    /* abstract */
+  }
 }

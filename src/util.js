@@ -37,6 +37,14 @@ export function forEachRight <T> (
   }
 }
 
+export function nullthrows <T> (value: ?T): T {
+  if (value == null) {
+    throw new Error('')
+  }
+
+  return value
+}
+
 // returns integers
 export function random (lo: number, hi?: number): number {
   if (hi == null) {

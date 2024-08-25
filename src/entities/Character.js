@@ -4,11 +4,13 @@ import type { EntityProps } from './Entity'
 
 import { Animation } from './Animation'
 import { CharacterIdleState } from '../states/entities/CharacterIdleState'
+import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterWalkState } from '../states/entities/CharacterWalkState'
 import { Entity } from './Entity'
 import { StateMachine } from '../states/StateMachine'
 
 type CharacterState =
+  | 'death'
   | 'idle'
   | 'walk'
 
@@ -26,6 +28,7 @@ export class Character extends Entity {
     this.direction = 2
 
     this.state = new StateMachine({
+      death: () => new CharacterDeathState(this),
       idle: () => new CharacterIdleState(this),
       walk: () => new CharacterWalkState(this)
     })

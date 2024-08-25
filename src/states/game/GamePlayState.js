@@ -28,6 +28,9 @@ export class GamePlayState extends BaseState {
     this.entities = [new Player(32, 32)]
     this.genWalls()
     this.genEnemies()
+
+    // $FlowFixMe[prop-missing]: find a way to pass entities in
+    this.entities[0].entities = this.entities
   }
 
   render () {
