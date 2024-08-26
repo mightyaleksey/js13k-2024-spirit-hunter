@@ -9,7 +9,7 @@ import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
 import { TileSize } from '../../shared/constants'
 import { Wall } from '../../entities/Wall'
-import { collides, forEachRight } from '../../util'
+import { collides, forEachRight, random } from '../../util'
 
 export class GamePlayState extends BaseState {
   cameraX: number
@@ -94,9 +94,11 @@ export class GamePlayState extends BaseState {
   /* helpers */
 
   genEnemies () {
-    const enemy = new Enemy()
-    enemy.entities = this.entities
-    this.entities.push(enemy)
+    for (let i = 0; i < 10; ++i) {
+      const enemy = new Enemy(random(this.maxX), random(this.maxY))
+      enemy.entities = this.entities
+      this.entities.push(enemy)
+    }
   }
 
   genWalls () {

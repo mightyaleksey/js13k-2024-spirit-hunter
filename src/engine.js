@@ -20,7 +20,7 @@ type dt = number
 const frameRate = 60
 const frameTime = 1 / frameRate
 const maxFrameTime = 1
-const scale = 4
+const scale = 2
 
 const localState: EngineState = {
   // $FlowFixMe[incompatible-type]

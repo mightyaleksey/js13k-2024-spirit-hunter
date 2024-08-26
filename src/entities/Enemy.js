@@ -25,10 +25,10 @@ export class Enemy extends Character {
   // $FlowFixMe[incompatible-extend]
   state: StateMachine<EnemyState>
 
-  constructor (x?: number, y?: number) {
+  constructor (x: number, y: number) {
     super({
-      x: x ?? 16,
-      y: y ?? 16,
+      x,
+      y,
       width: 10,
 
       isCollidable: true

@@ -8,7 +8,7 @@
   - [x] Add camera movement
   - [x] Add shooting
   - [x] Basic AI
-  - [ ] Add enemy generation
+  - [x] Add enemy generation
   - [ ] Generate two rooms
   - [ ] Add transition between rooms
 - [ ] Phase 2: Gameplay
