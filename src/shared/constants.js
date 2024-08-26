@@ -17,5 +17,5 @@ export const UnitVectors = [[0, -1], [1, 0], [0, 1], [-1, 0]]
 
 export const TileSize = 16
 
-export const EnemyVelocity = 60
+export const EnemyVelocity = 70
 export const PlayerVelocity = 60

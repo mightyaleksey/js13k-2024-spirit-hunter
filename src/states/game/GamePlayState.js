@@ -95,7 +95,10 @@ export class GamePlayState extends BaseState {
 
   genEnemies () {
     for (let i = 0; i < 10; ++i) {
-      const enemy = new Enemy(random(this.maxX), random(this.maxY))
+      const enemy = new Enemy(
+        random(TileSize, this.maxX - TileSize),
+        random(TileSize, this.maxY - TileSize)
+      )
       enemy.entities = this.entities
       this.entities.push(enemy)
     }
