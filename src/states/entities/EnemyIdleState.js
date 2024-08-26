@@ -7,7 +7,7 @@ export class EnemyIdleState extends CharacterIdleState {
   sightRadius: number
 
   enter (input: mixed) {
-    this.sightRadius = 5
+    this.sightRadius = 7
     // reset velocity
     super.enter(input)
   }
