@@ -7,7 +7,7 @@
   - [x] Add GameObject
   - [x] Add camera movement
   - [x] Add shooting
-  - [ ] Basic AI
+  - [x] Basic AI
   - [ ] Add enemy generation
   - [ ] Generate two rooms
   - [ ] Add transition between rooms

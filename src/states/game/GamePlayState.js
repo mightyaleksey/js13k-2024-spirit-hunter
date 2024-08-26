@@ -94,7 +94,9 @@ export class GamePlayState extends BaseState {
   /* helpers */
 
   genEnemies () {
-    this.entities.push(new Enemy())
+    const enemy = new Enemy()
+    enemy.entities = this.entities
+    this.entities.push(enemy)
   }
 
   genWalls () {

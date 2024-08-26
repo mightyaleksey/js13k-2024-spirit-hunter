@@ -54,3 +54,7 @@ export function random (lo: number, hi?: number): number {
 
   return Math.floor(Math.random() * (hi - lo)) + lo
 }
+
+export function unit (value: number): number {
+  return value > 0 ? 1 : -1
+}

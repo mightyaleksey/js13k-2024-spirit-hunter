@@ -9,7 +9,7 @@ import { CharacterWalkState } from '../states/entities/CharacterWalkState'
 import { Entity } from './Entity'
 import { StateMachine } from '../states/StateMachine'
 
-type CharacterState =
+export type CharacterState =
   | 'death'
   | 'idle'
   | 'walk'
@@ -18,6 +18,7 @@ export class Character extends Entity {
   animations: $ReadOnlyArray<Animation>
   currentAnimation: Animation
   direction: number
+  entities: Array<Entity>
   state: StateMachine<CharacterState>
 
   constructor (props: EntityProps) {

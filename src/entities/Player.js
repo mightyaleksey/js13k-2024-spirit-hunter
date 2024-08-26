@@ -21,7 +21,6 @@ type BlasterState =
 
 export class Player extends Character {
   blasterWeapon: StateMachine<BlasterState>
-  entities: Array<Entity>
 
   constructor (x?: number, y?: number) {
     super({

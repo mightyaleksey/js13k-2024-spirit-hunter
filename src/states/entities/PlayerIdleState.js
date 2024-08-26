@@ -12,5 +12,7 @@ export class PlayerIdleState extends CharacterIdleState {
       this.entity.direction = direction
       this.entity.changeState('walk')
     }
+
+    super.update(dt)
   }
 }
