@@ -6,6 +6,7 @@ import { BaseState } from '../BaseState'
 import { Dimentions, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { Player } from '../../entities/Player'
+import { Projectile } from '../../entities/Projectile'
 import { TileSize } from '../../shared/constants'
 import { Wall } from '../../entities/Wall'
 import { collides, forEachRight } from '../../util'
@@ -36,7 +37,17 @@ export class GamePlayState extends BaseState {
   render () {
     // emulate camera effect
     translate(-this.cameraX, -this.cameraY)
-    forEachRight(this.entities, entity => entity.render())
+
+    const projectiles = []
+    forEachRight(this.entities, entity => {
+      if (entity instanceof Projectile) {
+        projectiles.push(entity)
+      } else {
+        entity.render()
+      }
+    })
+
+    projectiles.forEach(entity => entity.render())
   }
 
   update (dt: number) {

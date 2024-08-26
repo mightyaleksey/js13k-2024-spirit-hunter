@@ -7,8 +7,8 @@
   - [x] Add GameObject
   - [x] Add camera movement
   - [x] Add shooting
-  - [ ] Add enemy generation
   - [ ] Basic AI
+  - [ ] Add enemy generation
   - [ ] Generate two rooms
   - [ ] Add transition between rooms
 - [ ] Phase 2: Gameplay

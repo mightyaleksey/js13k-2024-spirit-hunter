@@ -15,8 +15,14 @@ export class CharacterDeathState extends BaseState {
   }
 
   enter () {
-    this.entity.isCollidable = false
-    this.entity.isSolid = false
+    const entity = this.entity
+    // stop movement
+    entity.dx = 0
+    entity.dy = 0
+    // stop collision
+    entity.isCollidable = false
+    entity.isSolid = false
+
     this.timer = 0
     this.timerDuration = 0.1
   }
