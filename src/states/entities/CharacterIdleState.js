@@ -12,7 +12,7 @@ export class CharacterIdleState extends BaseState {
     this.entity = entity
   }
 
-  enter () {
+  enter (input: mixed) {
     this.entity.dx = 0
     this.entity.dy = 0
   }

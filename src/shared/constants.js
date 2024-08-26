@@ -1,5 +1,12 @@
 /* @flow */
 
+export const Direction = {
+  Bottom: 2,
+  Left: 3,
+  Right: 1,
+  Top: 0
+}
+
 // array index reflects corresponding direction
 // top, right, bottom, left
 export const MovementKeys = ['w', 'd', 's', 'a']

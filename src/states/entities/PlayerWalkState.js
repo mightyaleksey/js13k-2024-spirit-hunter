@@ -19,8 +19,5 @@ export class PlayerWalkState extends CharacterWalkState {
     } else {
       this.entity.changeState('idle')
     }
-
-    // update animation
-    super.update(dt)
   }
 }

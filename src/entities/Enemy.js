@@ -4,10 +4,8 @@ import type { Entity } from './Entity'
 
 import { Character } from './Character'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
-import { CharacterIdleState } from '../states/entities/CharacterIdleState'
-import { CharacterWalkState } from '../states/entities/CharacterWalkState'
-import { EnemyChaseState } from '../states/entities/EnemyChaseState'
-import { EnemyFleeState } from '../states/entities/EnemyFleeState'
+import { EnemyIdleState } from '../states/entities/EnemyIdleState'
+import { EnemyWalkState } from '../states/entities/EnemyWalkState'
 import { Player } from './Player'
 import { StateMachine } from '../states/StateMachine'
 import { rect, setColor } from '../engine'
@@ -35,13 +33,11 @@ export class Enemy extends Character {
     })
 
     this.state = new StateMachine({
-      chase: () => new EnemyChaseState(this),
       death: () => new CharacterDeathState(this),
-      flee: () => new EnemyFleeState(this),
-      idle: () => new CharacterIdleState(this),
-      walk: () => new CharacterWalkState(this)
+      idle: () => new EnemyIdleState(this),
+      walk: () => new EnemyWalkState(this)
     })
-    this.state.change('chase')
+    this.state.change('idle')
   }
 
   render () {
@@ -51,14 +47,9 @@ export class Enemy extends Character {
 
   /* helpers */
 
-  changeState (state: EnemyState, input: mixed) {
-    // $FlowFixMe[incompatible-call]
-    super.changeState(state, input)
-  }
-
   collided (target: Entity) {
     if (target instanceof Player) {
-      this.changeState('flee')
+      this.changeState('walk', 'flee')
     }
   }
 }

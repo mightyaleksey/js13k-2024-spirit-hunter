@@ -14,7 +14,7 @@ export class CharacterDeathState extends BaseState {
     this.entity = entity
   }
 
-  enter () {
+  enter (input: mixed) {
     const entity = this.entity
     // stop movement
     entity.dx = 0

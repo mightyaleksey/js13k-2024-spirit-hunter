@@ -12,7 +12,7 @@ export class CharacterWalkState extends BaseState {
     this.entity = entity
   }
 
-  enter () {
+  enter (input: mixed) {
     this.entity.changeAnimation(0)
   }
 }
