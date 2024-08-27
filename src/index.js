@@ -5,11 +5,13 @@ import { GamePlayState } from './states/game/GamePlayState'
 import { StateMachine } from './states/StateMachine'
 import { StateStack } from './states/StateStack'
 import { appendElements, gameStates, gameTiles } from './shared/game'
-import { createEngine, genQuads, newImage } from './engine'
+import { createEngine, genQuads, newImage, renderQuadsForDebug } from './engine'
 
 async function initGame () {
   appendElements(gameTiles,
-    genQuads(await newImage('/tilemap_packed.png'), 16, 16))
+    genQuads(await newImage('/01-generic.png'), 16, 16))
+  appendElements(gameTiles,
+    genQuads(await newImage('/tilesheet.png'), 16, 16))
   appendElements(gameStates, [
     new StateStack(),
     new StateMachine<GameState>({
@@ -27,6 +29,7 @@ function updateGame (dt: number) {
 
 function renderGame () {
   gameStates[0].render()
+  // renderQuadsForDebug(gameTiles)
 }
 
 createEngine(initGame, updateGame, renderGame)

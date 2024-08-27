@@ -8,7 +8,6 @@ import { EnemyIdleState } from '../states/entities/EnemyIdleState'
 import { EnemyWalkState } from '../states/entities/EnemyWalkState'
 import { Player } from './Player'
 import { StateMachine } from '../states/StateMachine'
-import { rect, setColor } from '../engine'
 
 // sequences: chase > impact > flee > repeat
 
@@ -25,6 +24,8 @@ export class Enemy extends Character {
 
   constructor (x: number, y: number) {
     super({
+      character: 'spirit',
+
       x,
       y,
       width: 10,
@@ -38,11 +39,6 @@ export class Enemy extends Character {
       walk: () => new EnemyWalkState(this)
     })
     this.state.change('idle')
-  }
-
-  render () {
-    setColor('green')
-    rect('fill', this.x, this.y, this.width, this.height, 2)
   }
 
   /* helpers */

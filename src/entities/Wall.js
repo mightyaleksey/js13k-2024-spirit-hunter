@@ -1,23 +1,24 @@
 /* @flow */
 
-import type { EntityProps } from './Entity'
-
 import { Thing } from './Thing'
-import { rect, setColor } from '../engine'
+import { Walls } from '../definitions'
+
+type WallProps = $ReadOnly<{
+  x: number,
+  y: number,
+  wallID: number,
+}>
 
 export class Wall extends Thing {
-  constructor (props: EntityProps) {
+  constructor (props: WallProps) {
     super({
       x: props.x,
       y: props.y,
 
       isCollidable: true,
-      isSolid: true
-    })
-  }
+      isSolid: true,
 
-  render () {
-    setColor('gray')
-    rect('fill', this.x, this.y, this.width, this.height)
+      tileID: Walls[props.wallID]
+    })
   }
 }

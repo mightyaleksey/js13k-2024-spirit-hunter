@@ -11,13 +11,15 @@ import {
 export class PlayerWalkState extends CharacterWalkState {
   update (dt: number) {
     const direction = MovementKeys.findIndex(key => Keys.wasHolding(key))
+    const entity = this.entity
 
     if (direction > -1) {
-      this.entity.direction = direction
-      this.entity.dx = UnitVectors[direction][0] * PlayerVelocity
-      this.entity.dy = UnitVectors[direction][1] * PlayerVelocity
+      entity.direction = direction
+      entity.dx = UnitVectors[direction][0] * PlayerVelocity
+      entity.dy = UnitVectors[direction][1] * PlayerVelocity
+      entity.changeAnimation(entity.direction + 8)
     } else {
-      this.entity.changeState('idle')
+      entity.changeState('idle')
     }
   }
 }

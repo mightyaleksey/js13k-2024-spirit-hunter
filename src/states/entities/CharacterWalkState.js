@@ -13,6 +13,7 @@ export class CharacterWalkState extends BaseState {
   }
 
   enter (input: mixed) {
-    this.entity.changeAnimation(0)
+    const entity = this.entity
+    entity.changeAnimation(entity.direction + 8)
   }
 }

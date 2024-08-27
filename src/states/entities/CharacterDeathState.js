@@ -22,6 +22,7 @@ export class CharacterDeathState extends BaseState {
     // stop collision
     entity.isCollidable = false
     entity.isSolid = false
+    entity.changeAnimation(entity.direction)
 
     this.timer = 0
     this.timerDuration = 0.1

@@ -3,13 +3,15 @@
 import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
-import { Dimentions, translate } from '../../engine'
+import { Dimentions, translate, draw } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
+import { Floor } from '../../definitions'
 import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
 import { TileSize } from '../../shared/constants'
 import { Wall } from '../../entities/Wall'
 import { collides, forEachRight, random } from '../../util'
+import { gameTiles } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
   cameraX: number
@@ -37,6 +39,12 @@ export class GamePlayState extends BaseState {
   render () {
     // emulate camera effect
     translate(-this.cameraX, -this.cameraY)
+
+    for (let y = 0; y < this.maxY; y += TileSize) {
+      for (let x = 0; x < this.maxX; x += TileSize) {
+        draw(gameTiles[Floor[(x * y + 1) % Floor.length]], x, y)
+      }
+    }
 
     const projectiles = []
     forEachRight(this.entities, entity => {
@@ -105,25 +113,35 @@ export class GamePlayState extends BaseState {
   }
 
   genWalls () {
+    const entities = this.entities
     const size = 20
 
     for (let k = 0; k < size; ++k) {
-      this.entities.push(new Wall({
+      entities.push(new Wall({
         x: k * TileSize,
-        y: 0
+        y: 0,
+        wallID: k === 0 ? 7 : k === size - 1 ? 1 : 0
       }))
-      this.entities.push(new Wall({
-        x: 0,
-        y: k * TileSize
-      }))
-      this.entities.push(new Wall({
+
+      entities.push(new Wall({
         x: k * TileSize,
-        y: (size - 1) * TileSize
+        y: (size - 1) * TileSize,
+        wallID: k === 0 ? 5 : k === size - 1 ? 3 : 4
       }))
-      this.entities.push(new Wall({
-        x: (size - 1) * TileSize,
-        y: k * TileSize
-      }))
+
+      if (k !== 0 && k !== size - 1) {
+        entities.push(new Wall({
+          x: 0,
+          y: k * TileSize,
+          wallID: 6
+        }))
+
+        entities.push(new Wall({
+          x: (size - 1) * TileSize,
+          y: k * TileSize,
+          wallID: 2
+        }))
+      }
     }
 
     this.maxX = size * TileSize

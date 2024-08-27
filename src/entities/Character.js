@@ -1,8 +1,10 @@
 /* @flow */
 
+import type { CharacterType } from '../definitions'
 import type { EntityProps } from './Entity'
 
 import { Animation } from './Animation'
+import { Characters } from '../definitions'
 import { CharacterIdleState } from '../states/entities/CharacterIdleState'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterWalkState } from '../states/entities/CharacterWalkState'
@@ -14,6 +16,11 @@ export type CharacterState =
   | 'idle'
   | 'walk'
 
+export type CharacterProps = $ReadOnly<{
+  ...EntityProps,
+  character: string
+}>
+
 export class Character extends Entity {
   animations: $ReadOnlyArray<Animation>
   currentAnimation: Animation
@@ -21,11 +28,12 @@ export class Character extends Entity {
   entities: Array<Entity>
   state: StateMachine<CharacterState>
 
-  constructor (props: EntityProps) {
+  constructor (props: CharacterProps) {
+    // $FlowFixMe[prop-missing]
     super(props)
 
-    this.animations = [] // generate
-    this.currentAnimation = this.animations[2]
+    this.animations = this.genAnimations(Characters[props.character])
+    this.currentAnimation = this.animations[6]
     this.direction = 2
 
     this.state = new StateMachine({
@@ -37,6 +45,9 @@ export class Character extends Entity {
   }
 
   update (dt: number) {
+    // update frame
+    this.currentAnimation?.update(dt)
+    this.tileID = this.currentAnimation?.getCurrentFrame()
     // handle i/o
     this.state.update(dt)
     // update position
@@ -51,5 +62,10 @@ export class Character extends Entity {
 
   changeState (stateName: CharacterState, input: mixed) {
     this.state.change(stateName, input)
+  }
+
+  genAnimations (characterDef: CharacterType): $ReadOnlyArray<Animation> {
+    return characterDef.frames.map(frames =>
+      new Animation(frames, characterDef.interval))
   }
 }

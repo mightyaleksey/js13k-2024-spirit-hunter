@@ -2,6 +2,7 @@
 
 import { TileSize } from '../shared/constants'
 import { draw } from '../engine'
+import { gameTiles } from '../shared/game'
 
 export type EntityProps = $ReadOnly<{
   x?: number,
@@ -12,7 +13,7 @@ export type EntityProps = $ReadOnly<{
   isCollidable?: boolean,
   isSolid?: boolean,
 
-  tileID?: HTMLImageElement
+  tileID?: number
 }>
 
 export class Entity {
@@ -31,7 +32,7 @@ export class Entity {
   isDestroyed: boolean
   isSolid: boolean
 
-  tileID: ?HTMLImageElement
+  tileID: ?number
 
   constructor (props: EntityProps) {
     this.x = props.x ?? 0
@@ -52,7 +53,7 @@ export class Entity {
   render () {
     if (this.tileID != null) {
       draw(
-        this.tileID,
+        gameTiles[this.tileID],
         this.x,
         this.y
       )

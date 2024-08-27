@@ -24,6 +24,8 @@ export class Player extends Character {
 
   constructor (x?: number, y?: number) {
     super({
+      character: 'player',
+
       x,
       y,
       width: 10,
@@ -44,11 +46,6 @@ export class Player extends Character {
       fire: () => new BlasterFireState(this)
     })
     this.blasterWeapon.change('aim')
-  }
-
-  render () {
-    setColor('blue')
-    rect('fill', this.x, this.y, this.width, this.height, 2)
   }
 
   update (dt: number) {

@@ -29,7 +29,7 @@ export class EnemyWalkState extends CharacterWalkState {
     }
 
     // update animation
-    super.enter()
+    super.enter(input)
   }
 
   update (dt: number) {
