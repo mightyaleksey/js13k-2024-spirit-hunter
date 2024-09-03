@@ -9,10 +9,11 @@ import { Character } from './Character'
 import { Enemy } from './Enemy'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
+import { CharacterDeathState } from '../states/entities/CharacterDeathState'
+import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { StateMachine } from '../states/StateMachine'
 import { Thing } from './Thing'
 import { UnitVectors } from '../shared/constants'
-import { rect, setColor } from '../engine'
 
 type BlasterState =
   | 'aim'
@@ -35,7 +36,9 @@ export class Player extends Character {
     })
 
     this.state = new StateMachine({
+      death: () => new CharacterDeathState(this),
       idle: () => new PlayerIdleState(this),
+      stunned: () => new CharacterStunnedState(this),
       walk: () => new PlayerWalkState(this)
     })
     this.state.change('idle')

@@ -7,6 +7,7 @@ import { Animation } from './Animation'
 import { Characters } from '../definitions'
 import { CharacterIdleState } from '../states/entities/CharacterIdleState'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
+import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { CharacterWalkState } from '../states/entities/CharacterWalkState'
 import { Entity } from './Entity'
 import { StateMachine } from '../states/StateMachine'
@@ -14,6 +15,7 @@ import { StateMachine } from '../states/StateMachine'
 export type CharacterState =
   | 'death'
   | 'idle'
+  | 'stunned'
   | 'walk'
 
 export type CharacterProps = $ReadOnly<{
@@ -39,6 +41,7 @@ export class Character extends Entity {
     this.state = new StateMachine({
       death: () => new CharacterDeathState(this),
       idle: () => new CharacterIdleState(this),
+      stunned: () => new CharacterStunnedState(this),
       walk: () => new CharacterWalkState(this)
     })
     this.state.change('idle')
