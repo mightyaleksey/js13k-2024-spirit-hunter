@@ -9,7 +9,7 @@ import { createEngine, genQuads, newImage, renderQuadsForDebug } from './engine'
 
 async function initGame () {
   appendElements(gameTiles,
-    genQuads(await newImage('/01-generic.png'), 16, 16))
+    genQuads(await newImage('/characters.png'), 16, 16))
   appendElements(gameTiles,
     genQuads(await newImage('/tilesheet.png'), 16, 16))
   appendElements(gameStates, [
