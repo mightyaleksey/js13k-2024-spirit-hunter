@@ -9,18 +9,15 @@
   - [x] Add shooting
   - [x] Basic AI
   - [x] Add enemy generation
-  - [ ] Generate two rooms
-  - [ ] Add transition between rooms
-- [ ] Phase 2: Gameplay
-  - [ ] Level progression
-  - [ ] Shop and consumables & Income
-  - [ ] Status effects
-  - [ ] Handle touch events
-- [ ] Phase 3: Polish
-  - [ ] Main plot, Theme
-  - [ ] Graphics
-  - [ ] Bosses
-  - [ ] Second hero
+- [ ] Phase 2
+  - [ ] Projectile implementation + collisions
+  - [ ] Show damage numbers
+  - [ ] Sound
+  - [ ] Infinite room with environment
+  - [ ] Enemy generation
+  - [ ] Level progression / Cards
+  - [ ] Sprite generation
+  - [ ] Music
 
 ## Specs
 
