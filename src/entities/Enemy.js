@@ -10,12 +10,16 @@ import { EnemyWalkState } from '../states/entities/EnemyWalkState'
 import { Player } from './Player'
 import { StateMachine } from '../states/StateMachine'
 
+import { random } from '../util'
+
 // sequences: chase > impact > flee > repeat
+
+const defs = ['spirit1', 'spirit2', 'spirit3']
 
 export class Enemy extends Character {
   constructor (x: number, y: number) {
     super({
-      character: 'spirit',
+      character: defs[random(defs.length)],
 
       x,
       y,

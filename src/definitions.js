@@ -1,9 +1,20 @@
 /* @flow */
 
+export type CharacterStatsType = $ReadOnlyArray<number>
 export type CharacterType = $ReadOnly<{
   frames: $ReadOnlyArray<$ReadOnlyArray<number>>,
-  interval: number
+  frameInterval: number,
+  stats: CharacterStatsType
 }>
+
+export const CharacterStat = {
+  Speed: 0,
+  SpeedDC: 1,
+  Hp: 2,
+  HpDC: 3,
+  Attack: 4,
+  AttackDC: 5
+}
 
 export const Characters: $ReadOnly<{[string]: CharacterType}> = {
   player: {
@@ -21,10 +32,12 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
       [60, 61, 62, 61], // walk-bottom
       [75, 76, 77, 76] // walk-left
     ],
-    interval: 0.2
+    frameInterval: 0.2,
+
+    stats: [60, 0, 100, 3, 100, 3]
   },
 
-  spirit: {
+  spirit1: {
     frames: [
       [118], // death-top
       [103], // death-right
@@ -39,7 +52,46 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
       [72, 73, 74, 73], // walk-bottom
       [87, 88, 89, 88] // walk-left
     ],
-    interval: 0.2
+    frameInterval: 0.2,
+    stats: [60, 0, 100, 50, 20, 2]
+  },
+
+  spirit2: {
+    frames: [
+      [109],
+      [94],
+      [79],
+      [64],
+      [109],
+      [94],
+      [79],
+      [64],
+      [108, 109, 110, 109],
+      [93, 94, 95, 94],
+      [63, 64, 65, 64],
+      [78, 79, 80, 79]
+    ],
+    frameInterval: 0.2,
+    stats: [60, 0, 100, 50, 20, 2]
+  },
+
+  spirit3: {
+    frames: [
+      [58],
+      [43],
+      [28],
+      [13],
+      [58],
+      [43],
+      [28],
+      [13],
+      [57, 58, 59, 58],
+      [42, 43, 44, 43],
+      [12, 13, 14, 13],
+      [27, 28, 29, 28]
+    ],
+    frameInterval: 0.2,
+    stats: [60, 0, 100, 50, 20, 2]
   }
 }
 
