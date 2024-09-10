@@ -96,6 +96,7 @@ export class Character extends Entity {
   }
 
   takeDamage (dmg: number) {
+    console.log('take damage')
     this.stats[CharacterStat.Hp] -= dmg
 
     if (this.stats[CharacterStat.Hp] <= 0) {

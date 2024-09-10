@@ -1,8 +1,9 @@
 /* @flow */
 
 import { BaseWeaponState } from './BaseWeaponState'
+import { CharacterStat } from '../../definitions'
 import { Enemy } from '../../entities/Enemy'
-import { BlasterProjectile } from '../../entities/BlasterProjectile'
+import { Projectile } from '../../entities/Projectile'
 
 export class BlasterFireState extends BaseWeaponState {
   enter (target: mixed): void {
@@ -12,16 +13,21 @@ export class BlasterFireState extends BaseWeaponState {
       throw new Error('expected enemy')
     }
 
+    const dx = target.centerX() - player.centerX()
+    const dy = target.centerY() - player.centerY()
+    const d = Math.max(Math.abs(dx), Math.abs(dy))
+
     player.entities.push(
-      new BlasterProjectile({
+      new Projectile({
         x: player.centerX(),
         y: player.centerY(),
-        targetX: target.centerX(),
-        targetY: target.centerY()
+        dx: dx / d * 240,
+        dy: dy / d * 240,
+
+        damage: player.stats[CharacterStat.Attack]
       })
     )
 
     player.blasterWeapon.change('cooldown')
-    target.changeState('death')
   }
 }

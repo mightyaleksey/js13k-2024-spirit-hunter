@@ -7,7 +7,6 @@ import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { EnemyIdleState } from '../states/entities/EnemyIdleState'
 import { EnemyWalkState } from '../states/entities/EnemyWalkState'
-import { Player } from './Player'
 import { StateMachine } from '../states/StateMachine'
 
 import { random } from '../util'
@@ -19,13 +18,13 @@ const defs = ['spirit1', 'spirit2', 'spirit3']
 export class Enemy extends Character {
   constructor (x: number, y: number) {
     super({
-      character: defs[random(defs.length)],
-
       x,
       y,
       width: 10,
 
-      isCollidable: true
+      isCollidable: true,
+
+      character: defs[random(defs.length)]
     })
 
     this.state = new StateMachine({
@@ -39,9 +38,5 @@ export class Enemy extends Character {
 
   /* helpers */
 
-  collided (target: Entity) {
-    if (target instanceof Player) {
-      this.changeState('walk', 'flee')
-    }
-  }
+  collided (target: Entity) {}
 }
