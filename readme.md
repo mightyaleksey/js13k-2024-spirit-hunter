@@ -10,10 +10,10 @@
   - [x] Basic AI
   - [x] Add enemy generation
 - [ ] Phase 2
-  - [ ] Projectile implementation + collisions
-  - [ ] Show damage numbers
-  - [ ] Sound
+  - [x] Projectile implementation + collisions
+  - [x] Show damage numbers
   - [ ] Infinite room with environment
+  - [ ] Sound
   - [ ] Enemy generation
   - [ ] Level progression / Cards
   - [ ] Sprite generation

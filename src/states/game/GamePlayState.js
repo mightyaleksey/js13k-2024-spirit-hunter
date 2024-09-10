@@ -3,6 +3,8 @@
 import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
+import { Character } from '../../entities/Character'
+import { Damage } from '../../entities/Damage'
 import { Dimentions, translate, draw } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { Floor } from '../../definitions'
@@ -10,6 +12,7 @@ import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
 import { TileSize } from '../../shared/constants'
 import { Wall } from '../../entities/Wall'
+
 import { collides, forEachRight, random } from '../../util'
 import { gameTiles } from '../../shared/game'
 
@@ -46,16 +49,7 @@ export class GamePlayState extends BaseState {
       }
     }
 
-    const projectiles = []
-    forEachRight(this.entities, entity => {
-      if (entity instanceof Projectile) {
-        projectiles.push(entity)
-      } else {
-        entity.render()
-      }
-    })
-
-    projectiles.forEach(entity => entity.render())
+    sortEntities(this.entities).forEach(entity => entity.render())
   }
 
   update (dt: number) {
@@ -167,4 +161,23 @@ export class GamePlayState extends BaseState {
 
     return currentValue
   }
+}
+
+// higher value, last render
+function genEntityLayer (entity: Entity): number {
+  if (entity instanceof Character) return 1
+  if (entity instanceof Projectile) return 2
+  if (entity instanceof Damage) return 3
+  return 0
+}
+
+function sortEntities (
+  entities: $ReadOnlyArray<Entity>
+): $ReadOnlyArray<Entity> {
+  return entities.slice().sort((left, right) => {
+    const leftLayer = genEntityLayer(left)
+    const rightLayer = genEntityLayer(right)
+    if (leftLayer !== rightLayer) return leftLayer - rightLayer
+    return left.y - right.y
+  })
 }
