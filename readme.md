@@ -12,7 +12,8 @@
 - [ ] Phase 2
   - [x] Projectile implementation + collisions
   - [x] Show damage numbers
-  - [ ] Infinite room with environment
+  - [x] Add environment
+  - [ ] Infinite map
   - [ ] Sound
   - [ ] Enemy generation
   - [ ] Level progression / Cards

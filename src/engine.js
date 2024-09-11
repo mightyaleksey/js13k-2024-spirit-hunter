@@ -20,7 +20,7 @@ type dt = number
 const frameRate = 60
 const frameTime = 1 / frameRate
 const maxFrameTime = 1
-const scale = 2
+const scale = 3
 
 const localState: EngineState = {
   // $FlowFixMe[incompatible-type]
@@ -322,7 +322,7 @@ export function renderQuadsForDebug (
   let x = 0
   let y = 0
 
-  setColor('#1b1b1b')
+  setColor('#11eb11')
   setFont('8px sans-serif')
 
   quads.forEach((quad, index) => {

@@ -49,12 +49,6 @@ export class Player extends Character {
       fire: () => new BlasterFireState(this)
     })
     this.blasterWeapon.change('aim')
-
-    console.log(this.stats)
-    this.levelUp()
-    // this.levelUp()
-    // this.levelUp()
-    console.log(this.stats)
   }
 
   update (dt: number) {

@@ -5,16 +5,15 @@ import type { Entity } from '../../entities/Entity'
 import { BaseState } from '../BaseState'
 import { Character } from '../../entities/Character'
 import { Damage } from '../../entities/Damage'
-import { Dimentions, translate, draw } from '../../engine'
+import { Dimentions, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
-import { Floor } from '../../definitions'
+import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
+import { TileMap } from '../../entities/TileMap'
 import { TileSize } from '../../shared/constants'
-import { Wall } from '../../entities/Wall'
 
 import { collides, forEachRight, random } from '../../util'
-import { gameTiles } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
   cameraX: number
@@ -22,32 +21,30 @@ export class GamePlayState extends BaseState {
   maxX: number
   maxY: number
 
+  tileMap: TileMap
   entities: Array<Entity>
 
   enter () {
     this.cameraX = 0
     this.cameraY = 0
-    this.maxX = 0
-    this.maxY = 0
+    this.maxX = 20 * 16
+    this.maxY = 20 * 16
 
     // keep player first, so we can render it after all entities
     this.entities = [new Player(32, 32)]
-    this.genWalls()
-    this.genEnemies()
-
     // $FlowFixMe[prop-missing]: find a way to pass entities in
     this.entities[0].entities = this.entities
+    this.genEnemies()
+
+    this.tileMap = new TileMap()
+    this.entities.push(...this.tileMap.obstacles)
   }
 
   render () {
     // emulate camera effect
     translate(-this.cameraX, -this.cameraY)
 
-    for (let y = 0; y < this.maxY; y += TileSize) {
-      for (let x = 0; x < this.maxX; x += TileSize) {
-        draw(gameTiles[Floor[(x * y + 1) % Floor.length]], x, y)
-      }
-    }
+    this.tileMap.render()
 
     sortEntities(this.entities).forEach(entity => entity.render())
   }
@@ -106,42 +103,6 @@ export class GamePlayState extends BaseState {
     }
   }
 
-  genWalls () {
-    const entities = this.entities
-    const size = 20
-
-    for (let k = 0; k < size; ++k) {
-      entities.push(new Wall({
-        x: k * TileSize,
-        y: 0,
-        wallID: k === 0 ? 7 : k === size - 1 ? 1 : 0
-      }))
-
-      entities.push(new Wall({
-        x: k * TileSize,
-        y: (size - 1) * TileSize,
-        wallID: k === 0 ? 5 : k === size - 1 ? 3 : 4
-      }))
-
-      if (k !== 0 && k !== size - 1) {
-        entities.push(new Wall({
-          x: 0,
-          y: k * TileSize,
-          wallID: 6
-        }))
-
-        entities.push(new Wall({
-          x: (size - 1) * TileSize,
-          y: k * TileSize,
-          wallID: 2
-        }))
-      }
-    }
-
-    this.maxX = size * TileSize
-    this.maxY = size * TileSize
-  }
-
   updateCamera (
     currentValue: number,
     movingPoint: number,
@@ -166,6 +127,7 @@ export class GamePlayState extends BaseState {
 // higher value, last render
 function genEntityLayer (entity: Entity): number {
   if (entity instanceof Character) return 1
+  if (entity instanceof Obstacle) return 1
   if (entity instanceof Projectile) return 2
   if (entity instanceof Damage) return 3
   return 0
