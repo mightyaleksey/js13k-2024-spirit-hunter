@@ -10,7 +10,7 @@ const pattern = [
                                                                           800, 21,                                                                      1700, 0,
                     201, 27,          401, 29,          601, 30,          801, 21,          1001, 27, 1101, 46, 1201, 29,           1401, 26,           1601, 11,
                     202, 58,                   502, 46,                   802, 21, 902, 47,                     1202, 58,
-                    203, 30, 303, 45, 403, 26,                            803, 31,                              1203, 25, 1303, 47, 1403, 27, 1503, 58,
+                    203, 30, 303, 45, 403, 26,                            803, 19,                              1203, 25, 1303, 47, 1403, 27, 1503, 58,
                                                                  704,  8, 804,  9, 904, 10,                               1304,  7, 1404, 21, 1504, 21, 1604, 21,
            105, 21, 205, 21, 305,  7, 405, 21, 505, 21,          705, 20, 805, 21, 905, 22,           1105, 21, 1205, 21,
            106, 58,                                              706, 32, 806, 33, 906, 34,                                                   1506, 11,
@@ -20,6 +20,9 @@ const pattern = [
 ]
 /* eslint-enable indent */
 
+const patternWidth = 18
+const patternHeight = 10
+
 export class TileMap {
   obstacles: Array<Obstacle>
   terrain: Array<Obstacle>
@@ -28,17 +31,22 @@ export class TileMap {
     this.obstacles = []
     this.terrain = []
 
-    for (let k = 0; k < pattern.length; k += 2) {
-      const x = Math.floor(pattern[k] / 100) * TileSize
-      const y = (pattern[k] % 100) * TileSize
-      const tileID = pattern[k + 1]
+    const repeat = 2
+    for (let v = 0; v < repeat; v++) {
+      for (let h = 0; h < repeat; h++) {
+        for (let k = 0; k < pattern.length; k += 2) {
+          const x = (Math.floor(pattern[k] / 100) + h * patternWidth) * TileSize
+          const y = ((pattern[k] % 100) + v * patternHeight) * TileSize
+          const tileID = pattern[k + 1]
 
-      const tile = new Obstacle({ x, y, tileID })
+          const tile = new Obstacle({ x, y, tileID })
 
-      if (tile.isSolid) {
-        this.obstacles.push(tile)
-      } else {
-        this.terrain.push(tile)
+          if (tile.isSolid) {
+            this.obstacles.push(tile)
+          } else {
+            this.terrain.push(tile)
+          }
+        }
       }
     }
   }
