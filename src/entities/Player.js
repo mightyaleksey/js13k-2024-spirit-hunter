@@ -23,13 +23,18 @@ export class Player extends Character {
 
   constructor (x?: number, y?: number) {
     super({
-      character: 'player',
-
       x,
       y,
+      height: 14,
+      width: 10,
 
       isCollidable: true,
-      isSolid: true
+      isSolid: true,
+
+      tileOX: -3,
+      tileOY: -2,
+
+      character: 'player'
     })
 
     this.state = new StateMachine({

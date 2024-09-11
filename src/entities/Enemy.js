@@ -20,9 +20,13 @@ export class Enemy extends Character {
     super({
       x,
       y,
+      height: 14,
       width: 10,
 
       isCollidable: true,
+
+      tileOX: -3,
+      tileOY: -2,
 
       character: defs[random(defs.length)]
     })

@@ -14,6 +14,8 @@ export type EntityProps = $ReadOnly<{
   isCollidable?: boolean,
   isSolid?: boolean,
 
+  tileOX?: number,
+  tileOY?: number,
   tileID?: number
 }>
 
@@ -33,6 +35,11 @@ export class Entity {
   isDestroyed: boolean
   isSolid: boolean
 
+  // add extra offset to bounding box for tile rendering
+  // (might be useful if tile have a lot of space around)
+  tileOX: number
+  tileOY: number
+  // tile id to render
   tileID: ?number
 
   constructor (props: EntityProps) {
@@ -48,6 +55,8 @@ export class Entity {
     this.isDestroyed = false
     this.isSolid = Boolean(props.isSolid)
 
+    this.tileOX = props.tileOX ?? 0
+    this.tileOY = props.tileOY ?? 0
     this.tileID = props.tileID
   }
 
@@ -55,8 +64,8 @@ export class Entity {
     if (this.tileID != null) {
       draw(
         gameTiles[this.tileID],
-        this.x,
-        this.y
+        this.x + this.tileOX,
+        this.y + this.tileOY
       )
 
       if (Debug) {
