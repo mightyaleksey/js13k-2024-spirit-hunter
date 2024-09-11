@@ -1,9 +1,12 @@
 /* @flow */
 
-import { Dimentions, draw } from '../engine'
-import { TileSize } from '../shared/constants'
-import { gameTiles } from '../shared/game'
+import type { CollidableType } from '../util'
+
+import { Dimentions, rect, setColor } from '../engine'
 import { Obstacle } from './Obstacle'
+import { TileSize } from '../shared/constants'
+
+import { collides } from '../util'
 
 /* eslint-disable indent, no-multi-spaces */
 const pattern = [
@@ -24,42 +27,112 @@ const patternWidth = 18
 const patternHeight = 10
 
 export class TileMap {
+  offsetX: number
+  offsetY: number
+  viewportWidth: number
+  viewportHeight: number
+  repeat: number
+
+  // rendered at the same level as characters
   obstacles: Array<Obstacle>
+  // terain is static are rendered below characters
   terrain: Array<Obstacle>
 
   constructor () {
+    this.offsetX = 0
+    this.offsetY = 0
+    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
+    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
+    this.repeat = Math.ceil(Math.max(
+      this.viewportWidth / patternWidth,
+      this.viewportHeight / patternHeight
+    ))
+
     this.obstacles = []
     this.terrain = []
 
-    const repeat = 2
-    for (let v = 0; v < repeat; v++) {
-      for (let h = 0; h < repeat; h++) {
+    for (let v = 0; v < this.repeat; v++) {
+      for (let h = 0; h < this.repeat; h++) {
         for (let k = 0; k < pattern.length; k += 2) {
           const x = (Math.floor(pattern[k] / 100) + h * patternWidth) * TileSize
           const y = ((pattern[k] % 100) + v * patternHeight) * TileSize
           const tileID = pattern[k + 1]
 
           const tile = new Obstacle({ x, y, tileID })
-
-          if (tile.isSolid) {
-            this.obstacles.push(tile)
-          } else {
-            this.terrain.push(tile)
-          }
+          ;(tile.isSolid ? this.obstacles : this.terrain).push(tile)
         }
       }
     }
   }
 
   render () {
-    for (let y = 0; y < Dimentions.height; y += TileSize) {
-      for (let x = 0; x < Dimentions.width; x += TileSize) {
-        draw(gameTiles[59], x, y)
-      }
-    }
-
     this.terrain.forEach(tile => tile.render())
   }
 
-  update (dt: number) {}
+  update (dt: number) {
+    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
+    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
+  }
+
+  /* helpers */
+
+  renderBg () {
+    setColor('#000023')
+    rect('fill', 0, 0, Dimentions.width, Dimentions.height)
+  }
+
+  startX (): number {
+    return 0.5 * (patternWidth - this.viewportWidth) * TileSize
+  }
+
+  startY (): number {
+    return 0.5 * (patternHeight - this.viewportHeight) * TileSize + TileSize
+  }
+
+  updateObstacles (entities: $ReadOnlyArray<Obstacle>, boundingBox: CollidableType) {
+    const stepX = patternWidth * this.repeat * TileSize
+    const stepY = patternHeight * this.repeat * TileSize
+
+    entities.forEach(obstacle => {
+      if (!collides(obstacle, boundingBox, TileSize)) {
+        obstacle.x = updateCoordinate(obstacle.x, stepX, boundingBox.x, boundingBox.width)
+        obstacle.y = updateCoordinate(obstacle.y, stepY, boundingBox.y, boundingBox.height)
+      }
+    })
+  }
+
+  updateViewpoint (cameraX: number, cameraY: number) {
+    if (
+      this.offsetX !== cameraX ||
+      this.offsetY !== cameraY
+    ) {
+      this.offsetX = cameraX
+      this.offsetY = cameraY
+
+      const boundingBox = {
+        x: this.offsetX,
+        y: this.offsetY,
+        width: this.viewportWidth * TileSize,
+        height: this.viewportHeight * TileSize
+      }
+
+      this.updateObstacles(this.obstacles, boundingBox)
+      this.updateObstacles(this.terrain, boundingBox)
+    }
+  }
+}
+
+function updateCoordinate (
+  current: number,
+  step: number,
+  left: number,
+  size: number
+): number {
+  if (current < left - TileSize) {
+    return current + step
+  } else if (current > left + size) {
+    return current - step
+  }
+
+  return current
 }

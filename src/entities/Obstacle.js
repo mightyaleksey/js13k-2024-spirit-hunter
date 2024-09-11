@@ -13,6 +13,9 @@ type Props = $ReadOnly<{
 }>
 
 export class Obstacle extends Thing {
+  originalX: number
+  originalY: number
+
   constructor (props: Props) {
     const tileID = props.tileID
 
@@ -23,6 +26,9 @@ export class Obstacle extends Thing {
 
       isSolid: isSolid(tileID)
     })
+
+    this.originalX = props.x
+    this.originalY = props.y
   }
 
   render () {

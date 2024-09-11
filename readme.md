@@ -13,7 +13,7 @@
   - [x] Projectile implementation + collisions
   - [x] Show damage numbers
   - [x] Add environment
-  - [ ] Infinite map
+  - [x] Infinite map
   - [ ] Sound
   - [ ] Enemy generation
   - [ ] Level progression / Cards

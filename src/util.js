@@ -1,6 +1,6 @@
 /* @flow */
 
-interface CollidableType {
+export interface CollidableType {
   x: number;
   y: number;
   width: number;

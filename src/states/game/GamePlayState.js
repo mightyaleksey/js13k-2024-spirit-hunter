@@ -16,40 +16,37 @@ import { TileSize } from '../../shared/constants'
 import { collides, forEachRight, random } from '../../util'
 
 export class GamePlayState extends BaseState {
+  tileMap: TileMap
   cameraX: number
   cameraY: number
-  maxX: number
-  maxY: number
 
-  tileMap: TileMap
   entities: Array<Entity>
 
   enter () {
-    this.cameraX = 0
-    this.cameraY = 0
-    this.maxX = 20 * 16
-    this.maxY = 20 * 16
+    this.tileMap = new TileMap()
+    this.cameraX = this.tileMap.startX()
+    this.cameraY = this.tileMap.startY()
 
-    // keep player first, so we can render it after all entities
-    this.entities = [new Player(32, 32)]
-    // $FlowFixMe[prop-missing]: find a way to pass entities in
-    this.entities[0].entities = this.entities
+    const player = new Player(8 * TileSize + 3, 5 * TileSize)
+
+    this.entities = [player].concat(this.tileMap.obstacles)
     this.genEnemies()
 
-    this.tileMap = new TileMap()
-    this.entities.push(...this.tileMap.obstacles)
+    player.entities = this.entities
   }
 
   render () {
+    this.tileMap.renderBg()
     // emulate camera effect
     translate(-this.cameraX, -this.cameraY)
 
     this.tileMap.render()
-
     sortEntities(this.entities).forEach(entity => entity.render())
   }
 
   update (dt: number) {
+    this.tileMap.update(dt)
+
     forEachRight(this.entities, (entity, j) => {
       entity.update(dt)
 
@@ -88,15 +85,17 @@ export class GamePlayState extends BaseState {
       this.cameraX,
       player.x,
       0.3 * Dimentions.width,
-      0.7 * Dimentions.width,
-      this.maxX - Dimentions.width
+      0.7 * Dimentions.width
     )
     this.cameraY = this.updateCamera(
       this.cameraY,
       player.y,
       0.3 * Dimentions.height,
-      0.7 * Dimentions.height,
-      this.maxY - Dimentions.height
+      0.7 * Dimentions.height
+    )
+    this.tileMap.updateViewpoint(
+      this.cameraX,
+      this.cameraY
     )
   }
 
@@ -105,8 +104,8 @@ export class GamePlayState extends BaseState {
   genEnemies () {
     for (let i = 0; i < 10; ++i) {
       const enemy = new Enemy(
-        random(TileSize, this.maxX - TileSize),
-        random(TileSize, this.maxY - TileSize)
+        random(TileSize, 18 * TileSize),
+        random(TileSize, 9 * TileSize)
       )
       enemy.entities = this.entities
       this.entities.push(enemy)
@@ -117,17 +116,16 @@ export class GamePlayState extends BaseState {
     currentValue: number,
     movingPoint: number,
     leftEdge: number,
-    rightEdge: number,
-    rightMax: number
+    rightEdge: number
   ): number {
     // move camera left
     if (movingPoint < currentValue + leftEdge) {
-      return Math.max(movingPoint - leftEdge, 0)
+      return movingPoint - leftEdge
     }
 
     // move camera right
     if (movingPoint > currentValue + rightEdge) {
-      return Math.min(movingPoint - rightEdge, rightMax)
+      return movingPoint - rightEdge
     }
 
     return currentValue
