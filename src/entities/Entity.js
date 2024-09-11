@@ -1,7 +1,8 @@
 /* @flow */
 
-import { TileSize } from '../shared/constants'
-import { draw } from '../engine'
+import { Debug, TileSize } from '../shared/constants'
+
+import { draw, rect, setColor } from '../engine'
 import { gameTiles } from '../shared/game'
 
 export type EntityProps = $ReadOnly<{
@@ -57,6 +58,11 @@ export class Entity {
         this.x,
         this.y
       )
+
+      if (Debug) {
+        setColor(this.isSolid ? 'red' : 'green')
+        rect('line', this.x, this.y, this.width, this.height)
+      }
     }
   }
 
@@ -77,5 +83,10 @@ export class Entity {
 
   collided (target: Entity) {
     /* abstract */
+  }
+
+  retreate (dt: number) {
+    this.x -= this.dx * dt
+    this.y -= this.dy * dt
   }
 }

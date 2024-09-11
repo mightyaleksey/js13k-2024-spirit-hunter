@@ -61,14 +61,24 @@ export class GamePlayState extends BaseState {
     // check collision (time complexity O(n*n))
     // (try Spatial Partition if any perf issues)
     // https://gameprogrammingpatterns.com/spatial-partition.html
-    const collidable = this.entities.filter(entity => entity.isCollidable)
-    collidable.forEach((left, j) => {
-      for (let k = j + 1; k < collidable.length; ++k) {
-        const right = collidable[k]
+    const collidableEntities = this.entities.filter(entity =>
+      entity.isCollidable ||
+      entity.isSolid)
+
+    collidableEntities.forEach((left, j) => {
+      for (let k = j + 1; k < collidableEntities.length; ++k) {
+        const right = collidableEntities[k]
         if (!collides(left, right, 1)) continue
 
-        left.collided(right)
-        right.collided(left)
+        if (left.isSolid && right.isSolid) {
+          left.retreate(dt)
+          right.retreate(dt)
+        }
+
+        if (left.isCollidable && right.isCollidable) {
+          left.collided(right)
+          right.collided(left)
+        }
       }
     })
 

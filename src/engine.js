@@ -151,6 +151,7 @@ function normalizeCanvas (
   canvas.width = width
   canvas.height = height
   canvasContext.imageSmoothingEnabled = false
+  canvasContext.font = '.8rem Consolas, monaco, monospace'
   canvasContext.textBaseline = 'top'
   canvasContext.scale(scale, scale)
 }

@@ -12,6 +12,7 @@ import { CharacterWalkState } from '../states/entities/CharacterWalkState'
 import { Entity } from './Entity'
 import { StateMachine } from '../states/StateMachine'
 
+import { rect, setColor } from '../engine'
 import { random } from '../util'
 
 export type CharacterState =
@@ -56,6 +57,13 @@ export class Character extends Entity {
     this.exp = 0
     this.level = 1
     this.stats = char.stats.slice()
+  }
+
+  render () {
+    super.render()
+
+    setColor('green')
+    rect('line', this.x, this.y, this.width, this.height)
   }
 
   update (dt: number) {

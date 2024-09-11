@@ -1,6 +1,7 @@
 /* @flow */
 
 import { Thing } from './Thing'
+
 import { draw } from '../engine'
 import { gameTiles } from '../shared/game'
 import { nullthrows } from '../util'

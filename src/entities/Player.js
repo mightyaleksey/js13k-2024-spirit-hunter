@@ -12,8 +12,6 @@ import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { StateMachine } from '../states/StateMachine'
-import { Thing } from './Thing'
-import { UnitVectors } from '../shared/constants'
 
 type BlasterState =
   | 'aim'
@@ -29,7 +27,6 @@ export class Player extends Character {
 
       x,
       y,
-      width: 10,
 
       isCollidable: true,
       isSolid: true
@@ -60,21 +57,6 @@ export class Player extends Character {
   /* helpers */
 
   collided (entity: Entity) {
-    if (
-      (entity instanceof Thing) &&
-      entity.isSolid
-    ) {
-      // fix player position
-      const unitVector = UnitVectors[this.direction]
-
-      if (unitVector[0] !== 0) {
-        this.x = entity.x + (unitVector[0] < 0 ? entity.width : -this.width)
-      }
-      if (unitVector[1] !== 0) {
-        this.y = entity.y + (unitVector[1] < 0 ? entity.height : -this.height)
-      }
-    }
-
     if (entity instanceof Enemy) {
       // handle impact
     }
