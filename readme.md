@@ -24,29 +24,24 @@
   - [ ] Sprite generation
 
 
-## Specs
+## How To
 
-Archetypes:
-- `Entity` — universal class that defines dimentions, statuses and handles rendering
-- `Character` — base class for the interactive characters (enemies, player and etc)
-- `Thing` — base class for the environment objects (walls)
+Prototypes:
+- `Entity` — Universal building block for other game elements. Implements dimentions, statuses and rendering.
+- `Character` — Base class for the interactive characters (enemies, player). Inheritor of Entity.
+- `Thing` — Base class for the environment objects (obstacle, projective).
 
 Update sequence:
-- entity update
-  - custom logic (I/O handlers for example)
-  - position update
-- clean up destroyed entities
-- collision detection
-
-
-## Resources
-
-- Sound: https://sfxr.me/
-
-
-## How To
+1. Entity changes (I/O logic, movement).
+2. Clean up destroyed entities.
+3. Collision detection.
 
 Open local server on mobile device:
 - Get IP: `ipconfig getifaddr en1`.
 - Run vitejs with `--host <ip>`.
 - Open final address on device.
+
+
+## Resources
+
+- Sound: https://sfxr.me/
