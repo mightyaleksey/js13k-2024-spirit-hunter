@@ -4,14 +4,16 @@ import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
 import { Character } from '../../entities/Character'
+import { Console } from '../../entities/Console'
 import { Damage } from '../../entities/Damage'
+import { DebugConsole, TileSize } from '../../shared/constants'
 import { Dimentions, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
+import { MobileControl } from '../../entities/MobileControl'
 import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
 import { TileMap } from '../../entities/TileMap'
-import { TileSize } from '../../shared/constants'
 
 import { collides, forEachRight, random } from '../../util'
 
@@ -20,12 +22,17 @@ export class GamePlayState extends BaseState {
   cameraX: number
   cameraY: number
 
+  console: Console
+  mobileControl: MobileControl
+
   entities: Array<Entity>
 
   enter () {
     this.tileMap = new TileMap()
     this.cameraX = this.tileMap.startX()
     this.cameraY = this.tileMap.startY()
+
+    if (DebugConsole) this.console = new Console()
 
     const player = new Player(8 * TileSize + 3, 5 * TileSize)
 
@@ -42,9 +49,11 @@ export class GamePlayState extends BaseState {
 
     this.tileMap.render()
     sortEntities(this.entities).forEach(entity => entity.render())
+    if (DebugConsole) this.console.render(this.cameraX, this.cameraY)
   }
 
   update (dt: number) {
+    if (DebugConsole) this.console.update(dt)
     this.tileMap.update(dt)
 
     forEachRight(this.entities, (entity, j) => {

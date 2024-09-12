@@ -1,6 +1,6 @@
 /* @flow */
 
-import { Debug, TileSize } from '../shared/constants'
+import { DebugBB, TileSize } from '../shared/constants'
 
 import { draw, rect, setColor } from '../engine'
 import { gameTiles } from '../shared/game'
@@ -68,7 +68,7 @@ export class Entity {
         this.y + this.tileOY
       )
 
-      if (Debug) {
+      if (DebugBB) {
         setColor(this.isSolid ? 'red' : 'green')
         rect('line', this.x, this.y, this.width, this.height)
       }

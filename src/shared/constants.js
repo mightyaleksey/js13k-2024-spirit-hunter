@@ -20,4 +20,5 @@ export const TileSize = 16
 export const EnemyVelocity = 70
 export const PlayerVelocity = 60
 
-export const Debug = false
+export const DebugBB = false
+export const DebugConsole = true

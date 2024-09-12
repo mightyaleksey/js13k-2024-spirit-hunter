@@ -39,6 +39,18 @@ export function clear () {
   c.clearRect(0, 0, c.canvas.width, c.canvas.height)
 }
 
+export function circle (
+  mode: DrawMode,
+  x: number,
+  y: number,
+  radius: number
+) {
+  const c = localState.context
+  c.beginPath()
+  c.arc(x, y, radius, 0, 2 * Math.PI)
+  mode === 'fill' ? c.fill() : c.stroke()
+}
+
 export function draw (
   drawable: HTMLImageElement,
   x: number,
@@ -151,7 +163,7 @@ function normalizeCanvas (
   canvas.width = width
   canvas.height = height
   canvasContext.imageSmoothingEnabled = false
-  canvasContext.font = '.8rem Consolas, monaco, monospace'
+  canvasContext.font = '8px Consolas, monaco, monospace'
   canvasContext.textBaseline = 'top'
   canvasContext.scale(scale, scale)
 }
@@ -195,6 +207,7 @@ export async function createEngine (
   renderGame?: ?() => void
 ) {
   updateDimentions()
+  console.info(Dimentions)
 
   if (initGame != null) {
     await initGame()

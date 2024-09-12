@@ -19,5 +19,5 @@ export function initSounds () {
 
 export function playSound (name: SoundName) {
   const sound = nullthrows(soundbank[name])
-  sound.play()
+  // sound.play()
 }

@@ -46,6 +46,7 @@
   "scripts": {
     "build": "vite build --config ./vite.config.mjs --emptyOutDir --outDir ../dist src",
     "dev": "vite --config ./vite.config.mjs --port 1234 src",
+    "dev:phone": "vite --config ./vite.config.mjs --host 192.168.1.234 --port 1234 src",
     "format": "standard src",
     "preview": "vite preview --port 1234"
   }

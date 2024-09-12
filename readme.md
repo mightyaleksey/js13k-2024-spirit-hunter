@@ -22,6 +22,7 @@
   - [ ] Level progression / Cards
   - [ ] Sprite generation
 
+
 ## Specs
 
 Archetypes:
@@ -40,3 +41,11 @@ Update sequence:
 ## Resources
 
 - Sound: https://sfxr.me/
+
+
+## How To
+
+Open local server on mobile device:
+- Get IP: `ipconfig getifaddr en1`.
+- Run vitejs with `--host <ip>`.
+- Open final address on device.
