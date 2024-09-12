@@ -29,7 +29,7 @@ export class CharacterDeathState<T: Character> extends BaseState {
     this.timer = 0
     this.timerDuration = 0.1
 
-    playSound('enemyHit')
+    playSound('death')
   }
 
   update (dt: number) {
