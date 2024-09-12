@@ -4,6 +4,7 @@ import { BaseWeaponState } from './BaseWeaponState'
 import { CharacterStat } from '../../definitions'
 import { Enemy } from '../../entities/Enemy'
 import { Projectile } from '../../entities/Projectile'
+import { playSound } from '../../shared/sound'
 
 export class BlasterFireState extends BaseWeaponState {
   enter (target: mixed): void {
@@ -29,5 +30,6 @@ export class BlasterFireState extends BaseWeaponState {
     )
 
     player.blasterWeapon.change('cooldown')
+    playSound('laser')
   }
 }

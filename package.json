@@ -1,5 +1,8 @@
 {
   "name": "web-template",
+  "dependencies": {
+    "jsfxr": "1.2.2"
+  },
   "devDependencies": {
     "@babel/core": "7.25.2",
     "@babel/preset-flow": "7.24.7",

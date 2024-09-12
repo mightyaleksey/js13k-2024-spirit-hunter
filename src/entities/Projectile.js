@@ -6,6 +6,7 @@ import { Damage } from './Damage'
 import { Enemy } from './Enemy'
 import { Thing } from './Thing'
 import { TileSize } from '../shared/constants'
+
 import { line, setColor } from '../engine'
 
 type Props = {
@@ -73,7 +74,6 @@ export class Projectile extends Thing {
           damage: this.damage
         })
       )
-      this.isDestroyed = true
     }
   }
 }

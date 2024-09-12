@@ -14,11 +14,13 @@
   - [x] Show damage numbers
   - [x] Add environment
   - [x] Infinite map
-  - [ ] Sound
+  - [ ] Mobile controls
+  - [x] Sound
+  - [ ] Music
   - [ ] Enemy generation
+  - [ ] Menus
   - [ ] Level progression / Cards
   - [ ] Sprite generation
-  - [ ] Music
 
 ## Specs
 
@@ -33,3 +35,8 @@ Update sequence:
   - position update
 - clean up destroyed entities
 - collision detection
+
+
+## Resources
+
+- Sound: https://sfxr.me/

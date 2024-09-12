@@ -4,6 +4,8 @@ import type { Character } from '../../entities/Character'
 
 import { BaseState } from '../BaseState'
 
+import { playSound } from '../../shared/sound'
+
 export class CharacterDeathState extends BaseState {
   entity: Character
   timer: number
@@ -26,6 +28,8 @@ export class CharacterDeathState extends BaseState {
 
     this.timer = 0
     this.timerDuration = 0.1
+
+    playSound('enemyHit')
   }
 
   update (dt: number) {
