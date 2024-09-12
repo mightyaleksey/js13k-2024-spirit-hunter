@@ -55,6 +55,16 @@ export function random (lo: number, hi?: number): number {
   return Math.floor(Math.random() * (hi - lo)) + lo
 }
 
+export function clamp (v: number, lo: number, hi: number): number {
+  if (hi < lo) {
+    const t = hi
+    hi = lo
+    lo = t
+  }
+
+  return Math.min(hi, Math.max(lo, v))
+}
+
 export function unit (value: number): number {
   return value > 0 ? 1 : -1
 }

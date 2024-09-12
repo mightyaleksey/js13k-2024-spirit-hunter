@@ -4,10 +4,10 @@ import type { Character } from '../../entities/Character'
 
 import { BaseState } from '../BaseState'
 
-export class CharacterWalkState extends BaseState {
-  entity: Character
+export class CharacterWalkState<T: Character> extends BaseState {
+  entity: T
 
-  constructor (entity: Character) {
+  constructor (entity: T) {
     super()
     this.entity = entity
   }

@@ -1,7 +1,7 @@
 # js13k
 
 ## Plan
-- [ ] Phase 1: MVP
+- [x] Phase 1: MVP
   - [x] Add Entity class
   - [x] Add Enemy, Player
   - [x] Add GameObject
@@ -14,12 +14,13 @@
   - [x] Show damage numbers
   - [x] Add environment
   - [x] Infinite map
-  - [ ] Mobile controls
+  - [x] Mobile controls
   - [x] Sound
   - [ ] Music
   - [ ] Enemy generation
   - [ ] Menus
   - [ ] Level progression / Cards
+  - [ ] Dynamic scaling
   - [ ] Sprite generation
 
 

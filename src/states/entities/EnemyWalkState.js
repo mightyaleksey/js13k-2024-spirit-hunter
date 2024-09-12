@@ -1,9 +1,11 @@
 /* @flow */
 
+import type { Enemy } from '../../entities/Enemy'
+
 import { CharacterWalkState } from './CharacterWalkState'
 import { Direction, EnemyVelocity, UnitVectors } from '../../shared/constants'
 
-export class EnemyWalkState extends CharacterWalkState {
+export class EnemyWalkState extends CharacterWalkState<Enemy> {
   timer: number
   timerDuraction: number
 

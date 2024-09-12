@@ -28,9 +28,9 @@
 /**
  * Usage:
  *
- * t = time       should go from 0 to duration
- * b = begin      value of the property being ease
- * c = change     ending value of the property
+ * t = time       should go from 0 to duration,
+ * b = begin      value of the property being ease,
+ * c = change     ending value of the property,
  * d = duration
  */
 

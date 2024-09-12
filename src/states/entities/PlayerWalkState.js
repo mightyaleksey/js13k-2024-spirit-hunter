@@ -1,5 +1,7 @@
 /* @flow */
 
+import type { Player } from '../../entities/Player'
+
 import { CharacterWalkState } from './CharacterWalkState'
 import { Keys } from '../../engine'
 import {
@@ -8,9 +10,12 @@ import {
   UnitVectors
 } from '../../shared/constants'
 
-export class PlayerWalkState extends CharacterWalkState {
+export class PlayerWalkState extends CharacterWalkState<Player> {
   update (dt: number) {
-    const direction = MovementKeys.findIndex(key => Keys.wasHolding(key))
+    const joystick = this.entity.joystick
+    const direction = joystick.direction > -1
+      ? joystick.direction
+      : MovementKeys.findIndex(key => Keys.wasHolding(key))
     const entity = this.entity
 
     if (direction > -1) {

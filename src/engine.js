@@ -12,6 +12,7 @@ type EngineState = {
   checked: {[string]: boolean},
   holding: {[string]: boolean},
   pressed: {[string]: boolean},
+  touches: {[string]: [number, number]}
 }
 
 // Time since the last update in seconds.
@@ -31,7 +32,9 @@ const localState: EngineState = {
   checked: {},
   // keeps keyboard state
   holding: {},
-  pressed: {}
+  pressed: {},
+  // touch events
+  touches: {}
 }
 
 export function clear () {
@@ -194,6 +197,19 @@ export const Keys = {
 }
 
 /**
+ * Handles mobile I/O
+ */
+export const Touch = {
+  getPosition (id: ?string): ?[number, number] {
+    // $FlowExpectedError[incompatible-type]: missing null check
+    return localState.touches[id] ?? null
+  },
+  getTouches (): $ReadOnlyArray<string> {
+    return Object.keys(localState.touches)
+  }
+}
+
+/**
  * Starts engine that implements game loop pattern. Accepts the following
  * functions as input:
  *
@@ -207,7 +223,6 @@ export async function createEngine (
   renderGame?: ?() => void
 ) {
   updateDimentions()
-  console.info(Dimentions)
 
   if (initGame != null) {
     await initGame()
@@ -278,6 +293,27 @@ export async function createEngine (
     delete localState.holding[key]
     delete localState.pressed[key]
   })
+
+  document.addEventListener('touchstart', onTouch)
+  document.addEventListener('touchmove', onTouch)
+  document.addEventListener('touchend', onTouchEnd)
+
+  function onTouch (event: TouchEvent) {
+    for (let t = 0; t < event.changedTouches.length; t++) {
+      const touchEvent = event.changedTouches[t]
+      localState.touches[String(touchEvent.identifier)] = [
+        touchEvent.pageX / scale,
+        touchEvent.pageY / scale
+      ]
+    }
+  }
+
+  function onTouchEnd (event: TouchEvent) {
+    for (let t = 0; t < event.changedTouches.length; t++) {
+      const touchEvent = event.changedTouches[t]
+      delete localState.touches[String(touchEvent.identifier)]
+    }
+  }
 
   function getTime (): number {
     return Date.now() / 1000

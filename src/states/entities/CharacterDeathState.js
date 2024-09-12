@@ -6,12 +6,12 @@ import { BaseState } from '../BaseState'
 
 import { playSound } from '../../shared/sound'
 
-export class CharacterDeathState extends BaseState {
-  entity: Character
+export class CharacterDeathState<T: Character> extends BaseState {
+  entity: T
   timer: number
   timerDuration: number
 
-  constructor (entity: Character) {
+  constructor (entity: T) {
     super()
     this.entity = entity
   }

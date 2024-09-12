@@ -1,6 +1,7 @@
 /* @flow */
 
 import type { Entity } from './Entity'
+import type { Joystick } from './Joystick'
 
 import { BlasterAimState } from '../states/weapons/BlasterAimState'
 import { BlasterCooldownState } from '../states/weapons/BlasterCooldownState'
@@ -20,6 +21,7 @@ type BlasterState =
 
 export class Player extends Character {
   blasterWeapon: StateMachine<BlasterState>
+  joystick: Joystick
 
   constructor (x?: number, y?: number) {
     super({

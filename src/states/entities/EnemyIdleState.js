@@ -1,9 +1,11 @@
 /* @flow */
 
+import type { Enemy } from '../../entities/Enemy'
+
 import { CharacterIdleState } from './CharacterIdleState'
 import { TileSize } from '../../shared/constants'
 
-export class EnemyIdleState extends CharacterIdleState {
+export class EnemyIdleState extends CharacterIdleState<Enemy> {
   sightRadius: number
 
   enter (input: mixed) {

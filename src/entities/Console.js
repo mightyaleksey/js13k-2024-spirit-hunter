@@ -1,34 +1,42 @@
 /* @flow */
 
-import { Dimentions, printf, rect, setColor } from '../engine'
+import { Dimentions, printf, setColor } from '../engine'
+import { Panel } from '../gui/Panel'
 
 export class Console {
   metrics: Array<number | string>
+  panel: Panel
 
   constructor () {
     this.metrics = []
+    this.panel = new Panel({
+      x: 10,
+      y: 10,
+      width: 60,
+      height: 10
+    })
   }
 
-  render (cx: number, cy: number) {
+  render () {
     const rows = 0.5 * this.metrics.length
 
-    setColor('rgba(255, 255, 255, 0.4)')
-    rect('fill', 10 + cx, 10 + cy, 50, 10 * rows + 10, 5)
-    setColor('#131313')
+    this.panel.height = 10 * rows + 10
+    this.panel.render()
 
+    setColor('#131313')
     for (let k = 0; k < this.metrics.length; k += 2) {
       printf(
         `${this.metrics[k]}: ${this.metrics[k + 1]}`,
-        15 + cx,
-        15 + 5 * k + cy
+        15,
+        15 + 5 * k
       )
     }
   }
 
   update (dt: number) {
     this.metrics = [
-      'w', Dimentions.width,
-      'h', Dimentions.height
+      'vw', Dimentions.width,
+      'vh', Dimentions.height
     ]
   }
 }

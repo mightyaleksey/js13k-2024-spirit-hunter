@@ -9,7 +9,7 @@ import { Damage } from '../../entities/Damage'
 import { DebugConsole, TileSize } from '../../shared/constants'
 import { Dimentions, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
-import { MobileControl } from '../../entities/MobileControl'
+import { Joystick } from '../../entities/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { Projectile } from '../../entities/Projectile'
@@ -22,38 +22,55 @@ export class GamePlayState extends BaseState {
   cameraX: number
   cameraY: number
 
-  console: Console
-  mobileControl: MobileControl
-
   entities: Array<Entity>
+
+  console: Console
+  joystick: Joystick
 
   enter () {
     this.tileMap = new TileMap()
     this.cameraX = this.tileMap.startX()
     this.cameraY = this.tileMap.startY()
 
-    if (DebugConsole) this.console = new Console()
-
     const player = new Player(8 * TileSize + 3, 5 * TileSize)
 
     this.entities = [player].concat(this.tileMap.obstacles)
     this.genEnemies()
 
+    if (DebugConsole) this.console = new Console()
+    this.joystick = new Joystick()
+
     player.entities = this.entities
+    player.joystick = this.joystick
   }
 
   render () {
     this.tileMap.renderBg()
+
     // emulate camera effect
     translate(-this.cameraX, -this.cameraY)
 
     this.tileMap.render()
     sortEntities(this.entities).forEach(entity => entity.render())
-    if (DebugConsole) this.console.render(this.cameraX, this.cameraY)
+
+    // restore camera
+    translate(this.cameraX, this.cameraY)
+
+    if (DebugConsole) this.console.render()
+    this.joystick.render()
   }
 
   update (dt: number) {
-    if (DebugConsole) this.console.update(dt)
+    if (DebugConsole) {
+      this.console.update(dt)
+      this.joystick.isVisible &&
+      this.console.metrics.push(
+        'ox', this.joystick.offsetX.toFixed(2),
+        'oy', this.joystick.offsetY.toFixed(2),
+        'jd', this.joystick.direction
+      )
+    }
+    this.joystick.update(dt)
     this.tileMap.update(dt)
 
     forEachRight(this.entities, (entity, j) => {
