@@ -16,35 +16,61 @@ import { TransitionState } from './TransitionState'
 import { gameStates } from '../../shared/game'
 import { toggleMusic } from '../../shared/sound'
 
+const title = 'Spirit Hunter'
+
 export class GameStartState extends BaseState {
   page: number
 
-  constructor () {
+  constructor (page?: number) {
     super()
-    this.page = 0
+    this.page = page ?? 0
   }
 
   render () {
-    setColor('#9F1D33')
-    setFont(24)
+    switch (this.page) {
+      case 0: {
+        setColor('#9F1D33')
+        setFont(24)
 
-    printf(
-      'Spirit Hunter',
-      10,
-      0.5 * Dimentions.height - 32,
-      Dimentions.width - 20,
-      'center'
-    )
+        printf(
+          title,
+          0,
+          0.5 * Dimentions.height - 32,
+          null,
+          'center'
+        )
 
-    setColor('#fff')
-    setFont(12)
-    printf(
-      'Press to ENTER start',
-      10,
-      0.5 * Dimentions.height + 16,
-      Dimentions.width - 20,
-      'center'
-    )
+        setColor('#fff')
+        setFont(12)
+        printf(
+          'Press to ENTER start',
+          0,
+          0.5 * Dimentions.height + 16,
+          null,
+          'center'
+        )
+
+        break
+      }
+
+      case 1: {
+        setColor('#9F1D33')
+        setFont(12)
+        printf(title, 0, 4, null, 'center')
+
+        setFont(8)
+        setColor('#fff')
+        ;[
+          'Controls:',
+          '',
+          Dimentions.isMobile ? 'Use joystick to' : 'Use W,A,S,D keys to',
+          'move the character'
+        ].forEach((text, line) =>
+          printf(text, 10, 10 * line + 30))
+
+        break
+      }
+    }
   }
 
   update (dt: number) {
@@ -55,16 +81,20 @@ export class GameStartState extends BaseState {
       Keys.wasPressed('Enter') ||
       Touch.wasTouched()
     ) {
-      gameStates[0].push(new TransitionState({
-        fadeIn: true,
-        handler: () => {
-          gameStates[0].pop()
-          gameStates[0].push(new GamePlayState())
-          gameStates[0].push(new TransitionState({ fadeIn: false }))
-        }
-      }))
+      if (this.page < 1) {
+        this.page++
+      } else {
+        gameStates[0].push(new TransitionState({
+          fadeIn: true,
+          handler: () => {
+            gameStates[0].pop()
+            gameStates[0].push(new GamePlayState())
+            gameStates[0].push(new TransitionState({ fadeIn: false }))
+          }
+        }))
 
-      toggleMusic()
+        toggleMusic()
+      }
     }
   }
 }

@@ -13,7 +13,7 @@ type EngineState = {
   holding: {[string]: boolean},
   pressed: {[string]: boolean},
   touched: boolean,
-  touches: {[string]: [number, number]}
+  touches: {[string]: [number, number]},
 }
 
 // Time since the last update in seconds.
@@ -87,7 +87,7 @@ export function printf (
   text: string,
   x: number,
   y: number,
-  limit?: number,
+  limit?: ?number,
   align?: AlignMode
 ) {
   const c = localState.context
@@ -185,6 +185,7 @@ function normalizeCanvas (
  * Provides canvas virtual resolution
  */
 export const Dimentions = {
+  isMobile: false,
   width: 0,
   height: 0
 }
@@ -314,6 +315,7 @@ export async function createEngine (
   document.addEventListener('touchend', onTouchEnd)
 
   function onTouch (event: TouchEvent) {
+    Dimentions.isMobile = true
     localState.touched = true
 
     for (let t = 0; t < event.changedTouches.length; t++) {

@@ -24,6 +24,7 @@ export class Joystick {
   direction: number
 
   constructor () {
+    this.isVisible = Dimentions.isMobile
     this.reset()
   }
 

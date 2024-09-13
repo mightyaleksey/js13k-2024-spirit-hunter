@@ -1,7 +1,5 @@
 /* @flow */
 
-import type { GameState } from './shared/game'
-
 import { GameStartState } from './states/game/GameStartState'
 import { StateStack } from './states/StateStack'
 import { appendElements, gameStates, gameTiles } from './shared/game'
