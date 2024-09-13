@@ -53,4 +53,4 @@ Open local server on mobile device:
 ## Resources
 
 - Music: https://keithclark.github.io/ZzFXM/
-- Sound: https://sfxr.me/
+- Sound: https://killedbyapixel.github.io/ZzFX/
