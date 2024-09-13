@@ -176,7 +176,7 @@ Params.prototype.toB58 = function () {
 }
 
 Params.prototype.fromB58 = function (b58encoded) {
-  this.fromJSON(sfxr.b58decode(b58encoded))
+  this.fromJSON(b58decode(b58encoded))
   return this
 }
 
@@ -189,270 +189,13 @@ Params.prototype.fromJSON = function (struct) {
   return this
 }
 
-/** * Presets ***/
-
-// These functions roll up random sounds appropriate to various
-// typical game events:
-
-Params.prototype.pickupCoin = function () {
-  this.wave_type = SAWTOOTH
-  this.p_base_freq = 0.4 + frnd(0.5)
-  this.p_env_attack = 0
-  this.p_env_sustain = frnd(0.1)
-  this.p_env_decay = 0.1 + frnd(0.4)
-  this.p_env_punch = 0.3 + frnd(0.3)
-  if (rnd(1)) {
-    this.p_arp_speed = 0.5 + frnd(0.2)
-    this.p_arp_mod = 0.2 + frnd(0.4)
-  }
-  return this
-}
-
-Params.prototype.laserShoot = function () {
-  this.wave_type = rnd(2)
-  if (this.wave_type === SINE && rnd(1)) { this.wave_type = rnd(1) }
-  if (rnd(2) === 0) {
-    this.p_base_freq = 0.3 + frnd(0.6)
-    this.p_freq_limit = frnd(0.1)
-    this.p_freq_ramp = -0.35 - frnd(0.3)
-  } else {
-    this.p_base_freq = 0.5 + frnd(0.5)
-    this.p_freq_limit = this.p_base_freq - 0.2 - frnd(0.6)
-    if (this.p_freq_limit < 0.2) this.p_freq_limit = 0.2
-    this.p_freq_ramp = -0.15 - frnd(0.2)
-  }
-  if (this.wave_type === SAWTOOTH) { this.p_duty = 1 }
-  if (rnd(1)) {
-    this.p_duty = frnd(0.5)
-    this.p_duty_ramp = frnd(0.2)
-  } else {
-    this.p_duty = 0.4 + frnd(0.5)
-    this.p_duty_ramp = -frnd(0.7)
-  }
-  this.p_env_attack = 0
-  this.p_env_sustain = 0.1 + frnd(0.2)
-  this.p_env_decay = frnd(0.4)
-  if (rnd(1)) { this.p_env_punch = frnd(0.3) }
-  if (rnd(2) === 0) {
-    this.p_pha_offset = frnd(0.2)
-    this.p_pha_ramp = -frnd(0.2)
-  }
-  // if (rnd(1))
-  this.p_hpf_freq = frnd(0.3)
-
-  return this
-}
-
-Params.prototype.explosion = function () {
-  this.wave_type = NOISE
-  if (rnd(1)) {
-    this.p_base_freq = sqr(0.1 + frnd(0.4))
-    this.p_freq_ramp = -0.1 + frnd(0.4)
-  } else {
-    this.p_base_freq = sqr(0.2 + frnd(0.7))
-    this.p_freq_ramp = -0.2 - frnd(0.2)
-  }
-  if (rnd(4) === 0) { this.p_freq_ramp = 0 }
-  if (rnd(2) === 0) { this.p_repeat_speed = 0.3 + frnd(0.5) }
-  this.p_env_attack = 0
-  this.p_env_sustain = 0.1 + frnd(0.3)
-  this.p_env_decay = frnd(0.5)
-  if (rnd(1)) {
-    this.p_pha_offset = -0.3 + frnd(0.9)
-    this.p_pha_ramp = -frnd(0.3)
-  }
-  this.p_env_punch = 0.2 + frnd(0.6)
-  if (rnd(1)) {
-    this.p_vib_strength = frnd(0.7)
-    this.p_vib_speed = frnd(0.6)
-  }
-  if (rnd(2) === 0) {
-    this.p_arp_speed = 0.6 + frnd(0.3)
-    this.p_arp_mod = 0.8 - frnd(1.6)
-  }
-
-  return this
-}
-
-Params.prototype.powerUp = function () {
-  if (rnd(1)) {
-    this.wave_type = SAWTOOTH
-    this.p_duty = 1
-  } else {
-    this.p_duty = frnd(0.6)
-  }
-  this.p_base_freq = 0.2 + frnd(0.3)
-  if (rnd(1)) {
-    this.p_freq_ramp = 0.1 + frnd(0.4)
-    this.p_repeat_speed = 0.4 + frnd(0.4)
-  } else {
-    this.p_freq_ramp = 0.05 + frnd(0.2)
-    if (rnd(1)) {
-      this.p_vib_strength = frnd(0.7)
-      this.p_vib_speed = frnd(0.6)
-    }
-  }
-  this.p_env_attack = 0
-  this.p_env_sustain = frnd(0.4)
-  this.p_env_decay = 0.1 + frnd(0.4)
-
-  return this
-}
-
-Params.prototype.hitHurt = function () {
-  this.wave_type = rnd(2)
-  if (this.wave_type === SINE) { this.wave_type = NOISE }
-  if (this.wave_type === SQUARE) { this.p_duty = frnd(0.6) }
-  if (this.wave_type === SAWTOOTH) { this.p_duty = 1 }
-  this.p_base_freq = 0.2 + frnd(0.6)
-  this.p_freq_ramp = -0.3 - frnd(0.4)
-  this.p_env_attack = 0
-  this.p_env_sustain = frnd(0.1)
-  this.p_env_decay = 0.1 + frnd(0.2)
-  if (rnd(1)) { this.p_hpf_freq = frnd(0.3) }
-  return this
-}
-
-Params.prototype.jump = function () {
-  this.wave_type = SQUARE
-  this.p_duty = frnd(0.6)
-  this.p_base_freq = 0.3 + frnd(0.3)
-  this.p_freq_ramp = 0.1 + frnd(0.2)
-  this.p_env_attack = 0
-  this.p_env_sustain = 0.1 + frnd(0.3)
-  this.p_env_decay = 0.1 + frnd(0.2)
-  if (rnd(1)) { this.p_hpf_freq = frnd(0.3) }
-  if (rnd(1)) { this.p_lpf_freq = 1 - frnd(0.6) }
-  return this
-}
-
-Params.prototype.blipSelect = function () {
-  this.wave_type = rnd(1)
-  if (this.wave_type === SQUARE) { this.p_duty = frnd(0.6) } else { this.p_duty = 1 }
-  this.p_base_freq = 0.2 + frnd(0.4)
-  this.p_env_attack = 0
-  this.p_env_sustain = 0.1 + frnd(0.1)
-  this.p_env_decay = frnd(0.2)
-  this.p_hpf_freq = 0.1
-  return this
-}
-
-Params.prototype.synth = function () {
-  this.wave_type = rnd(1)
-  this.p_base_freq = [0.2723171360931539, 0.19255692561524382, 0.13615778746815113][rnd(2)]
-  this.p_env_attack = rnd(4) > 3 ? frnd(0.5) : 0
-  this.p_env_sustain = frnd(1)
-  this.p_env_punch = frnd(1)
-  this.p_env_decay = frnd(0.9) + 0.1
-  this.p_arp_mod = [0, 0, 0, 0, -0.3162, 0.7454, 0.7454][rnd(6)]
-  this.p_arp_speed = frnd(0.5) + 0.4
-  this.p_duty = frnd(1)
-  this.p_duty_ramp = rnd(2) == 2 ? frnd(1) : 0
-  this.p_lpf_freq = [1, 0.9 * frnd(1) * frnd(1) + 0.1][rnd(1)]
-  this.p_lpf_ramp = rndr(-1, 1)
-  this.p_lpf_resonance = frnd(1)
-  this.p_hpf_freq = rnd(3) == 3 ? frnd(1) : 0
-  this.p_hpf_ramp = rnd(3) == 3 ? frnd(1) : 0
-  return this
-}
-
-Params.prototype.tone = function () {
-  this.wave_type = SINE
-  this.p_base_freq = 0.35173364 // 440 Hz
-  this.p_env_attack = 0
-  this.p_env_sustain = 0.6641 // 1 sec
-  this.p_env_decay = 0
-  this.p_env_punch = 0
-  return this
-}
-
-Params.prototype.click = function () {
-  const base = ['explosion', 'hitHurt'][rnd(1)]
-  this[base]()
-  if (rnd(1)) {
-    this.p_freq_ramp = -0.5 + frnd(1.0)
-  }
-  if (rnd(1)) {
-    this.p_env_sustain = (frnd(0.4) + 0.2) * this.p_env_sustain
-    this.p_env_decay = (frnd(0.4) + 0.2) * this.p_env_decay
-  }
-  if (rnd(3) == 0) {
-    this.p_env_attack = frnd(0.3)
-  }
-  this.p_base_freq = 1 - frnd(0.25)
-  this.p_hpf_freq = 1 - frnd(0.1)
-  return this
-}
-
-Params.prototype.random = function () {
-  this.wave_type = rnd(3)
-  if (rnd(1)) { this.p_base_freq = cube(frnd(2) - 1) + 0.5 } else { this.p_base_freq = sqr(frnd(1)) }
-  this.p_freq_limit = 0
-  this.p_freq_ramp = Math.pow(frnd(2) - 1, 5)
-  if (this.p_base_freq > 0.7 && this.p_freq_ramp > 0.2) { this.p_freq_ramp = -this.p_freq_ramp }
-  if (this.p_base_freq < 0.2 && this.p_freq_ramp < -0.05) { this.p_freq_ramp = -this.p_freq_ramp }
-  this.p_freq_dramp = Math.pow(frnd(2) - 1, 3)
-  this.p_duty = frnd(2) - 1
-  this.p_duty_ramp = Math.pow(frnd(2) - 1, 3)
-  this.p_vib_strength = Math.pow(frnd(2) - 1, 3)
-  this.p_vib_speed = rndr(-1, 1)
-  this.p_env_attack = cube(rndr(-1, 1))
-  this.p_env_sustain = sqr(rndr(-1, 1))
-  this.p_env_decay = rndr(-1, 1)
-  this.p_env_punch = Math.pow(frnd(0.8), 2)
-  if (this.p_env_attack + this.p_env_sustain + this.p_env_decay < 0.2) {
-    this.p_env_sustain += 0.2 + frnd(0.3)
-    this.p_env_decay += 0.2 + frnd(0.3)
-  }
-  this.p_lpf_resonance = rndr(-1, 1)
-  this.p_lpf_freq = 1 - Math.pow(frnd(1), 3)
-  this.p_lpf_ramp = Math.pow(frnd(2) - 1, 3)
-  if (this.p_lpf_freq < 0.1 && this.p_lpf_ramp < -0.05) { this.p_lpf_ramp = -this.p_lpf_ramp }
-  this.p_hpf_freq = Math.pow(frnd(1), 5)
-  this.p_hpf_ramp = Math.pow(frnd(2) - 1, 5)
-  this.p_pha_offset = Math.pow(frnd(2) - 1, 3)
-  this.p_pha_ramp = Math.pow(frnd(2) - 1, 3)
-  this.p_repeat_speed = frnd(2) - 1
-  this.p_arp_speed = frnd(2) - 1
-  this.p_arp_mod = frnd(2) - 1
-  return this
-}
-
-Params.prototype.mutate = function () {
-  if (rnd(1)) this.p_base_freq += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_freq_ramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_freq_dramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_duty += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_duty_ramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_vib_strength += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_vib_speed += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_vib_delay += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_env_attack += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_env_sustain += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_env_decay += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_env_punch += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_lpf_resonance += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_lpf_freq += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_lpf_ramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_hpf_freq += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_hpf_ramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_pha_offset += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_pha_ramp += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_repeat_speed += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_arp_speed += frnd(0.1) - 0.05
-  if (rnd(1)) this.p_arp_mod += frnd(0.1) - 0.05
-  return this
-}
-
 /** * Simpler namespaced functional API ***/
 
-const sfxr = {}
-
-sfxr.toBuffer = function (synthdef) {
+export function toBuffer (synthdef) {
   return (new SoundEffect(synthdef)).getRawBuffer().buffer
 }
 
-sfxr.toWebAudio = function (synthdef, audiocontext) {
+export function toWebAudio (synthdef, audiocontext) {
   const sfx = new SoundEffect(synthdef)
   const buffer = sfx.getRawBuffer().normalized
   if (audiocontext) {
@@ -467,19 +210,19 @@ sfxr.toWebAudio = function (synthdef, audiocontext) {
   }
 }
 
-sfxr.toWave = function (synthdef) {
+export function toWave (synthdef) {
   return (new SoundEffect(synthdef)).generate()
 }
 
-sfxr.toAudio = function (synthdef) {
-  return sfxr.toWave(synthdef).getAudio()
+export function toAudio (synthdef) {
+  return toWave(synthdef).getAudio()
 }
 
-sfxr.play = function (synthdef) {
-  return sfxr.toAudio(synthdef).play()
+export function play (synthdef) {
+  return toAudio(synthdef).play()
 }
 
-sfxr.b58decode = function (b58encoded) {
+function b58decode (b58encoded) {
   const decoded = (function (S, A) { const d = []; const b = []; let i; let j; let c; let n; for (i in S) { j = 0, c = A.indexOf(S[i]); if (c < 0) return undefined; c || b.length ^ i ? i : b.push(0); while (j in d || c) { n = d[j]; n = n ? n * 58 + c : c; c = n >> 8; d[j] = n % 256; j++ } } while (j--)b.push(d[j]); return new Uint8Array(b) }(b58encoded, b58alphabet))
   const result = {}
   for (const pi in params_order) {
@@ -495,13 +238,13 @@ sfxr.b58decode = function (b58encoded) {
   return result
 }
 
-sfxr.b58encode = function (synthdef) {
+export function b58encode (synthdef) {
   const p = new Params()
   p.fromJSON(synthdef)
   return p.toB58()
 }
 
-sfxr.generate = function (algorithm, options) {
+export function generate (algorithm, options) {
   const p = new Params()
   const opts = options || {}
   p.sound_vol = opts.sound_vol || 0.25
@@ -1079,30 +822,5 @@ const units = {
     v = 10 * Math.log(v * v) / Math.log(10)
     const sign = v >= 0 ? '+' : ''
     return sign + v.toPrecision(4) + ' dB'
-  }
-}
-
-/** * Plumbing ***/
-
-export const jsfxr = {
-  sfxr,
-  convert: {
-    sliders,
-    domain,
-    sliders_inverse,
-    domain_inverse,
-    units
-  },
-  parameters: {
-    order: params_order,
-    signed: params_signed
-  },
-  Params,
-  SoundEffect,
-  waveforms: {
-    SQUARE,
-    SAWTOOTH,
-    SINE,
-    NOISE
   }
 }

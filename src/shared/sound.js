@@ -3,7 +3,7 @@
 import { NoSound } from './constants'
 
 import { nullthrows } from '../util'
-import { jsfxr } from '../libs/jsfxr/sfxr'
+import { toAudio } from '../libs/jsfxr/sfxr'
 import { zzfxM } from '../libs/zzfxm/zzfxm.min'
 import { zzfxP } from '../libs/zzfxm/zzfx'
 
@@ -35,7 +35,7 @@ export async function initSounds () {
   ]
 
   for (let k = 0; k < sounds.length; k += 2) {
-    setTimeout(() => { soundbank[sounds[k]] = jsfxr.sfxr.toAudio(sounds[k + 1]) })
+    setTimeout(() => { soundbank[sounds[k]] = toAudio(sounds[k + 1]) })
   }
 
   // eslint-disable-next-line no-sparse-arrays
