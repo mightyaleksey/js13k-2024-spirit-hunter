@@ -13,7 +13,7 @@ import { random } from '../util'
 
 // sequences: chase > impact > flee > repeat
 
-const defs = ['spirit1', 'spirit2', 'spirit3']
+const defs = ['spirit1', 'spirit2']
 
 export class Enemy extends Character {
   constructor (x: number, y: number) {

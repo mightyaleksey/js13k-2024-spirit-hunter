@@ -22,4 +22,4 @@ export const PlayerVelocity = 60
 
 export const DebugBB = false
 export const DebugConsole = true
-export const NoSound = false
+export const NoSound = true
