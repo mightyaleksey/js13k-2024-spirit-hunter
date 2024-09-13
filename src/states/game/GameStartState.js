@@ -5,9 +5,9 @@ import { BaseState } from '../BaseState'
 import { Dimentions, printf, setColor, setFont } from '../../engine'
 import { GamePlayState } from './GamePlayState'
 import { PortraitMode } from './PortraitMode'
+import { Textbox } from '../../gui/Textbox'
 import { TransitionState } from './TransitionState'
 
-import { gameStates } from '../../shared/game'
 import { toggleMusic } from '../../shared/sound'
 
 const title = 'Spirit Hunter'
@@ -48,19 +48,34 @@ export class GameStartState extends BaseState {
       }
 
       case 1: {
-        setColor('#9F1D33')
-        setFont(12)
-        printf(title, 0, 4, null, 'center')
+        new Textbox({
+          // x: 0.2 * Dimentions.width,
+          // y: 0,
+          // width: 0.6 * Dimentions.width,
+          // height: 0.4 * Dimentions.width,
 
-        setFont(8)
-        setColor('#fff')
-        ;[
-          'Controls:',
-          '',
-          Dimentions.isMobile ? 'Use joystick to' : 'Use W,A,S,D keys to',
-          'move the character'
-        ].forEach((text, line) =>
-          printf(text, 10, 10 * line + 30))
+          title,
+          body: [
+            'Controls:',
+            '',
+            Dimentions.isMobile ? 'Use joystick to' : 'Use W,A,S,D keys to',
+            'move the character'
+          ],
+          bodyColor: '#fff'
+        }).render()
+        // setColor('#9F1D33')
+        // setFont(12)
+        // printf(title, 0, 4, null, 'center')
+
+        // setFont(8)
+        // setColor('#fff')
+        // ;[
+        //   'Controls:',
+        //   '',
+        //   Dimentions.isMobile ? 'Use joystick to' : 'Use W,A,S,D keys to',
+        //   'move the character'
+        // ].forEach((text, line) =>
+        //   printf(text, 10, 10 * line + 30))
 
         break
       }
@@ -74,15 +89,7 @@ export class GameStartState extends BaseState {
       if (this.page < 1) {
         this.page++
       } else {
-        gameStates[0].push(new TransitionState({
-          fadeIn: true,
-          handler: () => {
-            gameStates[0].pop()
-            gameStates[0].push(new GamePlayState())
-            gameStates[0].push(new TransitionState({ fadeIn: false }))
-          }
-        }))
-
+        TransitionState.transitionTo(new GamePlayState())
         toggleMusic()
       }
     }

@@ -16,6 +16,17 @@ type Props = $ReadOnly<{
 }>
 
 export class TransitionState extends BaseState {
+  static transitionTo (state: BaseState) {
+    gameStates[0].push(new TransitionState({
+      fadeIn: true,
+      handler: () => {
+        gameStates[0].pop()
+        gameStates[0].push(state)
+        gameStates[0].push(new TransitionState({ fadeIn: false }))
+      }
+    }))
+  }
+
   fadeIn: boolean
   easing: (number, number, number, number) => number
   opacity: number

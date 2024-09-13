@@ -2,11 +2,11 @@
 
 import { Action } from '../../gui/Action'
 import { BaseState } from '../BaseState'
-import { Dimentions } from '../../engine'
 import { Panel } from '../../gui/Panel'
 import { Textbox } from '../../gui/Textbox'
 
 import { emptyFunction } from '../../util'
+import { gameStates } from '../../shared/game'
 
 type Props = $ReadOnly<{
   x?: number,
@@ -29,21 +29,10 @@ export class Dialog extends BaseState {
   constructor (props: Props) {
     super()
 
-    const w = Math.min(200, 0.6 * Dimentions.width)
-    const h = Math.min(100, 0.6 * Dimentions.height)
-    const t = {
-      x: 0.5 * (Dimentions.width - w),
-      y: 0.5 * (Dimentions.height - h),
-      width: w,
-      height: h,
-      ...props
-    }
-    console.info(t)
-
     // $FlowIgnore[prop-missing]
-    this.panel = new Panel(t)
+    this.panel = new Panel(props)
     // $FlowIgnore[prop-missing]
-    this.textbox = new Textbox(t)
+    this.textbox = new Textbox(props)
 
     this.fn = props.handler ?? emptyFunction
   }
@@ -55,6 +44,7 @@ export class Dialog extends BaseState {
 
   update (dt: number) {
     if (Action.wasPressed()) {
+      gameStates[0].pop()
       this.fn()
     }
   }

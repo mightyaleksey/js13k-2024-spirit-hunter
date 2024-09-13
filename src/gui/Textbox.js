@@ -1,34 +1,31 @@
 /* @flow */
 
+import type { Props as BoxProps } from './Box'
+
+import { Box } from './Box'
+
 import { printf, setColor, setFont } from '../engine'
 
 type Props = $ReadOnly<{
-  x: number,
-  y: number,
-  width: number,
-  height: number,
+  ...BoxProps,
 
   title: string,
   body: string | Array<string>,
+  bodyColor?: string
 }>
 
-export class Textbox {
-  x: number
-  y: number
-  width: number
-  height: number
-
+export class Textbox extends Box {
   title: string
   body: Array<string>
+  bodyColor: string
 
   constructor (props: Props) {
-    this.x = props.x
-    this.y = props.y
-    this.width = props.width
-    this.height = props.height
+    // $FlowIgnore[prop-missing]
+    super(props)
 
     this.title = props.title
     this.body = Array.isArray(props.body) ? props.body : [props.body]
+    this.bodyColor = props.bodyColor ?? '#000'
   }
 
   render () {
@@ -45,12 +42,12 @@ export class Textbox {
     )
 
     setFont(8)
-    setColor('#000')
+    setColor(this.bodyColor)
     this.body.forEach((text, line) =>
       printf(
         text,
         this.x + 4,
-        this.y + offsetY + 10 * line + 20,
+        this.y + offsetY + 10 * line + 30,
         this.width - 8,
         this.body.length > 1 ? 'left' : 'center'
       ))

@@ -11,12 +11,14 @@ import { DebugConsole, TileSize } from '../../shared/constants'
 import { Dialog } from './Dialog'
 import { Dimentions, printf, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
+import { GameStartState } from './GameStartState'
 import { Joystick } from '../../entities/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { PortraitMode } from './PortraitMode'
 import { Projectile } from '../../entities/Projectile'
 import { TileMap } from '../../entities/TileMap'
+import { TransitionState } from './TransitionState'
 
 import { collides, forEachRight, random } from '../../util'
 import { gameStates } from '../../shared/game'
@@ -140,7 +142,9 @@ export class GamePlayState extends BaseState {
       gameStates[0].push(
         new Dialog({
           title: 'Game Over',
-          body: 'Do better next time!'
+          body: 'Do better next time!',
+
+          handler: () => TransitionState.transitionTo(new GameStartState(1))
         })
       )
     }
