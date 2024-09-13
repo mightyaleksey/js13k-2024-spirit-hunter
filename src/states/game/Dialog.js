@@ -7,6 +7,7 @@ import { Textbox } from '../../gui/Textbox'
 
 import { emptyFunction } from '../../util'
 import { gameStates } from '../../shared/game'
+import { playSound } from '../../shared/sound'
 
 type Props = $ReadOnly<{
   x?: number,
@@ -44,6 +45,8 @@ export class Dialog extends BaseState {
 
   update (dt: number) {
     if (Action.wasPressed()) {
+      playSound('pickup')
+
       gameStates[0].pop()
       this.fn()
     }

@@ -8,7 +8,7 @@ import { PortraitMode } from './PortraitMode'
 import { Textbox } from '../../gui/Textbox'
 import { TransitionState } from './TransitionState'
 
-import { toggleMusic } from '../../shared/sound'
+import { playSound, toggleMusic } from '../../shared/sound'
 
 const title = 'Spirit Hunter'
 
@@ -49,11 +49,6 @@ export class GameStartState extends BaseState {
 
       case 1: {
         new Textbox({
-          // x: 0.2 * Dimentions.width,
-          // y: 0,
-          // width: 0.6 * Dimentions.width,
-          // height: 0.4 * Dimentions.width,
-
           title,
           body: [
             'Controls:',
@@ -63,19 +58,6 @@ export class GameStartState extends BaseState {
           ],
           bodyColor: '#fff'
         }).render()
-        // setColor('#9F1D33')
-        // setFont(12)
-        // printf(title, 0, 4, null, 'center')
-
-        // setFont(8)
-        // setColor('#fff')
-        // ;[
-        //   'Controls:',
-        //   '',
-        //   Dimentions.isMobile ? 'Use joystick to' : 'Use W,A,S,D keys to',
-        //   'move the character'
-        // ].forEach((text, line) =>
-        //   printf(text, 10, 10 * line + 30))
 
         break
       }
@@ -86,11 +68,13 @@ export class GameStartState extends BaseState {
     PortraitMode.check()
 
     if (Action.wasPressed()) {
+      playSound('pickup')
+
       if (this.page < 1) {
         this.page++
       } else {
         TransitionState.transitionTo(new GamePlayState())
-        toggleMusic()
+        setTimeout(toggleMusic, 100)
       }
     }
   }

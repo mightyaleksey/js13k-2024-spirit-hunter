@@ -27,5 +27,5 @@ export const InvulnerabilityDuration = 0.3
 export const LastMomentDuration = 0.2
 
 export const DebugBB = false
-export const DebugConsole = true
+export const DebugConsole = false
 export const NoSound = false
