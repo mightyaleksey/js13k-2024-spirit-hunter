@@ -6,14 +6,15 @@ import type { Joystick } from './Joystick'
 import { BlasterAimState } from '../states/weapons/BlasterAimState'
 import { BlasterCooldownState } from '../states/weapons/BlasterCooldownState'
 import { BlasterFireState } from '../states/weapons/BlasterFireState'
-import { CharacterStat } from '../definitions'
 import { Character } from './Character'
+import { CharacterDeathState } from '../states/entities/CharacterDeathState'
+import { CharacterStat } from '../definitions'
+import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { Enemy } from './Enemy'
+import { FirstAid } from '../entities/FirstAid'
 import { InvulnerabilityDuration } from '../shared/constants'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
-import { CharacterDeathState } from '../states/entities/CharacterDeathState'
-import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { StateMachine } from '../states/StateMachine'
 
 import { inOutSine } from '../shared/easing'
@@ -94,6 +95,16 @@ export class Player extends Character {
 
         playSound('hit')
       }
+    }
+
+    if (entity instanceof FirstAid) {
+      entity.isDestroyed = true
+      this.stats[CharacterStat.Hp] = Math.min(
+        this.stats[CharacterStat.Hp] + 20,
+        this.stats[CharacterStat.HpMax]
+      )
+
+      playSound('pickup')
     }
   }
 

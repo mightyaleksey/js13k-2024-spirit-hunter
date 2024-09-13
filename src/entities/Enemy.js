@@ -1,11 +1,14 @@
 /* @flow */
 
+import type { Entity } from './Entity'
+
 import { Character } from './Character'
-import { CharacterStat } from '../definitions'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
+import { CharacterStat } from '../definitions'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { EnemyIdleState } from '../states/entities/EnemyIdleState'
 import { EnemyWalkState } from '../states/entities/EnemyWalkState'
+import { FirstAid } from '../entities/FirstAid'
 import { StateMachine } from '../states/StateMachine'
 
 import { random } from '../util'
@@ -36,6 +39,16 @@ export class Enemy extends Character {
   }
 
   /* helpers */
+
+  collided (entity: Entity) {
+    if (entity instanceof FirstAid) {
+      entity.isDestroyed = true
+      this.stats[CharacterStat.Hp] = Math.min(
+        this.stats[CharacterStat.Hp] + 20,
+        this.stats[CharacterStat.HpMax]
+      )
+    }
+  }
 
   takeDamage (damage: number, x: number, y: number, color?: number) {
     super.takeDamage(damage, x, y, color)

@@ -40,12 +40,11 @@ export function playSound (name: SoundName) {
   NoSound || zzfx(...sound)
 }
 
-export function toggleMusic () {
+export function playMusic () {
   if (NoSound) return
-  if (music.current != null) {
-    music.current.stop()
-    music.current = null
-  } else {
+  // music.current.stop()
+  // music.current = null
+  if (music.current == null) {
     music.current = zzfxP(...music.buffer)
   }
 }

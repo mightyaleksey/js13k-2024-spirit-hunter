@@ -8,7 +8,7 @@ import { PortraitMode } from './PortraitMode'
 import { Textbox } from '../../gui/Textbox'
 import { TransitionState } from './TransitionState'
 
-import { playSound, toggleMusic } from '../../shared/sound'
+import { playMusic, playSound } from '../../shared/sound'
 
 const title = 'Spirit Hunter'
 
@@ -74,7 +74,7 @@ export class GameStartState extends BaseState {
         this.page++
       } else {
         TransitionState.transitionTo(new GamePlayState())
-        setTimeout(toggleMusic, 100)
+        setTimeout(playMusic, 100)
       }
     }
   }

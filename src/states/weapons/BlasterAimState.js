@@ -8,7 +8,7 @@ export class BlasterAimState extends BaseWeaponState {
   update (dt: number) {
     const player = this.entity
     const unitVector = UnitVectors[player.direction]
-    const d = 1.7 * TileSize
+    const d = 1.6 * TileSize
     const x = player.centerX() + unitVector[0] * (0.5 * player.width + d)
     const y = player.centerY() + unitVector[1] * (0.5 * player.height + d)
 

@@ -11,6 +11,7 @@ import { DebugConsole, TileSize } from '../../shared/constants'
 import { Dialog } from './Dialog'
 import { Dimentions, printf, setColor, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
+import { FirstAid } from '../../entities/FirstAid'
 import { GameStartState } from './GameStartState'
 import { Joystick } from '../../entities/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
@@ -113,6 +114,15 @@ export class GamePlayState extends BaseState {
 
         this.player.getExp(exp)
         this.currentEnemies--
+
+        if (random(10) > 7) {
+          this.entities.push(
+            new FirstAid(
+              entity.x + 3,
+              entity.y + 3
+            )
+          )
+        }
       }
     })
 
@@ -193,8 +203,8 @@ export class GamePlayState extends BaseState {
 
     for (let k = maxEnemies; k--;) {
       const enemy = new Enemy(
-        genEnemyPosition(this.player.x, 5),
-        genEnemyPosition(this.player.y, 5),
+        genEnemyPosition(this.player.x, 4),
+        genEnemyPosition(this.player.y, 4),
         this.level
       )
       enemy.entities = this.entities
