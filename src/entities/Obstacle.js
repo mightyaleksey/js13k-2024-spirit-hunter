@@ -24,6 +24,7 @@ export class Obstacle extends Thing {
       y: props.y,
       tileID,
 
+      isCollidable: isSolid(tileID),
       isSolid: isSolid(tileID)
     })
 

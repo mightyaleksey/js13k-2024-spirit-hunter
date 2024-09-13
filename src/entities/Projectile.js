@@ -3,6 +3,7 @@
 import type { Entity } from './Entity'
 
 import { Enemy } from './Enemy'
+import { Obstacle } from './Obstacle'
 import { Thing } from './Thing'
 import { TileSize } from '../shared/constants'
 
@@ -66,6 +67,10 @@ export class Projectile extends Thing {
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
       entity.takeDamage(this.damage, this.x, this.y, 2)
+    }
+
+    if (entity instanceof Obstacle) {
+      this.isDestroyed = true
     }
   }
 }

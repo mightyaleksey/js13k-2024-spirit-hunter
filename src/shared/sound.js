@@ -41,6 +41,7 @@ export function playSound (name: SoundName) {
 }
 
 export function toggleMusic () {
+  if (NoSound) return
   if (music.current != null) {
     music.current.stop()
     music.current = null

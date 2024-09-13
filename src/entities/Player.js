@@ -55,7 +55,7 @@ export class Player extends Character {
       cooldown: () => new BlasterCooldownState(this),
       fire: () => new BlasterFireState(this)
     })
-    this.blasterWeapon.change('aim')
+    this.blasterWeapon.change('cooldown')
 
     this.invulnerableTimer = 0
   }

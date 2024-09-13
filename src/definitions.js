@@ -11,9 +11,10 @@ export const CharacterStat = {
   Speed: 0,
   SpeedDC: 1,
   Hp: 2,
-  HpDC: 3,
-  Attack: 4,
-  AttackDC: 5
+  HpMax: 3,
+  HpDC: 4,
+  Attack: 5,
+  AttackDC: 6
 }
 
 // top, right, bottom, left
@@ -31,24 +32,24 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
     frames: genFrames(84),
     frameInterval: 0.2,
 
-    stats: [60, 0, 130, 0, 100, 3]
+    stats: [60, 0, 130, 130, 0, 100, 3]
   },
 
   princess: {
     frames: genFrames(87),
     frameInterval: 0.2,
-    stats: [60, 0, 1000, 0, 0, 0]
+    stats: [60, 0, 1000, 1000, 0, 0, 0]
   },
 
   spirit1: {
     frames: genFrames(60),
     frameInterval: 0.2,
-    stats: [50, 0, 100, 50, 10, 2]
+    stats: [50, 0, 100, 100, 0, 10, 2]
   },
 
   spirit2: {
     frames: genFrames(63),
     frameInterval: 0.2,
-    stats: [50, 0, 100, 50, 10, 2]
+    stats: [50, 0, 100, 100, 0, 10, 2]
   }
 }

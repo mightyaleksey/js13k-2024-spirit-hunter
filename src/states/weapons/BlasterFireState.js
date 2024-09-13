@@ -1,10 +1,20 @@
 /* @flow */
 
 import { BaseWeaponState } from './BaseWeaponState'
+import { BlasterVelocity } from '../../shared/constants'
 import { CharacterStat } from '../../definitions'
 import { Enemy } from '../../entities/Enemy'
 import { Projectile } from '../../entities/Projectile'
+
 import { playSound } from '../../shared/sound'
+
+// character box 10x14
+const StartPosition = [
+  [2, -7],
+  [5, 3],
+  [-2, 7],
+  [-5, 3]
+]
 
 export class BlasterFireState extends BaseWeaponState {
   enter (target: mixed): void {
@@ -17,13 +27,14 @@ export class BlasterFireState extends BaseWeaponState {
     const dx = target.centerX() - player.centerX()
     const dy = target.centerY() - player.centerY()
     const d = Math.max(Math.abs(dx), Math.abs(dy))
+    const p = StartPosition[player.direction]
 
     player.entities.push(
       new Projectile({
-        x: player.centerX(),
-        y: player.centerY(),
-        dx: dx / d * 240,
-        dy: dy / d * 240,
+        x: player.centerX() + p[0],
+        y: player.centerY() + p[1],
+        dx: dx / d * BlasterVelocity,
+        dy: dy / d * BlasterVelocity,
 
         damage: player.stats[CharacterStat.Attack]
       })

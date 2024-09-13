@@ -26,6 +26,7 @@ Updated version: [https://mightyaleksey.github.io/js13k-2024-spirit-hunter/](htt
   - [x] Sound
   - [x] Music
   - [ ] Enemy generation
+  - [ ] Health drop
   - [ ] Level progression / Cards
   - [x] Menus
   - [x] Dynamic scaling
