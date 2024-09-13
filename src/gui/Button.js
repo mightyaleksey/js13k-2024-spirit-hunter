@@ -1,7 +1,5 @@
 /* @flow */
 
-import { rect, setColor } from '../engine'
-
 type Props = $ReadOnly<{
   x: number,
   y: number,
@@ -9,7 +7,7 @@ type Props = $ReadOnly<{
   height: number,
 }>
 
-export class Panel {
+export class Button {
   x: number
   y: number
   width: number
@@ -22,8 +20,7 @@ export class Panel {
     this.height = props.height
   }
 
-  render () {
-    setColor('#fff', 0.75)
-    rect('fill', this.x, this.y, this.width, this.height, 5)
-  }
+  render () {}
+
+  update (dt: number) {}
 }

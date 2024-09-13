@@ -9,9 +9,11 @@ import { CharacterIdleState } from '../states/entities/CharacterIdleState'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { CharacterWalkState } from '../states/entities/CharacterWalkState'
+import { Damage } from './Damage'
 import { Entity } from './Entity'
 import { StateMachine } from '../states/StateMachine'
 
+import { setColor } from '../engine'
 import { random } from '../util'
 
 export type CharacterState =
@@ -38,7 +40,15 @@ export class Character extends Entity {
 
   constructor (props: CharacterProps) {
     // $FlowFixMe[prop-missing]
-    super(props)
+    super({
+      height: 14,
+      width: 10,
+
+      tileOX: -3,
+      tileOY: -2,
+
+      ...props
+    })
 
     const char = Characters[props.character]
     this.animations = this.genAnimations(char)
@@ -56,6 +66,16 @@ export class Character extends Entity {
     this.exp = 0
     this.level = 1
     this.stats = char.stats.slice()
+  }
+
+  render () {
+    if (this.state.current instanceof CharacterDeathState) {
+      setColor('#fff', 0.5)
+      super.render()
+      setColor('#fff')
+    } else {
+      super.render()
+    }
   }
 
   update (dt: number) {
@@ -95,11 +115,15 @@ export class Character extends Entity {
     }
   }
 
-  takeDamage (dmg: number) {
-    this.stats[CharacterStat.Hp] -= dmg
+  takeDamage (damage: number, x: number, y: number, color?: number) {
+    this.stats[CharacterStat.Hp] -= damage
 
     if (this.stats[CharacterStat.Hp] <= 0) {
       this.changeState('death')
     }
+
+    this.entities.push(
+      new Damage({ x, y, color, damage })
+    )
   }
 }

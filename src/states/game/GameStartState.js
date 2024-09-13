@@ -1,14 +1,8 @@
 /* @flow */
 
+import { Action } from '../../gui/Action'
 import { BaseState } from '../BaseState'
-import {
-  Dimentions,
-  Keys,
-  Touch,
-  printf,
-  setColor,
-  setFont
-} from '../../engine'
+import { Dimentions, printf, setColor, setFont } from '../../engine'
 import { GamePlayState } from './GamePlayState'
 import { PortraitMode } from './PortraitMode'
 import { TransitionState } from './TransitionState'
@@ -76,11 +70,7 @@ export class GameStartState extends BaseState {
   update (dt: number) {
     PortraitMode.check()
 
-    if (
-      Keys.wasPressed(' ') ||
-      Keys.wasPressed('Enter') ||
-      Touch.wasTouched()
-    ) {
+    if (Action.wasPressed()) {
       if (this.page < 1) {
         this.page++
       } else {

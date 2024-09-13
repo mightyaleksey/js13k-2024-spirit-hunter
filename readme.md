@@ -18,8 +18,8 @@
   - [x] Sound
   - [x] Music
   - [ ] Enemy generation
-  - [ ] Menus
   - [ ] Level progression / Cards
+  - [ ] Menus
   - [ ] Dynamic scaling
   - [ ] Sprite generation
 

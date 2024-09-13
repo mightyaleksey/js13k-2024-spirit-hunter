@@ -1,5 +1,6 @@
 /* @flow */
 
+// import { GamePlayState } from './states/game/GamePlayState'
 import { GameStartState } from './states/game/GameStartState'
 import { StateStack } from './states/StateStack'
 import { appendElements, gameStates, gameTiles } from './shared/game'
@@ -17,6 +18,7 @@ async function initGame () {
     new StateStack()
   ])
 
+  // gameStates[0].push(new GamePlayState())
   gameStates[0].push(new GameStartState())
 }
 

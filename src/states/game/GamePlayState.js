@@ -3,11 +3,13 @@
 import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
+import { CharacterStat } from '../../definitions'
 import { Character } from '../../entities/Character'
 import { Console } from '../../entities/Console'
 import { Damage } from '../../entities/Damage'
 import { DebugConsole, TileSize } from '../../shared/constants'
-import { Dimentions, translate } from '../../engine'
+import { Dialog } from './Dialog'
+import { Dimentions, printf, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { Joystick } from '../../entities/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
@@ -17,6 +19,7 @@ import { Projectile } from '../../entities/Projectile'
 import { TileMap } from '../../entities/TileMap'
 
 import { collides, forEachRight, random } from '../../util'
+import { gameStates } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
   tileMap: TileMap
@@ -24,6 +27,7 @@ export class GamePlayState extends BaseState {
   cameraY: number
 
   entities: Array<Entity>
+  player: Player
 
   console: Console
   joystick: Joystick
@@ -33,7 +37,7 @@ export class GamePlayState extends BaseState {
     this.cameraX = this.tileMap.startX()
     this.cameraY = this.tileMap.startY()
 
-    const player = new Player(8 * TileSize + 3, 5 * TileSize)
+    const player = this.player = new Player(8 * TileSize + 3, 5 * TileSize)
 
     this.entities = [player].concat(this.tileMap.obstacles)
     this.genEnemies()
@@ -56,6 +60,11 @@ export class GamePlayState extends BaseState {
 
     // restore camera
     translate(this.cameraX, this.cameraY)
+
+    setFont(8)
+    const hp = 0.1 * this.player.stats[CharacterStat.Hp]
+    printf('❤️'.repeat(Math.min(10, hp)), 5, 5)
+    if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
 
     if (DebugConsole) this.console.render()
     this.joystick.render()
@@ -126,6 +135,15 @@ export class GamePlayState extends BaseState {
       this.cameraX,
       this.cameraY
     )
+
+    if (this.player.isDestroyed) {
+      gameStates[0].push(
+        new Dialog({
+          title: 'Game Over',
+          body: 'Do better next time!'
+        })
+      )
+    }
   }
 
   /* helpers */

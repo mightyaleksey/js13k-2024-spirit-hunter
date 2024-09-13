@@ -1,7 +1,5 @@
 /* @flow */
 
-import type { Entity } from './Entity'
-
 import { Character } from './Character'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
@@ -20,13 +18,8 @@ export class Enemy extends Character {
     super({
       x,
       y,
-      height: 14,
-      width: 10,
 
       isCollidable: true,
-
-      tileOX: -3,
-      tileOY: -2,
 
       character: defs[random(defs.length)]
     })
@@ -39,8 +32,4 @@ export class Enemy extends Character {
     })
     this.state.change('idle')
   }
-
-  /* helpers */
-
-  collided (target: Entity) {}
 }

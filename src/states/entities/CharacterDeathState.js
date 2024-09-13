@@ -3,13 +3,13 @@
 import type { Character } from '../../entities/Character'
 
 import { BaseState } from '../BaseState'
+import { LastMomentDuration } from '../../shared/constants'
 
 import { playSound } from '../../shared/sound'
 
 export class CharacterDeathState<T: Character> extends BaseState {
   entity: T
   timer: number
-  timerDuration: number
 
   constructor (entity: T) {
     super()
@@ -27,13 +27,12 @@ export class CharacterDeathState<T: Character> extends BaseState {
     entity.changeAnimation(entity.direction)
 
     this.timer = 0
-    this.timerDuration = 0.1
 
     playSound('death')
   }
 
   update (dt: number) {
     this.timer += dt
-    if (this.timer > this.timerDuration) this.entity.isDestroyed = true
+    if (this.timer > LastMomentDuration) this.entity.isDestroyed = true
   }
 }

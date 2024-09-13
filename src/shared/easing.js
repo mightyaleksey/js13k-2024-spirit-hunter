@@ -53,3 +53,7 @@ export function inOutCubic (t: number, b: number, c: number, d: number): number 
     return c / 2 * (t * t * t + 2) + b
   }
 }
+
+export function inOutSine (t: number, b: number, c: number, d: number): number {
+  return -c / 2 * (Math.cos(Math.PI * t / d) - 1) + b
+}

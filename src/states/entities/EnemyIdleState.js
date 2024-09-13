@@ -3,13 +3,10 @@
 import type { Enemy } from '../../entities/Enemy'
 
 import { CharacterIdleState } from './CharacterIdleState'
-import { TileSize } from '../../shared/constants'
+import { EnemySightRadius, TileSize } from '../../shared/constants'
 
 export class EnemyIdleState extends CharacterIdleState<Enemy> {
-  sightRadius: number
-
   enter (input: mixed) {
-    this.sightRadius = 7
     // reset velocity
     super.enter(input)
   }
@@ -17,7 +14,7 @@ export class EnemyIdleState extends CharacterIdleState<Enemy> {
   update (dt: number) {
     const entity = this.entity
     const player = entity.entities[0]
-    const r = this.sightRadius * TileSize
+    const r = EnemySightRadius * TileSize
 
     if (
       Math.abs(entity.x - player.x) < r &&

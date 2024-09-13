@@ -1,21 +1,24 @@
 /* @flow */
 
+import { DamageDuration, TileSize } from '../shared/constants'
 import { Thing } from './Thing'
-import { TileSize } from '../shared/constants'
 import { inCubic } from '../shared/easing'
 
 import { printf, setColor, setFont } from '../engine'
 
+const colors = ['#fff', '#d72744', '#79c834']
+
 type Props = {
   x: number,
   y: number,
+  color?: number,
   damage: number,
 }
 
 export class Damage extends Thing {
+  color: number
   damage: number
   timer: number
-  timerInterval: number
 
   constructor (props: Props) {
     super({
@@ -23,9 +26,9 @@ export class Damage extends Thing {
       y: props.y
     })
 
+    this.color = props.color ?? 0
     this.damage = props.damage
     this.timer = 0
-    this.timerInterval = 0.3
   }
 
   render () {
@@ -33,10 +36,10 @@ export class Damage extends Thing {
       this.timer,
       this.y,
       -0.5 * TileSize,
-      this.timerInterval
+      DamageDuration
     )
 
-    setColor('white')
+    setColor(colors[this.color])
     setFont(8)
     // todo center
     printf(String(this.damage), this.x, y)
@@ -44,8 +47,6 @@ export class Damage extends Thing {
 
   update (dt: number) {
     this.timer += dt
-    if (this.timer >= this.timerInterval) {
-      this.isDestroyed = true
-    }
+    if (this.timer >= DamageDuration) this.isDestroyed = true
   }
 }

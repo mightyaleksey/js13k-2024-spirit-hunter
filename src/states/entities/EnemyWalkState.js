@@ -3,15 +3,13 @@
 import type { Enemy } from '../../entities/Enemy'
 
 import { CharacterWalkState } from './CharacterWalkState'
-import { Direction, EnemyVelocity, UnitVectors } from '../../shared/constants'
+import { Direction, EnemyVelocity, EnemyWalkDuration, UnitVectors } from '../../shared/constants'
 
 export class EnemyWalkState extends CharacterWalkState<Enemy> {
   timer: number
-  timerDuraction: number
 
   enter (input: mixed) {
     this.timer = 0
-    this.timerDuraction = 0.3
 
     if (input !== 'flee') {
       const entity = this.entity
@@ -36,7 +34,7 @@ export class EnemyWalkState extends CharacterWalkState<Enemy> {
 
   update (dt: number) {
     this.timer += dt
-    if (this.timer >= this.timerDuraction) {
+    if (this.timer >= EnemyWalkDuration) {
       this.entity.changeState('idle')
     }
   }

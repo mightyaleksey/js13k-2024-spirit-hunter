@@ -31,24 +31,24 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
     frames: genFrames(84),
     frameInterval: 0.2,
 
-    stats: [60, 0, 100, 3, 100, 3]
+    stats: [60, 0, 130, 0, 100, 3]
   },
 
   princess: {
     frames: genFrames(87),
     frameInterval: 0.2,
-    stats: [60, 0, 100, 50, 20, 2]
+    stats: [60, 0, 1000, 0, 0, 0]
   },
 
   spirit1: {
     frames: genFrames(60),
     frameInterval: 0.2,
-    stats: [60, 0, 100, 50, 20, 2]
+    stats: [50, 0, 100, 50, 10, 2]
   },
 
   spirit2: {
     frames: genFrames(63),
     frameInterval: 0.2,
-    stats: [60, 0, 100, 50, 20, 2]
+    stats: [50, 0, 100, 50, 10, 2]
   }
 }
