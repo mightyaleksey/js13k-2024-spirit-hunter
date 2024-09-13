@@ -9,7 +9,7 @@ import { Console } from '../../entities/Console'
 import { Damage } from '../../entities/Damage'
 import { DebugConsole, TileSize } from '../../shared/constants'
 import { Dialog } from './Dialog'
-import { Dimentions, printf, setFont, translate } from '../../engine'
+import { Dimentions, printf, setColor, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { GameStartState } from './GameStartState'
 import { Joystick } from '../../entities/Joystick'
@@ -31,6 +31,9 @@ export class GamePlayState extends BaseState {
   entities: Array<Entity>
   player: Player
 
+  level: number
+  currentEnemies: number
+
   console: Console
   joystick: Joystick
 
@@ -40,13 +43,14 @@ export class GamePlayState extends BaseState {
     this.cameraY = this.tileMap.startY()
 
     const player = this.player = new Player(8 * TileSize + 3, 5 * TileSize)
+    this.entities = [this.player].concat(this.tileMap.obstacles)
 
-    this.entities = [player].concat(this.tileMap.obstacles)
+    this.level = 1
+    this.currentEnemies = 0
     this.genEnemies()
 
     if (DebugConsole) this.console = new Console()
     this.joystick = new Joystick()
-
     player.entities = this.entities
     player.joystick = this.joystick
   }
@@ -63,10 +67,17 @@ export class GamePlayState extends BaseState {
     // restore camera
     translate(this.cameraX, this.cameraY)
 
+    // infographics
+    setColor('#fff')
     setFont(8)
     const hp = 0.1 * this.player.stats[CharacterStat.Hp]
     printf('❤️'.repeat(Math.min(10, hp)), 5, 5)
     if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
+
+    setColor('#fff', 0.7)
+    printf(this.currentEnemies + ' enemies', 5, 4, Dimentions.width - 50, 'right')
+    printf(this.level + ' lvl', 5, 4, Dimentions.width - 10, 'right')
+    printf(this.player.level + ' lvl', 5, 27, 30, 'right')
 
     if (DebugConsole) this.console.render()
     this.joystick.render()
@@ -90,8 +101,18 @@ export class GamePlayState extends BaseState {
     forEachRight(this.entities, (entity, j) => {
       entity.update(dt)
 
-      if (entity.isDestroyed) {
-        this.entities.splice(j, 1)
+      if (!entity.isDestroyed) return
+      this.entities.splice(j, 1)
+
+      if (entity instanceof Enemy) {
+        const exp = this.level * (
+          entity.stats[CharacterStat.AttackDC] +
+          entity.stats[CharacterStat.HpDC] +
+          entity.stats[CharacterStat.SpeedDC]
+        )
+
+        this.player.getExp(exp)
+        this.currentEnemies--
       }
     })
 
@@ -148,15 +169,33 @@ export class GamePlayState extends BaseState {
         })
       )
     }
+
+    if (this.currentEnemies === 0) {
+      gameStates[0].push(
+        new Dialog({
+          title: 'Good Job',
+          body: `Level ${this.level} completed!`,
+
+          handler: () => {
+            this.level++
+            this.genEnemies()
+          }
+        })
+      )
+    }
   }
 
   /* helpers */
 
   genEnemies () {
-    for (let i = 0; i < 10; ++i) {
+    const maxEnemies = 2 * this.level * this.level + 10
+    this.currentEnemies += maxEnemies
+
+    for (let k = maxEnemies; k--;) {
       const enemy = new Enemy(
-        random(TileSize, 18 * TileSize),
-        random(TileSize, 9 * TileSize)
+        genEnemyPosition(this.player.x, 5),
+        genEnemyPosition(this.player.y, 5),
+        this.level
       )
       enemy.entities = this.entities
       this.entities.push(enemy)
@@ -181,6 +220,12 @@ export class GamePlayState extends BaseState {
 
     return currentValue
   }
+}
+
+function genEnemyPosition (origin: number, distance: number): number {
+  const offset = (distance + random(5)) * TileSize
+  const direction = random(9) > 5 ? 1 : -1
+  return origin + direction * offset
 }
 
 // higher value, last render

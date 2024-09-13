@@ -1,6 +1,7 @@
 /* @flow */
 
 import { Character } from './Character'
+import { CharacterStat } from '../definitions'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { EnemyIdleState } from '../states/entities/EnemyIdleState'
@@ -14,14 +15,15 @@ import { random } from '../util'
 const defs = ['spirit1', 'spirit2']
 
 export class Enemy extends Character {
-  constructor (x: number, y: number) {
+  constructor (x: number, y: number, level?: number) {
     super({
       x,
       y,
 
       isCollidable: true,
 
-      character: defs[random(defs.length)]
+      character: defs[random(defs.length)],
+      level
     })
 
     this.state = new StateMachine({
@@ -31,5 +33,15 @@ export class Enemy extends Character {
       walk: () => new EnemyWalkState(this)
     })
     this.state.change('idle')
+  }
+
+  /* helpers */
+
+  takeDamage (damage: number, x: number, y: number, color?: number) {
+    super.takeDamage(damage, x, y, color)
+
+    if (this.stats[CharacterStat.Hp] > 0) {
+      this.changeState('stunned')
+    }
   }
 }

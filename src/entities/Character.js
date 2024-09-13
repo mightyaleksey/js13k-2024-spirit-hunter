@@ -24,7 +24,8 @@ export type CharacterState =
 
 export type CharacterProps = $ReadOnly<{
   ...EntityProps,
-  character: string
+  character: string,
+  level?: number
 }>
 
 export class Character extends Entity {
@@ -36,6 +37,7 @@ export class Character extends Entity {
 
   exp: number
   level: number
+  expToLevel: number
   stats: Array<number>
 
   constructor (props: CharacterProps) {
@@ -64,8 +66,12 @@ export class Character extends Entity {
     this.state.change('idle')
 
     this.exp = 0
-    this.level = 1
+    this.level = props.level ?? 1
+    this.expToLevel = this.level * this.level * 5 * 0.75
+
     this.stats = char.stats.slice()
+
+    for (let j = 1; j < this.level; j++) this.levelUp()
   }
 
   render () {
@@ -73,9 +79,10 @@ export class Character extends Entity {
       setColor('#fff', 0.5)
       super.render()
       setColor('#fff')
-    } else {
-      super.render()
+      return
     }
+
+    super.render()
   }
 
   update (dt: number) {
@@ -103,8 +110,18 @@ export class Character extends Entity {
       new Animation(frames, characterDef.frameInterval))
   }
 
+  getExp (exp: number) {
+    this.exp += exp
+
+    if (this.exp >= this.expToLevel) {
+      this.levelUp()
+      this.level++
+      this.expToLevel = this.level * this.level * 5 * 0.75
+    }
+  }
+
   levelUp () {
-    for (let t = 0; t < this.stats.length; t += 2) {
+    for (let t = 1; t < this.stats.length; t += 2) {
       const dc = this.stats[t + 1]
 
       for (let k = 0; k < 3; k++) {
