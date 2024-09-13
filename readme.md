@@ -16,7 +16,7 @@
   - [x] Infinite map
   - [x] Mobile controls
   - [x] Sound
-  - [ ] Music
+  - [x] Music
   - [ ] Enemy generation
   - [ ] Menus
   - [ ] Level progression / Cards
@@ -44,4 +44,5 @@ Open local server on mobile device:
 
 ## Resources
 
+- Music: https://keithclark.github.io/ZzFXM/
 - Sound: https://sfxr.me/
