@@ -3,7 +3,8 @@
 import { Thing } from './Thing'
 import { TileSize } from '../shared/constants'
 import { inCubic } from '../shared/easing'
-import { printf, setColor } from '../engine'
+
+import { printf, setColor, setFont } from '../engine'
 
 type Props = {
   x: number,
@@ -36,6 +37,7 @@ export class Damage extends Thing {
     )
 
     setColor('white')
+    setFont(8)
     // todo center
     printf(String(this.damage), this.x, y)
   }

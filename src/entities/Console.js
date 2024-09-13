@@ -1,6 +1,6 @@
 /* @flow */
 
-import { Dimentions, printf, setColor } from '../engine'
+import { Dimentions, printf, setColor, setFont } from '../engine'
 import { Panel } from '../gui/Panel'
 
 export class Console {
@@ -11,7 +11,7 @@ export class Console {
     this.metrics = []
     this.panel = new Panel({
       x: 10,
-      y: 10,
+      y: 30,
       width: 60,
       height: 10
     })
@@ -24,6 +24,8 @@ export class Console {
     this.panel.render()
 
     setColor('#131313')
+    setFont(8)
+
     for (let k = 0; k < this.metrics.length; k += 2) {
       printf(
         `${this.metrics[k]}: ${this.metrics[k + 1]}`,

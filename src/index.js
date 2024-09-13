@@ -1,12 +1,12 @@
 /* @flow */
 
 import type { GameState } from './shared/game'
-import { GamePlayState } from './states/game/GamePlayState'
-import { StateMachine } from './states/StateMachine'
+
+import { GameStartState } from './states/game/GameStartState'
 import { StateStack } from './states/StateStack'
 import { appendElements, gameStates, gameTiles } from './shared/game'
 import { createEngine, genQuads, newImage, renderQuadsForDebug } from './engine'
-import { initSounds, toggleMusic } from './shared/sound'
+import { initSounds } from './shared/sound'
 
 async function initGame () {
   appendElements(gameTiles,
@@ -16,16 +16,10 @@ async function initGame () {
   await initSounds()
 
   appendElements(gameStates, [
-    new StateStack(),
-    new StateMachine<GameState>({
-      play: () => new GamePlayState()
-    })
+    new StateStack()
   ])
 
-  gameStates[0].push(gameStates[1])
-  gameStates[1].change('play')
-
-  setTimeout(toggleMusic, 100)
+  gameStates[0].push(new GameStartState())
 }
 
 function updateGame (dt: number) {

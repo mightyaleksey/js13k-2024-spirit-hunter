@@ -12,6 +12,7 @@ type EngineState = {
   checked: {[string]: boolean},
   holding: {[string]: boolean},
   pressed: {[string]: boolean},
+  touched: boolean,
   touches: {[string]: [number, number]}
 }
 
@@ -34,6 +35,7 @@ const localState: EngineState = {
   holding: {},
   pressed: {},
   // touch events
+  touched: false,
   touches: {}
 }
 
@@ -63,6 +65,11 @@ export function draw (
   c.drawImage(drawable, Math.floor(x), Math.floor(y))
 }
 
+export function getTextWidth (text: string): number {
+  const c = localState.context
+  return c.measureText(text).width
+}
+
 export function line (
   x0: number,
   y0: number,
@@ -84,9 +91,9 @@ export function printf (
   align?: AlignMode
 ) {
   const c = localState.context
-  const width = c.measureText(text).width
-  limit = limit ?? width
+  limit = limit ?? (Dimentions.width - x)
 
+  const width = getTextWidth(text)
   const dx = align === 'right'
     ? limit - width
     : align === 'center'
@@ -121,15 +128,18 @@ export function rect (
   mode === 'fill' ? c.fill() : c.stroke()
 }
 
-export function setColor (color: string) {
+export function setColor (color: string, opacity?: number) {
   const c = localState.context
   c.fillStyle = color
   c.strokeStyle = color
+  c.globalAlpha = opacity ?? 1
 }
 
-export function setFont (font: string) {
+export function setFont (font: number | string) {
   const c = localState.context
-  c.font = font
+  c.font = typeof font === 'number'
+    ? c.font.replace(/\d+/, String(font))
+    : font
 }
 
 export function translate (dx: number, dy: number) {
@@ -206,6 +216,9 @@ export const Touch = {
   },
   getTouches (): $ReadOnlyArray<string> {
     return Object.keys(localState.touches)
+  },
+  wasTouched (): boolean {
+    return localState.touched
   }
 }
 
@@ -275,6 +288,8 @@ export async function createEngine (
         delete localState.checked[key]
         delete localState.pressed[key]
       })
+
+      localState.touched = false
     }
 
     window.requestAnimationFrame(() => {
@@ -299,6 +314,8 @@ export async function createEngine (
   document.addEventListener('touchend', onTouchEnd)
 
   function onTouch (event: TouchEvent) {
+    localState.touched = true
+
     for (let t = 0; t < event.changedTouches.length; t++) {
       const touchEvent = event.changedTouches[t]
       localState.touches[String(touchEvent.identifier)] = [
@@ -373,7 +390,7 @@ export function renderQuadsForDebug (
   let y = 0
 
   setColor('#11eb11')
-  setFont('8px sans-serif')
+  setFont(8)
 
   quads.forEach((quad, index) => {
     const tx = x * (size + 1) + 1

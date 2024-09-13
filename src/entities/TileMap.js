@@ -39,10 +39,9 @@ export class TileMap {
   terrain: Array<Obstacle>
 
   constructor () {
-    this.offsetX = 0
-    this.offsetY = 0
-    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
-    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
+    this.setViewport()
+    this.offsetX = this.startX()
+    this.offsetY = this.startY()
     this.repeat = Math.ceil(Math.max(
       this.viewportWidth / patternWidth,
       this.viewportHeight / patternHeight
@@ -63,6 +62,8 @@ export class TileMap {
         }
       }
     }
+
+    this.updateMap()
   }
 
   render () {
@@ -70,8 +71,7 @@ export class TileMap {
   }
 
   update (dt: number) {
-    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
-    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
+    this.setViewport()
   }
 
   /* helpers */
@@ -79,6 +79,11 @@ export class TileMap {
   renderBg () {
     setColor('#000023')
     rect('fill', 0, 0, Dimentions.width, Dimentions.height)
+  }
+
+  setViewport () {
+    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
+    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
   }
 
   startX (): number {
@@ -101,6 +106,18 @@ export class TileMap {
     })
   }
 
+  updateMap () {
+    const boundingBox = {
+      x: this.offsetX,
+      y: this.offsetY,
+      width: this.viewportWidth * TileSize,
+      height: this.viewportHeight * TileSize
+    }
+
+    this.updateObstacles(this.obstacles, boundingBox)
+    this.updateObstacles(this.terrain, boundingBox)
+  }
+
   updateViewpoint (cameraX: number, cameraY: number) {
     if (
       this.offsetX !== cameraX ||
@@ -108,16 +125,7 @@ export class TileMap {
     ) {
       this.offsetX = cameraX
       this.offsetY = cameraY
-
-      const boundingBox = {
-        x: this.offsetX,
-        y: this.offsetY,
-        width: this.viewportWidth * TileSize,
-        height: this.viewportHeight * TileSize
-      }
-
-      this.updateObstacles(this.obstacles, boundingBox)
-      this.updateObstacles(this.terrain, boundingBox)
+      this.updateMap()
     }
   }
 }
