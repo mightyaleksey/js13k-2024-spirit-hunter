@@ -26,10 +26,10 @@ export class GameStartState extends BaseState {
 
   render () {
     setColor('#9F1D33')
-    setFont(32)
+    setFont(24)
 
     printf(
-      'Ghost Hunter',
+      'Spirit Hunter',
       10,
       0.5 * Dimentions.height - 32,
       Dimentions.width - 20,
@@ -37,7 +37,7 @@ export class GameStartState extends BaseState {
     )
 
     setColor('#fff')
-    setFont(16)
+    setFont(12)
     printf(
       'Press to ENTER start',
       10,

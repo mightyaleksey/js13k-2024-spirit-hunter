@@ -33,5 +33,5 @@ export class PortraitMode extends BaseState {
 }
 
 function checkPortrait (): boolean {
-  return 0.6 * Dimentions.height > Dimentions.width
+  return 0.64 * Dimentions.height > Dimentions.width
 }

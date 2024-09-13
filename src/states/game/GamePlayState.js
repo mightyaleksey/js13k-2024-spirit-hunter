@@ -12,6 +12,7 @@ import { Enemy } from '../../entities/Enemy'
 import { Joystick } from '../../entities/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
+import { PortraitMode } from './PortraitMode'
 import { Projectile } from '../../entities/Projectile'
 import { TileMap } from '../../entities/TileMap'
 
@@ -61,6 +62,8 @@ export class GamePlayState extends BaseState {
   }
 
   update (dt: number) {
+    PortraitMode.check()
+
     if (DebugConsole) {
       this.console.update(dt)
       this.joystick.isVisible &&

@@ -30,7 +30,7 @@ export class Console {
       printf(
         `${this.metrics[k]}: ${this.metrics[k + 1]}`,
         15,
-        15 + 5 * k
+        this.panel.y + 5 * (k + 1)
       )
     }
   }
