@@ -3,6 +3,9 @@
 import { NoSound } from './constants'
 
 import { nullthrows } from '../util'
+import { jsfxr } from '../libs/jsfxr/sfxr'
+import { zzfxM } from '../libs/zzfxm/zzfxm.min'
+import { zzfxP } from '../libs/zzfxm/zzfx'
 
 type SoundName =
   | 'death'
@@ -19,7 +22,7 @@ const soundbank: {[SoundName]: SoundAudio} = {}
 
 function renderSong (song: Array<mixed>): Promise<empty> {
   return new Promise(resolve => {
-    setTimeout(() => resolve(window.zzfxM(...song)), 20)
+    setTimeout(() => resolve(zzfxM(...song)), 20)
   })
 }
 
@@ -32,7 +35,7 @@ export async function initSounds () {
   ]
 
   for (let k = 0; k < sounds.length; k += 2) {
-    setTimeout(() => { soundbank[sounds[k]] = window.sfxr.toAudio(sounds[k + 1]) })
+    setTimeout(() => { soundbank[sounds[k]] = jsfxr.sfxr.toAudio(sounds[k + 1]) })
   }
 
   // eslint-disable-next-line no-sparse-arrays
@@ -49,6 +52,6 @@ export function toggleMusic () {
     music.current.stop()
     music.current = null
   } else {
-    music.current = window.zzfxP(...music.buffer)
+    music.current = zzfxP(...music.buffer)
   }
 }
