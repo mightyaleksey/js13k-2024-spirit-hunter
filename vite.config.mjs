@@ -110,8 +110,8 @@ function roadrollerPlugin () {
   return {
     name: 'vite:roadroller',
     transformIndexHtml: {
-      enforce: 'post',
-      transform: async (html, ctx) => {
+      order: 'post',
+      handler: async (html, ctx) => {
         // Only use this plugin during build
         if (!ctx || !ctx.bundle) {
           return html
