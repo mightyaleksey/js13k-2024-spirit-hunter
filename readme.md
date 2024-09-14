@@ -5,6 +5,8 @@ The repository contains the game made for the js13kGames competition in 2024.
 Competition rules:
 > js13kGames is a JavaScript coding competition for Web Game Developers running yearly since 2012. The fun part of the compo is the file size limit set to 13 kilobytes. The competition started at 13:00 CEST, 13th August and will end at 13:00 CEST, 13th September 2024. Theme this year is [Triskaidekaphobia](https://medium.com/js13kgames/js13kgames-2024-start-and-theme-announcement-5d734f77da68).
 
+Try demo here: [https://dev.js13kgames.com/2024/games/spirit-hunter](https://dev.js13kgames.com/2024/games/spirit-hunter).
+
 Updated version: [https://mightyaleksey.github.io/js13k-2024-spirit-hunter/](https://mightyaleksey.github.io/js13k-2024-spirit-hunter/).
 
 
@@ -56,3 +58,10 @@ Open local server on mobile device:
 
 - Music: https://keithclark.github.io/ZzFXM/
 - Sound: https://killedbyapixel.github.io/ZzFX/
+- Characters: https://route1rodent.itch.io/16x16-rpg-character-sprite-sheet
+- Tilemap: https://poppants.itch.io/16x16-px-tilemap
+
+
+## Thanks
+
+- Andrzej Mazur for organizing and running [js13kGames](https://js13kgames.com) competition.
