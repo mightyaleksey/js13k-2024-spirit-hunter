@@ -1,7 +1,7 @@
 /* @flow */
 
 import { DamageDuration, TileSize } from '../shared/constants'
-import { Thing } from './Thing'
+import { Entity } from './Entity'
 import { inCubic } from '../shared/easing'
 
 import { printf, setColor, setFont } from '../engine'
@@ -15,7 +15,7 @@ type Props = {
   damage: number,
 }
 
-export class Damage extends Thing {
+export class Damage extends Entity {
   color: number
   damage: number
   timer: number

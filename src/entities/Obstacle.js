@@ -1,6 +1,6 @@
 /* @flow */
 
-import { Thing } from './Thing'
+import { Entity } from './Entity'
 
 import { draw } from '../engine'
 import { gameTiles } from '../shared/game'
@@ -12,7 +12,7 @@ type Props = $ReadOnly<{
   tileID: number
 }>
 
-export class Obstacle extends Thing {
+export class Obstacle extends Entity {
   originalX: number
   originalY: number
 

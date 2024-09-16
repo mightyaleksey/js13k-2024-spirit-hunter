@@ -1,10 +1,8 @@
 /* @flow */
 
-import type { Entity } from './Entity'
-
 import { Enemy } from './Enemy'
+import { Entity } from './Entity'
 import { Obstacle } from './Obstacle'
-import { Thing } from './Thing'
 import { TileSize } from '../shared/constants'
 
 import { line, setColor } from '../engine'
@@ -19,7 +17,7 @@ type Props = {
   size?: number
 }
 
-export class Projectile extends Thing {
+export class Projectile extends Entity {
   startX: number
   startY: number
 

@@ -58,7 +58,6 @@ Animations are basically series of sprites, which are unified and groupped by pa
 Prototypes:
 - `Entity` — Universal building block for other game elements. Implements dimentions, statuses and rendering.
 - `Character` — Base class for the interactive characters (enemies, player). Inheritor of Entity.
-- `Thing` — Base class for the environment objects (obstacle, projective).
 
 Update sequence:
 1. Entity changes (I/O logic, movement).

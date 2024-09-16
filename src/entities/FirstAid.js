@@ -1,10 +1,10 @@
 /* @flow */
 
-import { Thing } from './Thing'
+import { Entity } from './Entity'
 
 import { printf, setColor } from '../engine'
 
-export class FirstAid extends Thing {
+export class FirstAid extends Entity {
   originalX: number
   originalY: number
 
