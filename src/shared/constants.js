@@ -20,8 +20,6 @@ export const TileSize = 16
 export const EnemySightRadius = 5
 
 export const BlasterVelocity = 280
-export const EnemyVelocity = 70
-export const PlayerVelocity = 60
 
 export const DamageDuration = 0.3
 export const EnemyWalkDuration = 0.3

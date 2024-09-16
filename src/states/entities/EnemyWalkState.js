@@ -2,8 +2,9 @@
 
 import type { Enemy } from '../../entities/Enemy'
 
+import { CharacterStat } from '../../definitions'
 import { CharacterWalkState } from './CharacterWalkState'
-import { Direction, EnemyVelocity, EnemyWalkDuration, UnitVectors } from '../../shared/constants'
+import { Direction, EnemyWalkDuration, UnitVectors } from '../../shared/constants'
 
 export class EnemyWalkState extends CharacterWalkState<Enemy> {
   timer: number
@@ -24,8 +25,8 @@ export class EnemyWalkState extends CharacterWalkState<Enemy> {
       }
 
       const unitVector = UnitVectors[entity.direction]
-      entity.dx = unitVector[0] * EnemyVelocity
-      entity.dy = unitVector[1] * EnemyVelocity
+      entity.dx = unitVector[0] * entity.stats[CharacterStat.Speed]
+      entity.dy = unitVector[1] * entity.stats[CharacterStat.Speed]
     }
 
     // update animation
