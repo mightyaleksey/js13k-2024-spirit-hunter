@@ -12,6 +12,7 @@
     "flow-bin": "0.241.0",
     "hermes-eslint": "0.23.0",
     "html-minifier": "4.0.0",
+    "posthtml": "0.16.6",
     "roadroller": "2.1.0",
     "standard": "17.1.0",
     "vite": "5.3.4",

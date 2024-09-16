@@ -23,9 +23,3 @@ canvas {
   image-rendering: pixelated;
   user-select: none;
 }
-
-@supports (height: 100dvh) {
-  canvas {
-    height: 100dvh;
-  }
-}
