@@ -10,6 +10,23 @@ Try demo here: [https://dev.js13kgames.com/2024/games/spirit-hunter](https://dev
 Updated version: [https://mightyaleksey.github.io/js13k-2024-spirit-hunter/](https://mightyaleksey.github.io/js13k-2024-spirit-hunter/).
 
 
+## Design
+
+With a fear of not meeting 13kb bundle size and passing multiple sacrifices and loses, I'm happy to preset "Spirit Hunter"! It is an idle shooter (hello Vampire Survivors) having hunter as main character who brings peace to the cemetery in suburbs.
+
+For this year, I made desktop and mobile friendly game. Use "w,a,s,d" keys and Enter on desktop to control character and I made a custom joystick for mobile.
+
+For the technical part, I was inspired by [Love2d engine](https://love2d.org) and implemented lightweight [engine](./src/engine.js), thats supports [game loop](https://gameprogrammingpatterns.com/game-loop.html#play-catch-up) pattern and almost similar to Love2d rendering primitives.
+
+The data flow heavily relies on the [state machine](https://gameprogrammingpatterns.com/state.html) and state stack patterns. State machine were used to implement:
+- Character states, like idle, movement, stunned and etc;
+- Weapon shooting and states helped to control its behaviour: aiming, shooting and waiting for the reload.
+
+State stack was used for the navigation between starting and game screens with a custom transition. Also it helped to build interactive menus. Due to delegating control (updates) to the top state, you just need to push another state to the stack, that implements dialog or menu and the game will be paused in meantime.
+
+Animations are basically series of sprites, which are unified and groupped by particular states. All of those are defined in [definitions.js](./src/definitions.js) (kind of data-oriented design) and empowered by [Character.js](./src/entities/Character.js).
+
+
 ## Plan
 - [x] Phase 1: MVP
   - [x] Add Entity class
