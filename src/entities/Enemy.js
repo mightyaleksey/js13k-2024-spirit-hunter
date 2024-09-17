@@ -1,5 +1,6 @@
 /* @flow */
 
+import type { Damage } from './Damage'
 import type { Entity } from './Entity'
 
 import { Character } from './Character'
@@ -50,8 +51,8 @@ export class Enemy extends Character {
     }
   }
 
-  takeDamage (damage: number, x: number, y: number, color?: number) {
-    super.takeDamage(damage, x, y, color)
+  takeDamage (damage: Damage) {
+    super.takeDamage(damage)
 
     if (this.stats[CharacterHp] > 0) {
       this.changeState('stunned')

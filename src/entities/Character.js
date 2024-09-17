@@ -133,15 +133,13 @@ export class Character extends Entity {
     }
   }
 
-  takeDamage (damage: number, x: number, y: number, color?: number) {
-    this.stats[CharacterHp] -= damage
+  takeDamage (damage: Damage) {
+    this.stats[CharacterHp] -= damage.value
 
     if (this.stats[CharacterHp] <= 0) {
       this.changeState('death')
     }
 
-    this.entities.push(
-      new Damage({ x, y, color, damage })
-    )
+    this.entities.push(damage)
   }
 }

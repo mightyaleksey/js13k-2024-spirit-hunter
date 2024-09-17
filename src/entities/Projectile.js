@@ -1,5 +1,6 @@
 /* @flow */
 
+import { Damage } from './Damage'
 import { Enemy } from './Enemy'
 import { Entity } from './Entity'
 import { Obstacle } from './Obstacle'
@@ -64,7 +65,14 @@ export class Projectile extends Entity {
 
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
-      entity.takeDamage(this.damage, this.x, this.y, 2)
+      const damage = new Damage({
+        x: this.x,
+        y: this.y,
+        color: 2,
+        value: this.damage
+      })
+
+      entity.takeDamage(damage)
     }
 
     if (entity instanceof Obstacle) {

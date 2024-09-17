@@ -12,13 +12,13 @@ type Props = {
   x: number,
   y: number,
   color?: number,
-  damage: number,
+  value: number,
 }
 
 export class Damage extends Entity {
   color: number
-  damage: number
   timer: number
+  value: number
 
   constructor (props: Props) {
     super({
@@ -27,8 +27,8 @@ export class Damage extends Entity {
     })
 
     this.color = props.color ?? 0
-    this.damage = props.damage
     this.timer = 0
+    this.value = props.value
   }
 
   render () {
@@ -42,7 +42,7 @@ export class Damage extends Entity {
     setColor(colors[this.color])
     setFont(8)
     // todo center
-    printf(String(this.damage), this.x, y)
+    printf(String(this.value), this.x, y)
   }
 
   update (dt: number) {

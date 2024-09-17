@@ -9,6 +9,7 @@ import { BlasterFireState } from '../states/weapons/BlasterFireState'
 import { Character } from './Character'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
+import { Damage } from './Damage'
 import { Enemy } from './Enemy'
 import { FirstAid } from '../entities/FirstAid'
 import {
@@ -89,13 +90,15 @@ export class Player extends Character {
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
       if (this.invulnerableTimer === 0) {
+        const damage = new Damage({
+          x: this.centerX(),
+          y: this.centerY(),
+          color: 1,
+          value: entity.stats[CharacterAttack]
+        })
+
         this.invulnerableTimer = InvulnerabilityDuration
-        this.takeDamage(
-          entity.stats[CharacterAttack],
-          this.centerX(),
-          this.centerY(),
-          1
-        )
+        this.takeDamage(damage)
 
         playSound('hit')
       }
