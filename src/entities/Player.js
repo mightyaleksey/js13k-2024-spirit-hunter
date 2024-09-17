@@ -1,7 +1,7 @@
 /* @flow */
 
 import type { Entity } from './Entity'
-import type { Joystick } from './Joystick'
+import type { Joystick } from '../elements/Joystick'
 
 import { BlasterAimState } from '../states/weapons/BlasterAimState'
 import { BlasterCooldownState } from '../states/weapons/BlasterCooldownState'

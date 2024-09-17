@@ -3,7 +3,7 @@
 import type { CharacterType } from '../definitions'
 import type { EntityProps } from './Entity'
 
-import { Animation } from './Animation'
+import { Animation } from '../elements/Animation'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
 import { CharacterHp } from '../shared/constants'
 import { CharacterIdleState } from '../states/entities/CharacterIdleState'

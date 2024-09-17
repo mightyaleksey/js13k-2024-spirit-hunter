@@ -4,7 +4,7 @@ import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
 import { Character } from '../../entities/Character'
-import { Console } from '../../entities/Console'
+import { Console } from '../../elements/Console'
 import { Damage } from '../../entities/Damage'
 import {
   CharacterAttackDC,
@@ -19,12 +19,12 @@ import { Dimentions, printf, setColor, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { FirstAid } from '../../entities/FirstAid'
 import { GameStartState } from './GameStartState'
-import { Joystick } from '../../entities/Joystick'
+import { Joystick } from '../../elements/Joystick'
 import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { PortraitMode } from './PortraitMode'
 import { Projectile } from '../../entities/Projectile'
-import { TileMap } from '../../entities/TileMap'
+import { TileMap } from '../../elements/TileMap'
 import { TransitionState } from './TransitionState'
 
 import { collides, forEachRight, random } from '../../util'

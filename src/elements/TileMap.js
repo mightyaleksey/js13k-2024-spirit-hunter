@@ -3,7 +3,7 @@
 import type { CollidableType } from '../util'
 
 import { Dimentions, rect, setColor } from '../engine'
-import { Obstacle } from './Obstacle'
+import { Obstacle } from '../entities/Obstacle'
 import { TileSize } from '../shared/constants'
 
 import { collides } from '../util'
