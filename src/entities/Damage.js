@@ -8,27 +8,20 @@ import { printf, setColor, setFont } from '../engine'
 
 const colors = ['#fff', '#d72744', '#79c834']
 
-type Props = {
-  x: number,
-  y: number,
-  color?: number,
-  value: number,
-}
-
 export class Damage extends Entity {
   color: number
   timer: number
   value: number
 
-  constructor (props: Props) {
+  constructor (x: number, y: number, value: number, color?: number) {
     super({
-      x: props.x,
-      y: props.y
+      x,
+      y
     })
 
-    this.color = props.color ?? 0
+    this.color = color ?? 0
     this.timer = 0
-    this.value = props.value
+    this.value = value
   }
 
   render () {

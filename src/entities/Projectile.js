@@ -65,12 +65,12 @@ export class Projectile extends Entity {
 
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
-      const damage = new Damage({
-        x: this.x,
-        y: this.y,
-        color: 2,
-        value: this.damage
-      })
+      const damage = new Damage(
+        this.x,
+        this.y,
+        this.damage,
+        2
+      )
 
       entity.takeDamage(damage)
     }

@@ -90,12 +90,12 @@ export class Player extends Character {
   collided (entity: Entity) {
     if (entity instanceof Enemy) {
       if (this.invulnerableTimer === 0) {
-        const damage = new Damage({
-          x: this.centerX(),
-          y: this.centerY(),
-          color: 1,
-          value: entity.stats[CharacterAttack]
-        })
+        const damage = new Damage(
+          this.centerX(),
+          this.centerY(),
+          entity.stats[CharacterAttack],
+          1
+        )
 
         this.invulnerableTimer = InvulnerabilityDuration
         this.takeDamage(damage)
