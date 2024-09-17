@@ -77,7 +77,7 @@ export class GamePlayState extends BaseState {
     // infographics
     setColor('#fff')
     setFont(8)
-    const hp = 0.1 * this.player.stats[CharacterHp]
+    const hp = Math.ceil(0.1 * this.player.stats[CharacterHp])
     printf('❤️'.repeat(Math.min(10, hp)), 5, 5)
     if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
 
@@ -95,6 +95,9 @@ export class GamePlayState extends BaseState {
 
     if (DebugConsole) {
       this.console.update(dt)
+      this.console.metrics.push(
+        'ps', this.player.stats.join(',')
+      )
       this.joystick.isVisible &&
       this.console.metrics.push(
         'ox', this.joystick.offsetX.toFixed(2),

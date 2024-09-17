@@ -45,12 +45,14 @@ export function nullthrows <T> (value: ?T): T {
   return value
 }
 
-// returns integers
-export function random (lo: number, hi?: number): number {
+// get pseudo-random integer within [lo, hi)
+export function random (lo?: number, hi?: number): number {
   if (hi == null) {
-    hi = lo
+    hi = lo ?? 2
     lo = 0
   }
+
+  lo = lo ?? 0
 
   return Math.floor(Math.random() * (hi - lo)) + lo
 }

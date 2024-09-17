@@ -37,7 +37,7 @@ export class Player extends Character {
 
   joystick: Joystick
 
-  constructor (x?: number, y?: number) {
+  constructor (x: number, y: number) {
     super({
       x,
       y,

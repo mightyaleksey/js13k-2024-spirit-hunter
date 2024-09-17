@@ -1,12 +1,12 @@
 /* @flow */
 
-export const CharacterAttack = 5
-export const CharacterAttackDC = 6
-export const CharacterHp = 1
-export const CharacterHpDC = 4
-export const CharacterHpMax = 3
+export const CharacterHp = 0
 export const CharacterSpeed = 1
 export const CharacterSpeedDC = 2
+export const CharacterHpMax = 3
+export const CharacterHpDC = 4
+export const CharacterAttack = 5
+export const CharacterAttackDC = 6
 
 export const DirectionBottom = 2
 export const DirectionLeft = 3
@@ -34,5 +34,5 @@ export const LastMomentDuration = 0.2
 export const StunDuration = 0.1
 
 export const DebugBB = false
-export const DebugConsole = false
+export const DebugConsole = true
 export const NoSound = false

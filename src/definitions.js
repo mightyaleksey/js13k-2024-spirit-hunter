@@ -22,7 +22,8 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
     frames: genFrames(84),
     frameInterval: 0.2,
 
-    stats: [130, 60, 0, 130, 0, 50, 14]
+    // hp, speed, speeedDC, hpMax, hpDC, attack, attackDC
+    stats: [130, 60, 0, 130, 0, 50, 3]
   },
 
   princess: {
@@ -34,12 +35,12 @@ export const Characters: $ReadOnly<{[string]: CharacterType}> = {
   spirit1: {
     frames: genFrames(60),
     frameInterval: 0.2,
-    stats: [100, 30, 4, 100, 0, 7, 4]
+    stats: [100, 40, 3, 90, 3, 7, 2]
   },
 
   spirit2: {
     frames: genFrames(63),
     frameInterval: 0.2,
-    stats: [100, 25, 3, 100, 0, 11, 2]
+    stats: [100, 35, 3, 90, 3, 11, 2]
   }
 }

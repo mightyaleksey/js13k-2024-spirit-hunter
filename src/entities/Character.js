@@ -126,7 +126,7 @@ export class Character extends Entity {
       const dc = this.stats[t + 1]
 
       for (let k = 0; k < 3; k++) {
-        if (random(6) < dc) {
+        if (random(1, 7) <= dc) {
           this.stats[t]++
         }
       }
