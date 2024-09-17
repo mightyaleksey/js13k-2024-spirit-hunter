@@ -4,9 +4,10 @@ import type { CharacterType } from '../definitions'
 import type { EntityProps } from './Entity'
 
 import { Animation } from './Animation'
-import { Characters, CharacterStat } from '../definitions'
-import { CharacterIdleState } from '../states/entities/CharacterIdleState'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
+import { CharacterHp } from '../shared/constants'
+import { CharacterIdleState } from '../states/entities/CharacterIdleState'
+import { Characters } from '../definitions'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { CharacterWalkState } from '../states/entities/CharacterWalkState'
 import { Damage } from './Damage'
@@ -133,9 +134,9 @@ export class Character extends Entity {
   }
 
   takeDamage (damage: number, x: number, y: number, color?: number) {
-    this.stats[CharacterStat.Hp] -= damage
+    this.stats[CharacterHp] -= damage
 
-    if (this.stats[CharacterStat.Hp] <= 0) {
+    if (this.stats[CharacterHp] <= 0) {
       this.changeState('death')
     }
 

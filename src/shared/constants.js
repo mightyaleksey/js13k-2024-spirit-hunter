@@ -1,11 +1,17 @@
 /* @flow */
 
-export const Direction = {
-  Bottom: 2,
-  Left: 3,
-  Right: 1,
-  Top: 0
-}
+export const CharacterAttack = 5
+export const CharacterAttackDC = 6
+export const CharacterHp = 1
+export const CharacterHpDC = 4
+export const CharacterHpMax = 3
+export const CharacterSpeed = 1
+export const CharacterSpeedDC = 2
+
+export const DirectionBottom = 2
+export const DirectionLeft = 3
+export const DirectionRight = 1
+export const DirectionTop = 0
 
 // array index reflects corresponding direction
 // top, right, bottom, left

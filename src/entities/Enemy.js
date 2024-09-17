@@ -4,7 +4,7 @@ import type { Entity } from './Entity'
 
 import { Character } from './Character'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
-import { CharacterStat } from '../definitions'
+import { CharacterHp, CharacterHpMax } from '../shared/constants'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { EnemyIdleState } from '../states/entities/EnemyIdleState'
 import { EnemyWalkState } from '../states/entities/EnemyWalkState'
@@ -43,9 +43,9 @@ export class Enemy extends Character {
   collided (entity: Entity) {
     if (entity instanceof FirstAid) {
       entity.isDestroyed = true
-      this.stats[CharacterStat.Hp] = Math.min(
-        this.stats[CharacterStat.Hp] + 20,
-        this.stats[CharacterStat.HpMax]
+      this.stats[CharacterHp] = Math.min(
+        this.stats[CharacterHp] + 20,
+        this.stats[CharacterHpMax]
       )
     }
   }
@@ -53,7 +53,7 @@ export class Enemy extends Character {
   takeDamage (damage: number, x: number, y: number, color?: number) {
     super.takeDamage(damage, x, y, color)
 
-    if (this.stats[CharacterStat.Hp] > 0) {
+    if (this.stats[CharacterHp] > 0) {
       this.changeState('stunned')
     }
   }

@@ -7,16 +7,6 @@ export type CharacterType = $ReadOnly<{
   stats: CharacterStatsType
 }>
 
-export const CharacterStat = {
-  Hp: 0,
-  Speed: 1,
-  SpeedDC: 2,
-  HpMax: 3,
-  HpDC: 4,
-  Attack: 5,
-  AttackDC: 6
-}
-
 // top, right, bottom, left
 const framesPattern = [19, 13, 1, 7]
 function genFrames (offset: number) {

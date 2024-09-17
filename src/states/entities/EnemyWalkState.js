@@ -2,9 +2,16 @@
 
 import type { Enemy } from '../../entities/Enemy'
 
-import { CharacterStat } from '../../definitions'
+import {
+  CharacterSpeed,
+  DirectionBottom,
+  DirectionLeft,
+  DirectionRight,
+  DirectionTop,
+  EnemyWalkDuration,
+  UnitVectors
+} from '../../shared/constants'
 import { CharacterWalkState } from './CharacterWalkState'
-import { Direction, EnemyWalkDuration, UnitVectors } from '../../shared/constants'
 
 export class EnemyWalkState extends CharacterWalkState<Enemy> {
   timer: number
@@ -19,14 +26,14 @@ export class EnemyWalkState extends CharacterWalkState<Enemy> {
       const dy = entity.y - player.y
 
       if (Math.abs(dx) > Math.abs(dy)) {
-        entity.direction = dx > 0 ? Direction.Left : Direction.Right
+        entity.direction = dx > 0 ? DirectionLeft : DirectionRight
       } else {
-        entity.direction = dy > 0 ? Direction.Top : Direction.Bottom
+        entity.direction = dy > 0 ? DirectionTop : DirectionBottom
       }
 
       const unitVector = UnitVectors[entity.direction]
-      entity.dx = unitVector[0] * entity.stats[CharacterStat.Speed]
-      entity.dy = unitVector[1] * entity.stats[CharacterStat.Speed]
+      entity.dx = unitVector[0] * entity.stats[CharacterSpeed]
+      entity.dy = unitVector[1] * entity.stats[CharacterSpeed]
     }
 
     // update animation

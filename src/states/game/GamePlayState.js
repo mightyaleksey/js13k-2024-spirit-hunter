@@ -3,11 +3,17 @@
 import type { Entity } from '../../entities/Entity'
 
 import { BaseState } from '../BaseState'
-import { CharacterStat } from '../../definitions'
 import { Character } from '../../entities/Character'
 import { Console } from '../../entities/Console'
 import { Damage } from '../../entities/Damage'
-import { DebugConsole, TileSize } from '../../shared/constants'
+import {
+  CharacterAttackDC,
+  CharacterHp,
+  CharacterHpDC,
+  CharacterSpeedDC,
+  DebugConsole,
+  TileSize
+} from '../../shared/constants'
 import { Dialog } from './Dialog'
 import { Dimentions, printf, setColor, setFont, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
@@ -71,7 +77,7 @@ export class GamePlayState extends BaseState {
     // infographics
     setColor('#fff')
     setFont(8)
-    const hp = 0.1 * this.player.stats[CharacterStat.Hp]
+    const hp = 0.1 * this.player.stats[CharacterHp]
     printf('❤️'.repeat(Math.min(10, hp)), 5, 5)
     if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
 
@@ -107,9 +113,9 @@ export class GamePlayState extends BaseState {
 
       if (entity instanceof Enemy) {
         const exp = this.level * (
-          entity.stats[CharacterStat.AttackDC] +
-          entity.stats[CharacterStat.HpDC] +
-          entity.stats[CharacterStat.SpeedDC]
+          entity.stats[CharacterAttackDC] +
+          entity.stats[CharacterHpDC] +
+          entity.stats[CharacterSpeedDC]
         )
 
         this.player.getExp(exp)

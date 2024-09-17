@@ -1,8 +1,7 @@
 /* @flow */
 
 import { BaseWeaponState } from './BaseWeaponState'
-import { BlasterVelocity } from '../../shared/constants'
-import { CharacterStat } from '../../definitions'
+import { CharacterAttack, BlasterVelocity } from '../../shared/constants'
 import { Enemy } from '../../entities/Enemy'
 import { Projectile } from '../../entities/Projectile'
 
@@ -36,7 +35,7 @@ export class BlasterFireState extends BaseWeaponState {
         dx: dx / d * BlasterVelocity,
         dy: dy / d * BlasterVelocity,
 
-        damage: player.stats[CharacterStat.Attack]
+        damage: player.stats[CharacterAttack]
       })
     )
 

@@ -8,11 +8,15 @@ import { BlasterCooldownState } from '../states/weapons/BlasterCooldownState'
 import { BlasterFireState } from '../states/weapons/BlasterFireState'
 import { Character } from './Character'
 import { CharacterDeathState } from '../states/entities/CharacterDeathState'
-import { CharacterStat } from '../definitions'
 import { CharacterStunnedState } from '../states/entities/CharacterStunnedState'
 import { Enemy } from './Enemy'
 import { FirstAid } from '../entities/FirstAid'
-import { InvulnerabilityDuration } from '../shared/constants'
+import {
+  CharacterAttack,
+  CharacterHp,
+  CharacterHpMax,
+  InvulnerabilityDuration
+} from '../shared/constants'
 import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { StateMachine } from '../states/StateMachine'
@@ -87,7 +91,7 @@ export class Player extends Character {
       if (this.invulnerableTimer === 0) {
         this.invulnerableTimer = InvulnerabilityDuration
         this.takeDamage(
-          entity.stats[CharacterStat.Attack],
+          entity.stats[CharacterAttack],
           this.centerX(),
           this.centerY(),
           1
@@ -99,9 +103,9 @@ export class Player extends Character {
 
     if (entity instanceof FirstAid) {
       entity.isDestroyed = true
-      this.stats[CharacterStat.Hp] = Math.min(
-        this.stats[CharacterStat.Hp] + 20,
-        this.stats[CharacterStat.HpMax]
+      this.stats[CharacterHp] = Math.min(
+        this.stats[CharacterHp] + 20,
+        this.stats[CharacterHpMax]
       )
 
       playSound('pickup')
