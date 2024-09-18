@@ -1,12 +1,14 @@
 /* @flow */
 
 import type { CollidableType } from '../util'
+import type { Entity } from '../entities/Entity'
 
 import { Dimentions, rect, setColor } from '../engine'
+import { Enemy } from '../entities/Enemy'
 import { Obstacle } from '../entities/Obstacle'
 import { TileSize } from '../shared/constants'
 
-import { collides } from '../util'
+import { collides, forEachRight, random } from '../util'
 
 /* eslint-disable indent, no-multi-spaces */
 const pattern = [
@@ -33,6 +35,9 @@ export class TileMap {
   viewportHeight: number
   repeat: number
 
+  level: number
+
+  enemies: Array<Enemy>
   // rendered at the same level as characters
   obstacles: Array<Obstacle>
   // terain is static are rendered below characters
@@ -47,6 +52,9 @@ export class TileMap {
       this.viewportHeight / patternHeight
     ))
 
+    this.level = 1
+
+    this.enemies = []
     this.obstacles = []
     this.terrain = []
 
@@ -72,9 +80,30 @@ export class TileMap {
 
   update (dt: number) {
     this.setViewport()
+
+    forEachRight(this.enemies, (entity, j) => {
+      if (!entity.isDestroyed) return
+      this.enemies.splice(j, 1)
+    })
   }
 
   /* helpers */
+
+  genEnemies (entities: Array<Entity>, playerX: number, playerY: number) {
+    const maxEnemies = 2 * this.level * this.level + 10
+
+    for (let k = maxEnemies; k--;) {
+      const enemy = new Enemy(
+        genEnemyPosition(playerX, 4),
+        genEnemyPosition(playerY, 4),
+        this.level
+      )
+
+      enemy.entities = entities
+      this.enemies.push(enemy)
+      entities.push(enemy)
+    }
+  }
 
   renderBg () {
     setColor('#000023')
@@ -94,7 +123,7 @@ export class TileMap {
     return 0.5 * (patternHeight - this.viewportHeight) * TileSize + TileSize
   }
 
-  updateObstacles (entities: $ReadOnlyArray<Obstacle>, boundingBox: CollidableType) {
+  updateEntities (entities: $ReadOnlyArray<Entity>, boundingBox: CollidableType) {
     const stepX = patternWidth * this.repeat * TileSize
     const stepY = patternHeight * this.repeat * TileSize
 
@@ -114,8 +143,9 @@ export class TileMap {
       height: this.viewportHeight * TileSize
     }
 
-    this.updateObstacles(this.obstacles, boundingBox)
-    this.updateObstacles(this.terrain, boundingBox)
+    this.updateEntities(this.enemies, boundingBox)
+    this.updateEntities(this.obstacles, boundingBox)
+    this.updateEntities(this.terrain, boundingBox)
   }
 
   updateViewpoint (cameraX: number, cameraY: number) {
@@ -128,6 +158,12 @@ export class TileMap {
       this.updateMap()
     }
   }
+}
+
+function genEnemyPosition (origin: number, distance: number): number {
+  const offset = (distance + random(5)) * TileSize
+  const direction = random(9) > 5 ? 1 : -1
+  return origin + direction * offset
 }
 
 function updateCoordinate (

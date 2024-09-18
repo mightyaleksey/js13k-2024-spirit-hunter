@@ -117,7 +117,7 @@ export class Player extends Character {
 
   getExp (exp: number) {
     super.getExp(exp)
-    console.log(this.exp, this.expToLevel)
+
     playSound('powerup')
   }
 }

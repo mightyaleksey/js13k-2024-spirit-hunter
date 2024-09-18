@@ -34,5 +34,5 @@ export const LastMomentDuration = 0.2
 export const StunDuration = 0.1
 
 export const DebugBB = false
-export const DebugConsole = true
+export const DebugConsole = false
 export const NoSound = false

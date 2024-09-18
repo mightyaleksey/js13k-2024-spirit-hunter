@@ -38,10 +38,9 @@ export class GamePlayState extends BaseState {
   entities: Array<Entity>
   player: Player
 
-  level: number
-  currentEnemies: number
-
+  // debugger
   console: Console
+  // mobile control
   joystick: Joystick
 
   enter () {
@@ -52,9 +51,11 @@ export class GamePlayState extends BaseState {
     const player = this.player = new Player(8 * TileSize + 3, 5 * TileSize)
     this.entities = [this.player].concat(this.tileMap.obstacles)
 
-    this.level = 1
-    this.currentEnemies = 0
-    this.genEnemies()
+    this.tileMap.genEnemies(
+      this.entities,
+      this.player.x,
+      this.player.y
+    )
 
     if (DebugConsole) this.console = new Console()
     this.joystick = new Joystick()
@@ -82,8 +83,8 @@ export class GamePlayState extends BaseState {
     if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
 
     setColor('#fff', 0.7)
-    printf(this.currentEnemies + ' enemies', 5, 4, Dimentions.width - 50, 'right')
-    printf(this.level + ' lvl', 5, 4, Dimentions.width - 10, 'right')
+    printf(this.tileMap.enemies.length + ' enemies', 5, 4, Dimentions.width - 50, 'right')
+    printf(this.tileMap.level + ' lvl', 5, 4, Dimentions.width - 10, 'right')
     printf(this.player.level + ' lvl', 5, 27, 30, 'right')
 
     if (DebugConsole) this.console.render()
@@ -95,9 +96,6 @@ export class GamePlayState extends BaseState {
 
     if (DebugConsole) {
       this.console.update(dt)
-      this.console.metrics.push(
-        'ps', this.player.stats.join(',')
-      )
       this.joystick.isVisible &&
       this.console.metrics.push(
         'ox', this.joystick.offsetX.toFixed(2),
@@ -115,14 +113,13 @@ export class GamePlayState extends BaseState {
       this.entities.splice(j, 1)
 
       if (entity instanceof Enemy) {
-        const exp = this.level * (
+        const exp = this.tileMap.level * (
           entity.stats[CharacterAttackDC] +
           entity.stats[CharacterHpDC] +
           entity.stats[CharacterSpeedDC]
         )
 
         this.player.getExp(exp)
-        this.currentEnemies--
 
         if (random(10) > 7) {
           this.entities.push(
@@ -189,15 +186,19 @@ export class GamePlayState extends BaseState {
       )
     }
 
-    if (this.currentEnemies === 0) {
+    if (this.tileMap.enemies.length === 0) {
       gameStates[0].push(
         new Dialog({
           title: 'Good Job',
-          body: `Level ${this.level} completed!`,
+          body: `Level ${this.tileMap.level} completed!`,
 
           handler: () => {
-            this.level++
-            this.genEnemies()
+            this.tileMap.level++
+            this.tileMap.genEnemies(
+              this.entities,
+              this.player.x,
+              this.player.y
+            )
           }
         })
       )
@@ -205,21 +206,6 @@ export class GamePlayState extends BaseState {
   }
 
   /* helpers */
-
-  genEnemies () {
-    const maxEnemies = 2 * this.level * this.level + 10
-    this.currentEnemies += maxEnemies
-
-    for (let k = maxEnemies; k--;) {
-      const enemy = new Enemy(
-        genEnemyPosition(this.player.x, 4),
-        genEnemyPosition(this.player.y, 4),
-        this.level
-      )
-      enemy.entities = this.entities
-      this.entities.push(enemy)
-    }
-  }
 
   updateCamera (
     currentValue: number,
@@ -239,12 +225,6 @@ export class GamePlayState extends BaseState {
 
     return currentValue
   }
-}
-
-function genEnemyPosition (origin: number, distance: number): number {
-  const offset = (distance + random(5)) * TileSize
-  const direction = random(9) > 5 ? 1 : -1
-  return origin + direction * offset
 }
 
 // higher value, last render
