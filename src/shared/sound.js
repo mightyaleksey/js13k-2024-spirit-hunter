@@ -46,5 +46,6 @@ export function playMusic () {
   // music.current = null
   if (music.current == null) {
     music.current = zzfxP(...music.buffer)
+    music.current.loop = true
   }
 }
