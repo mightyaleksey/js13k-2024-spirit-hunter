@@ -15,7 +15,7 @@ import {
   TileSize
 } from '../../shared/constants'
 import { Dialog } from './Dialog'
-import { Dimentions, printf, setColor, setFont, translate } from '../../engine'
+import { Dimentions, printf, setColor, translate } from '../../engine'
 import { Enemy } from '../../entities/Enemy'
 import { FirstAid } from '../../entities/FirstAid'
 import { GameStartState } from './GameStartState'
@@ -28,7 +28,7 @@ import { TileMap } from '../../elements/TileMap'
 import { TransitionState } from './TransitionState'
 
 import { collides, forEachRight, random } from '../../util'
-import { gameStates } from '../../shared/game'
+import { gameStates, print } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
   tileMap: TileMap
@@ -77,15 +77,14 @@ export class GamePlayState extends BaseState {
 
     // infographics
     setColor('#fff')
-    setFont(8)
     const hp = Math.ceil(0.1 * this.player.stats[CharacterHp])
-    printf('❤️'.repeat(Math.min(10, hp)), 5, 5)
-    if (hp > 10) printf('❤️'.repeat(hp - 10), 5, 15)
+    printf('❤️'.repeat(Math.min(10, hp)), 2, 2)
+    if (hp > 10) printf('❤️'.repeat(hp - 10), 2, 14)
 
     setColor('#fff', 0.7)
-    printf(this.tileMap.enemies.length + ' enemies', 5, 4, Dimentions.width - 50, 'right')
-    printf(this.tileMap.level + ' lvl', 5, 4, Dimentions.width - 10, 'right')
-    printf(this.player.level + ' lvl', 5, 27, 30, 'right')
+    print(this.tileMap.enemies.length + ' enemies', 2, 4, Dimentions.width - 4, 'right')
+    print(this.tileMap.level + ' challenge', 2, 17, Dimentions.width - 4, 'right')
+    print(this.player.level + ' level', 2, 30, 56, 'right')
 
     if (DebugConsole) this.console.render()
     this.joystick.render()

@@ -61,6 +61,8 @@ export class Entity {
   }
 
   render () {
+    setColor('#fff')
+
     if (this.tileID != null) {
       draw(
         gameTiles[this.tileID],

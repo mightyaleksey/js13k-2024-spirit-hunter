@@ -3,7 +3,7 @@
 // import { GamePlayState } from './states/game/GamePlayState'
 import { GameStartState } from './states/game/GameStartState'
 import { StateStack } from './states/StateStack'
-import { appendElements, gameStates, gameTiles } from './shared/game'
+import { appendElements, gameFont, gameStates, gameTiles } from './shared/game'
 import { createEngine, genQuads, newImage, renderQuadsForDebug } from './engine'
 import { initSounds } from './shared/sound'
 
@@ -12,6 +12,9 @@ async function initGame () {
     genQuads(await newImage('./tilemap2.png'), 16, 16))
   appendElements(gameTiles,
     genQuads(await newImage('./characters2.png'), 16, 16))
+  appendElements(gameFont,
+    genQuads(await newImage('./dogica.png '), 7, 8))
+
   await initSounds()
 
   appendElements(gameStates, [

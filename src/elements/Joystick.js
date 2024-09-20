@@ -30,7 +30,7 @@ export class Joystick {
 
   render () {
     if (this.isVisible) {
-      setColor('rgba(255, 255, 255, 0.4)')
+      setColor('#fff', 0.4)
       circle('line', this.x, this.y, outerRadius)
       circle('fill', this.x + this.offsetX, this.y + this.offsetY, innerRadius)
     }

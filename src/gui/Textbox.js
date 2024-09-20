@@ -4,7 +4,8 @@ import type { Props as BoxProps } from './Box'
 
 import { Box } from './Box'
 
-import { printf, setColor, setFont } from '../engine'
+import { print } from '../shared/game'
+import { setColor } from '../engine'
 
 type Props = $ReadOnly<{
   ...BoxProps,
@@ -32,22 +33,21 @@ export class Textbox extends Box {
     const offsetY = 0.5 * (this.height - 10 * (this.body.length + 3))
 
     setColor('#9f1d33')
-    setFont(12)
-    printf(
+    print(
       this.title,
       this.x,
       this.y + offsetY,
       this.width,
-      'center'
+      'center',
+      1.4
     )
 
-    setFont(8)
     setColor(this.bodyColor)
     this.body.forEach((text, line) =>
-      printf(
+      print(
         text,
         this.x + 4,
-        this.y + offsetY + 10 * line + 30,
+        this.y + offsetY + 10 * line + 23,
         this.width - 8,
         this.body.length > 1 ? 'left' : 'center'
       ))

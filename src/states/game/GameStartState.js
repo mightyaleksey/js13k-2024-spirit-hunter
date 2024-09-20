@@ -2,13 +2,14 @@
 
 import { Action } from '../../gui/Action'
 import { BaseState } from '../BaseState'
-import { Dimentions, printf, setColor, setFont } from '../../engine'
+import { Dimentions, setColor } from '../../engine'
 import { GamePlayState } from './GamePlayState'
 import { PortraitMode } from './PortraitMode'
 import { Textbox } from '../../gui/Textbox'
 import { TransitionState } from './TransitionState'
 
 import { playMusic, playSound } from '../../shared/sound'
+import { print } from '../../shared/game'
 
 const title = 'Spirit Hunter'
 
@@ -24,22 +25,20 @@ export class GameStartState extends BaseState {
     switch (this.page) {
       case 0: {
         setColor('#9F1D33')
-        setFont(24)
-
-        printf(
-          title,
+        print(
+          'Spirit Hunter',
           0,
-          0.5 * Dimentions.height - 32,
+          0.5 * Dimentions.height - 12,
           null,
-          'center'
+          'center',
+          2
         )
 
         setColor('#fff')
-        setFont(12)
-        printf(
+        print(
           'Press to ENTER start',
           0,
-          0.5 * Dimentions.height + 16,
+          0.5 * Dimentions.height + 6,
           null,
           'center'
         )

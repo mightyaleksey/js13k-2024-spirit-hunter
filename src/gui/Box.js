@@ -16,7 +16,7 @@ export class Box {
   height: number
 
   constructor (props: Props) {
-    const w = Math.min(200, 0.6 * Dimentions.width)
+    const w = Math.min(220, 0.7 * Dimentions.width)
     const h = Math.min(100, 0.6 * Dimentions.height)
 
     this.x = props.x ?? 0.5 * (Dimentions.width - w)

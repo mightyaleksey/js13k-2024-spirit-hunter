@@ -4,7 +4,8 @@ import { DamageDuration, TileSize } from '../shared/constants'
 import { Entity } from './Entity'
 import { inCubic } from '../shared/easing'
 
-import { printf, setColor, setFont } from '../engine'
+import { print } from '../shared/game'
+import { setColor } from '../engine'
 
 const colors = ['#fff', '#d72744', '#79c834']
 
@@ -32,10 +33,10 @@ export class Damage extends Entity {
       DamageDuration
     )
 
+    setColor('#333')
+    print(String(this.value), this.x, y - 1)
     setColor(colors[this.color])
-    setFont(8)
-    // todo center
-    printf(String(this.value), this.x, y)
+    print(String(this.value), this.x, y)
   }
 
   update (dt: number) {
