@@ -299,12 +299,14 @@ export async function createEngine (
   })()
 
   document.addEventListener('keydown', (event: KeyboardEvent) => {
+    preventDefault(event)
     const key = event.key
     localState.holding[key] = true
     localState.pressed[key] = true
   })
 
   document.addEventListener('keyup', (event: KeyboardEvent) => {
+    preventDefault(event)
     const key = event.key
     delete localState.holding[key]
     delete localState.pressed[key]
@@ -315,6 +317,8 @@ export async function createEngine (
   document.addEventListener('touchend', onTouchEnd)
 
   function onTouch (event: TouchEvent) {
+    preventDefault(event)
+
     Dimentions.isMobile = true
     localState.touched = true
 
@@ -328,10 +332,16 @@ export async function createEngine (
   }
 
   function onTouchEnd (event: TouchEvent) {
+    preventDefault(event)
+
     for (let t = 0; t < event.changedTouches.length; t++) {
       const touchEvent = event.changedTouches[t]
       delete localState.touches[String(touchEvent.identifier)]
     }
+  }
+
+  function preventDefault (event: UIEvent) {
+    event.preventDefault()
   }
 
   function getTime (): number {
