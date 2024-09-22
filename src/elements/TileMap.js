@@ -3,12 +3,25 @@
 import type { CollidableType } from '../util'
 import type { Entity } from '../entities/Entity'
 
-import { Dimentions, rect, setColor } from '../engine'
+import {
+  CharacterAttackDC,
+  CharacterHpDC,
+  CharacterSpeedDC,
+  TileSize
+} from '../shared/constants'
+import { Character } from '../entities/Character'
+import { Damage } from '../entities/Damage'
+import { Dimentions, rect, setColor, translate } from '../engine'
 import { Enemy } from '../entities/Enemy'
+import { FirstAid } from '../entities/FirstAid'
 import { Obstacle } from '../entities/Obstacle'
-import { TileSize } from '../shared/constants'
+import { Player } from '../entities/Player'
+import { Projectile } from '../entities/Projectile'
 
 import { collides, forEachRight, random } from '../util'
+
+const patternWidth = 18
+const patternHeight = 10
 
 /* eslint-disable indent, no-multi-spaces */
 const pattern = [
@@ -25,72 +38,100 @@ const pattern = [
 ]
 /* eslint-enable indent */
 
-const patternWidth = 18
-const patternHeight = 10
-
 export class TileMap {
-  offsetX: number
-  offsetY: number
+  cameraX: number
+  cameraY: number
   viewportWidth: number
   viewportHeight: number
-  repeat: number
+  patternRepeat: number
 
+  enemies: number
   level: number
 
-  enemies: Array<Enemy>
-  // rendered at the same level as characters
-  obstacles: Array<Obstacle>
-  // terain is static are rendered below characters
+  entities: Array<Entity>
   terrain: Array<Obstacle>
+  player: Player
 
   constructor () {
-    this.setViewport()
-    this.offsetX = this.startX()
-    this.offsetY = this.startY()
-    this.repeat = Math.ceil(Math.max(
+    this.updateViewport()
+    this.cameraX = this.centerX()
+    this.cameraY = this.centerY()
+    this.patternRepeat = Math.ceil(Math.max(
       this.viewportWidth / patternWidth,
       this.viewportHeight / patternHeight
     ))
 
+    this.enemies = 0
     this.level = 1
 
-    this.enemies = []
-    this.obstacles = []
+    this.entities = [new Player(8 * TileSize + 3, 5 * TileSize)]
     this.terrain = []
 
-    for (let v = 0; v < this.repeat; v++) {
-      for (let h = 0; h < this.repeat; h++) {
-        for (let k = 0; k < pattern.length; k += 2) {
-          const x = (Math.floor(pattern[k] / 100) + h * patternWidth) * TileSize
-          const y = ((pattern[k] % 100) + v * patternHeight) * TileSize
-          const tileID = pattern[k + 1]
+    this.player = this.entities[0]
+    this.player.entities = this.entities
 
-          const tile = new Obstacle({ x, y, tileID })
-          ;(tile.isSolid ? this.obstacles : this.terrain).push(tile)
-        }
-      }
-    }
-
+    this.genMap()
     this.updateMap()
   }
 
   render () {
-    this.terrain.forEach(tile => tile.render())
+    setColor('#000023')
+    rect('fill', 0, 0, Dimentions.width, Dimentions.height)
+
+    // emulate camera effect
+    translate(-this.cameraX, -this.cameraY)
+
+    this.terrain.forEach(entity => entity.render())
+    sortEntities(this.entities).forEach(entity => entity.render())
+
+    // restore camera
+    translate(this.cameraX, this.cameraY)
   }
 
   update (dt: number) {
-    this.setViewport()
+    this.updateViewport()
 
-    forEachRight(this.enemies, (entity, j) => {
+    forEachRight(this.entities, (entity, j) => {
+      entity.update(dt)
+
       if (!entity.isDestroyed) return
-      this.enemies.splice(j, 1)
+      this.entities.splice(j, 1)
+
+      if (entity instanceof Enemy) {
+        this.enemies--
+
+        const exp = this.level * (
+          entity.stats[CharacterAttackDC] +
+          entity.stats[CharacterHpDC] +
+          entity.stats[CharacterSpeedDC]
+        )
+
+        this.player.getExp(exp)
+
+        if (random(10) > 7) {
+          this.entities.push(
+            new FirstAid(
+              entity.x + 3,
+              entity.y + 3
+            )
+          )
+        }
+      }
     })
   }
 
   /* helpers */
 
-  genEnemies (entities: Array<Entity>, playerX: number, playerY: number) {
-    const maxEnemies = 2 * this.level * this.level + 10
+  centerX (): number {
+    return 0.5 * (patternWidth - this.viewportWidth) * TileSize
+  }
+
+  centerY (): number {
+    return 0.5 * (patternHeight - this.viewportHeight) * TileSize
+  }
+
+  genEnemies (playerX: number, playerY: number) {
+    const maxEnemies = this.enemies = 2 * this.level * this.level + 10
 
     for (let k = maxEnemies; k--;) {
       const enemy = new Enemy(
@@ -99,64 +140,74 @@ export class TileMap {
         this.level
       )
 
-      enemy.entities = entities
-      this.enemies.push(enemy)
-      entities.push(enemy)
+      enemy.entities = this.entities
+      this.entities.push(enemy)
     }
   }
 
-  renderBg () {
-    setColor('#000023')
-    rect('fill', 0, 0, Dimentions.width, Dimentions.height)
+  genMap () {
+    for (let v = 0; v < this.patternRepeat; v++) {
+      for (let h = 0; h < this.patternRepeat; h++) {
+        for (let k = 0; k < pattern.length; k += 2) {
+          const x = (Math.floor(pattern[k] / 100) + h * patternWidth) * TileSize
+          const y = ((pattern[k] % 100) + v * patternHeight) * TileSize
+          const tileID = pattern[k + 1]
+
+          const tile = new Obstacle({ x, y, tileID })
+          ;(tile.isSolid ? this.entities : this.terrain).push(tile)
+        }
+      }
+    }
   }
 
-  setViewport () {
-    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
-    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
-  }
+  remapEntities (entities: $ReadOnlyArray<Entity>, boundingBox: CollidableType) {
+    const stepX = patternWidth * this.patternRepeat * TileSize
+    const stepY = patternHeight * this.patternRepeat * TileSize
 
-  startX (): number {
-    return 0.5 * (patternWidth - this.viewportWidth) * TileSize
-  }
-
-  startY (): number {
-    return 0.5 * (patternHeight - this.viewportHeight) * TileSize + TileSize
-  }
-
-  updateEntities (entities: $ReadOnlyArray<Entity>, boundingBox: CollidableType) {
-    const stepX = patternWidth * this.repeat * TileSize
-    const stepY = patternHeight * this.repeat * TileSize
-
-    entities.forEach(obstacle => {
-      if (!collides(obstacle, boundingBox, TileSize)) {
-        obstacle.x = updateCoordinate(obstacle.x, stepX, boundingBox.x, boundingBox.width)
-        obstacle.y = updateCoordinate(obstacle.y, stepY, boundingBox.y, boundingBox.height)
+    entities.forEach(entity => {
+      if (!collides(entity, boundingBox, TileSize)) {
+        entity.x = updateCoordinate(
+          entity.x,
+          stepX,
+          boundingBox.x,
+          boundingBox.width
+        )
+        entity.y = updateCoordinate(
+          entity.y,
+          stepY,
+          boundingBox.y,
+          boundingBox.height
+        )
       }
     })
   }
 
+  updateCamera (cameraX: number, cameraY: number) {
+    if (
+      this.cameraX !== cameraX ||
+      this.cameraY !== cameraY
+    ) {
+      this.cameraX = cameraX
+      this.cameraY = cameraY
+      this.updateMap()
+    }
+  }
+
   updateMap () {
     const boundingBox = {
-      x: this.offsetX,
-      y: this.offsetY,
+      x: this.cameraX,
+      y: this.cameraY,
       width: this.viewportWidth * TileSize,
       height: this.viewportHeight * TileSize
     }
 
-    this.updateEntities(this.enemies, boundingBox)
-    this.updateEntities(this.obstacles, boundingBox)
-    this.updateEntities(this.terrain, boundingBox)
+    this.remapEntities(this.entities, boundingBox)
+    this.remapEntities(this.terrain, boundingBox)
   }
 
-  updateViewpoint (cameraX: number, cameraY: number) {
-    if (
-      this.offsetX !== cameraX ||
-      this.offsetY !== cameraY
-    ) {
-      this.offsetX = cameraX
-      this.offsetY = cameraY
-      this.updateMap()
-    }
+  updateViewport () {
+    this.viewportWidth = Math.ceil(Dimentions.width / TileSize)
+    this.viewportHeight = Math.ceil(Dimentions.height / TileSize)
   }
 }
 
@@ -164,6 +215,26 @@ function genEnemyPosition (origin: number, distance: number): number {
   const offset = (distance + random(5)) * TileSize
   const direction = random(9) > 5 ? 1 : -1
   return origin + direction * offset
+}
+
+// higher value, last render
+function genEntityLayer (entity: Entity): number {
+  if (entity instanceof Character) return 1
+  if (entity instanceof Obstacle) return 1
+  if (entity instanceof Projectile) return 2
+  if (entity instanceof Damage) return 3
+  return 0
+}
+
+function sortEntities (
+  entities: $ReadOnlyArray<Entity>
+): $ReadOnlyArray<Entity> {
+  return entities.slice().sort((left, right) => {
+    const leftLayer = genEntityLayer(left)
+    const rightLayer = genEntityLayer(right)
+    if (leftLayer !== rightLayer) return leftLayer - rightLayer
+    return left.y - right.y
+  })
 }
 
 function updateCoordinate (

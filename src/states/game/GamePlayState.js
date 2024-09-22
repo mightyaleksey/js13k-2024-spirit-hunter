@@ -1,33 +1,18 @@
 /* @flow */
 
-import type { Entity } from '../../entities/Entity'
-
 import { BaseState } from '../BaseState'
-import { Character } from '../../entities/Character'
 import { Console } from '../../elements/Console'
-import { Damage } from '../../entities/Damage'
-import {
-  CharacterAttackDC,
-  CharacterHp,
-  CharacterHpDC,
-  CharacterSpeedDC,
-  DebugConsole,
-  TileSize
-} from '../../shared/constants'
+import { CharacterHp, DebugConsole } from '../../shared/constants'
 import { Dialog } from './Dialog'
-import { Dimentions, printf, setColor, translate } from '../../engine'
-import { Enemy } from '../../entities/Enemy'
-import { FirstAid } from '../../entities/FirstAid'
+import { Dimentions, printf, setColor } from '../../engine'
 import { GameStartState } from './GameStartState'
 import { Joystick } from '../../elements/Joystick'
-import { Obstacle } from '../../entities/Obstacle'
 import { Player } from '../../entities/Player'
 import { PortraitMode } from './PortraitMode'
-import { Projectile } from '../../entities/Projectile'
 import { TileMap } from '../../elements/TileMap'
 import { TransitionState } from './TransitionState'
 
-import { collides, forEachRight, random } from '../../util'
+import { collides } from '../../util'
 import { gameStates, print } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
@@ -35,7 +20,6 @@ export class GamePlayState extends BaseState {
   cameraX: number
   cameraY: number
 
-  entities: Array<Entity>
   player: Player
 
   // debugger
@@ -45,35 +29,22 @@ export class GamePlayState extends BaseState {
 
   enter () {
     this.tileMap = new TileMap()
-    this.cameraX = this.tileMap.startX()
-    this.cameraY = this.tileMap.startY()
+    this.cameraX = this.tileMap.cameraX
+    this.cameraY = this.tileMap.cameraY
 
-    const player = this.player = new Player(8 * TileSize + 3, 5 * TileSize)
-    this.entities = [this.player].concat(this.tileMap.obstacles)
-
+    this.player = this.tileMap.player
     this.tileMap.genEnemies(
-      this.entities,
       this.player.x,
       this.player.y
     )
 
     if (DebugConsole) this.console = new Console()
     this.joystick = new Joystick()
-    player.entities = this.entities
-    player.joystick = this.joystick
+    this.player.joystick = this.joystick
   }
 
   render () {
-    this.tileMap.renderBg()
-
-    // emulate camera effect
-    translate(-this.cameraX, -this.cameraY)
-
     this.tileMap.render()
-    sortEntities(this.entities).forEach(entity => entity.render())
-
-    // restore camera
-    translate(this.cameraX, this.cameraY)
 
     // infographics
     setColor('#fff')
@@ -82,7 +53,7 @@ export class GamePlayState extends BaseState {
     if (hp > 10) printf('❤️'.repeat(hp - 10), 2, 14)
 
     setColor('#fff', 0.7)
-    print(this.tileMap.enemies.length + ' enemies', 2, 4, Dimentions.width - 4, 'right')
+    print(this.tileMap.enemies + ' enemies', 2, 4, Dimentions.width - 4, 'right')
     print(this.tileMap.level + ' challenge', 2, 17, Dimentions.width - 4, 'right')
     print(this.player.level + ' level', 2, 30, 56, 'right')
 
@@ -102,39 +73,14 @@ export class GamePlayState extends BaseState {
         'jd', this.joystick.direction
       )
     }
+
     this.joystick.update(dt)
     this.tileMap.update(dt)
-
-    forEachRight(this.entities, (entity, j) => {
-      entity.update(dt)
-
-      if (!entity.isDestroyed) return
-      this.entities.splice(j, 1)
-
-      if (entity instanceof Enemy) {
-        const exp = this.tileMap.level * (
-          entity.stats[CharacterAttackDC] +
-          entity.stats[CharacterHpDC] +
-          entity.stats[CharacterSpeedDC]
-        )
-
-        this.player.getExp(exp)
-
-        if (random(10) > 7) {
-          this.entities.push(
-            new FirstAid(
-              entity.x + 3,
-              entity.y + 3
-            )
-          )
-        }
-      }
-    })
 
     // check collision (time complexity O(n*n))
     // (try Spatial Partition if any perf issues)
     // https://gameprogrammingpatterns.com/spatial-partition.html
-    const collidableEntities = this.entities.filter(entity =>
+    const collidableEntities = this.tileMap.entities.filter(entity =>
       entity.isCollidable ||
       entity.isSolid)
 
@@ -155,7 +101,7 @@ export class GamePlayState extends BaseState {
       }
     })
 
-    const player = this.entities[0]
+    const player = this.player
     // update camera position
     this.cameraX = this.updateCamera(
       this.cameraX,
@@ -169,7 +115,7 @@ export class GamePlayState extends BaseState {
       0.3 * Dimentions.height,
       0.7 * Dimentions.height
     )
-    this.tileMap.updateViewpoint(
+    this.tileMap.updateCamera(
       this.cameraX,
       this.cameraY
     )
@@ -185,7 +131,7 @@ export class GamePlayState extends BaseState {
       )
     }
 
-    if (this.tileMap.enemies.length === 0) {
+    if (this.tileMap.enemies === 0) {
       gameStates[0].push(
         new Dialog({
           title: 'Good Job',
@@ -194,7 +140,6 @@ export class GamePlayState extends BaseState {
           handler: () => {
             this.tileMap.level++
             this.tileMap.genEnemies(
-              this.entities,
               this.player.x,
               this.player.y
             )
@@ -224,24 +169,4 @@ export class GamePlayState extends BaseState {
 
     return currentValue
   }
-}
-
-// higher value, last render
-function genEntityLayer (entity: Entity): number {
-  if (entity instanceof Character) return 1
-  if (entity instanceof Obstacle) return 1
-  if (entity instanceof Projectile) return 2
-  if (entity instanceof Damage) return 3
-  return 0
-}
-
-function sortEntities (
-  entities: $ReadOnlyArray<Entity>
-): $ReadOnlyArray<Entity> {
-  return entities.slice().sort((left, right) => {
-    const leftLayer = genEntityLayer(left)
-    const rightLayer = genEntityLayer(right)
-    if (leftLayer !== rightLayer) return leftLayer - rightLayer
-    return left.y - right.y
-  })
 }
