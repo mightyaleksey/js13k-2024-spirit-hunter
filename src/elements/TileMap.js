@@ -233,7 +233,8 @@ function sortEntities (
     const leftLayer = genEntityLayer(left)
     const rightLayer = genEntityLayer(right)
     if (leftLayer !== rightLayer) return leftLayer - rightLayer
-    return left.y - right.y
+    if (left.y !== right.y) return left.y - right.y
+    return left.x - right.x
   })
 }
 

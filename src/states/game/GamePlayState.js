@@ -49,7 +49,7 @@ export class GamePlayState extends BaseState {
     // infographics
     setColor('#fff')
     const hp = Math.ceil(0.1 * this.player.stats[CharacterHp])
-    printf('❤️'.repeat(Math.min(10, hp)), 2, 2)
+    if (hp > 0) printf('❤️'.repeat(Math.min(10, hp)), 2, 2)
     if (hp > 10) printf('❤️'.repeat(hp - 10), 2, 14)
 
     setColor('#fff', 0.7)
@@ -135,7 +135,7 @@ export class GamePlayState extends BaseState {
       gameStates[0].push(
         new Dialog({
           title: 'Good Job',
-          body: `Level ${this.tileMap.level} completed!`,
+          body: `Challenge ${this.tileMap.level} completed!`,
 
           handler: () => {
             this.tileMap.level++
