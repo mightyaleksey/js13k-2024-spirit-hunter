@@ -13,7 +13,7 @@ export class PlayerIdleState extends CharacterIdleState<Player> {
     const joystick = this.entity.joystick
     const direction = joystick.direction > -1
       ? joystick.direction
-      : MovementKeys.findIndex(key => Keys.wasPressed(key))
+      : (MovementKeys.findIndex(key => Keys.wasPressed(key)) % 4)
 
     if (direction > -1) {
       this.entity.direction = direction

@@ -11,7 +11,7 @@ export class PlayerWalkState extends CharacterWalkState<Player> {
     const joystick = this.entity.joystick
     const direction = joystick.direction > -1
       ? joystick.direction
-      : MovementKeys.findIndex(key => Keys.wasHolding(key))
+      : (MovementKeys.findIndex(key => Keys.wasHolding(key)) % 4)
     const entity = this.entity
 
     if (direction > -1) {

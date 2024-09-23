@@ -15,7 +15,7 @@ export const DirectionTop = 0
 
 // array index reflects corresponding direction
 // top, right, bottom, left
-export const MovementKeys = ['w', 'd', 's', 'a']
+export const MovementKeys = ['w', 'd', 's', 'a', 'ц', 'в', 'ы', 'ф']
 
 // array index reflects corresponding direction
 // top, right, bottom, left
