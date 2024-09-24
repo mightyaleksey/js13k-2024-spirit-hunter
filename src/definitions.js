@@ -13,7 +13,7 @@ function genFrames (offset: number) {
   return framesPattern.concat(framesPattern, framesPattern)
     .map((frame, index) => index < 8
       ? [frame + offset]
-      : [frame + offset - 1, frame + offset, frame + offset + 1]
+      : [frame + offset - 1, frame + offset, frame + offset + 1, frame + offset]
     )
 }
 
