@@ -17,5 +17,9 @@ export class CharacterIdleState<T: Character> extends BaseState {
     entity.dx = 0
     entity.dy = 0
     entity.changeAnimation(entity.direction + 4)
+
+    // reset opacity
+    entity.opacity = 1
+    entity.tint = '#fff'
   }
 }

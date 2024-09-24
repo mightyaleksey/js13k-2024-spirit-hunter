@@ -18,13 +18,19 @@ export class CharacterDeathState<T: Character> extends BaseState {
 
   enter (input: mixed) {
     const entity = this.entity
+
     // stop movement
     entity.dx = 0
     entity.dy = 0
+
     // stop collision
     entity.isCollidable = false
     entity.isSolid = false
     entity.changeAnimation(entity.direction)
+
+    // make slightly transparent
+    entity.opacity = 0.5
+    entity.tint = '#c39'
 
     this.timer = 0
 

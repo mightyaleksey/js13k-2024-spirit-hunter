@@ -29,9 +29,9 @@ export const BlasterVelocity = 280
 
 export const DamageDuration = 0.3
 export const EnemyWalkDuration = 0.3
-export const InvulnerabilityDuration = 0.4
+export const InvulnerabilityDuration = 0.5
 export const LastMomentDuration = 0.2
-export const StunDuration = 0.1
+export const StunDuration = 0.15
 
 export const DebugBB = false
 export const DebugConsole = false

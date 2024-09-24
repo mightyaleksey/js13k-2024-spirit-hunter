@@ -22,8 +22,6 @@ import { PlayerIdleState } from '../states/entities/PlayerIdleState'
 import { PlayerWalkState } from '../states/entities/PlayerWalkState'
 import { StateMachine } from '../states/StateMachine'
 
-import { inOutSine } from '../shared/easing'
-import { setColor } from '../engine'
 import { playSound } from '../shared/sound'
 
 type BlasterState =
@@ -66,21 +64,12 @@ export class Player extends Character {
     this.invulnerableTimer = 0
   }
 
-  render () {
-    const opacity = inOutSine(
-      InvulnerabilityDuration - this.invulnerableTimer,
-      0,
-      1,
-      InvulnerabilityDuration
-    )
-    setColor('#fff', opacity)
-    super.render()
-    setColor('#fff')
-  }
-
   update (dt: number) {
     this.invulnerableTimer = Math.max(0, this.invulnerableTimer - dt)
     this.blasterWeapon.update(dt)
+
+    this.opacity = Math.round(this.invulnerableTimer / 0.15) % 2 === 0 ? 1 : 0.5
+
     // handle state & position update
     super.update(dt)
   }

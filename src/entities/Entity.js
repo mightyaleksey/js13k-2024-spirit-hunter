@@ -35,6 +35,8 @@ export class Entity {
   isDestroyed: boolean
   isSolid: boolean
 
+  opacity: number
+  tint: string
   // add extra offset to bounding box for tile rendering
   // (might be useful if tile have a lot of space around)
   tileOX: number
@@ -55,13 +57,15 @@ export class Entity {
     this.isDestroyed = false
     this.isSolid = Boolean(props.isSolid)
 
+    this.opacity = 1
+    this.tint = '#fff'
     this.tileOX = props.tileOX ?? 0
     this.tileOY = props.tileOY ?? 0
     this.tileID = props.tileID
   }
 
   render () {
-    setColor('#fff')
+    setColor(this.tint, this.opacity)
 
     if (this.tileID != null) {
       draw(

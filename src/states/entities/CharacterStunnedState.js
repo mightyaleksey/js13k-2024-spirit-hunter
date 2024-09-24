@@ -20,6 +20,9 @@ export class CharacterStunnedState<T: Character> extends BaseState {
     entity.dx = 0
     entity.dy = 0
     entity.changeAnimation(entity.direction + 4)
+
+    // make slightly transparent
+    entity.opacity = 0.7
   }
 
   update (dt: number) {

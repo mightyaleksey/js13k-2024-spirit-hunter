@@ -88,10 +88,15 @@ export function draw (
   b.globalCompositeOperation = 'destination-atop'
   b.drawImage(drawable, 0, 0)
 
-  // to tint the image, draw it first
-  // c.drawImage(drawable, Math.floor(x), Math.floor(y), w, h)
+  const currentAlpha = c.globalAlpha
+  if (currentAlpha < 1) {
+    // to tint the image, draw it first
+    c.globalAlpha = 1
+    c.drawImage(drawable, Math.floor(x), Math.floor(y), w, h)
+  }
   // then set the global alpha to the amound that you want to tint it,
   // and draw the buffer directly on top of it.
+  c.globalAlpha = currentAlpha
   c.drawImage(b.canvas, Math.floor(x), Math.floor(y), w, h)
 }
 
