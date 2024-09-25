@@ -18,10 +18,11 @@ import { Obstacle } from '../entities/Obstacle'
 import { Player } from '../entities/Player'
 import { Projectile } from '../entities/Projectile'
 
-import { collides, forEachRight, random } from '../util'
+import { collides, forEachRight, createRandom, random } from '../util'
 
 const patternWidth = 18
 const patternHeight = 10
+const random10 = createRandom(10)
 
 /* eslint-disable indent, no-multi-spaces */
 const pattern = [
@@ -108,7 +109,7 @@ export class TileMap {
 
         this.player.getExp(exp)
 
-        if (random(10) > 7) {
+        if (random10() > 7) {
           this.entities.push(
             new FirstAid(
               entity.x + 3,
