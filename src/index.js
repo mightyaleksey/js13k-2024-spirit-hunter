@@ -9,9 +9,12 @@ import { initSounds } from './shared/sound'
 
 async function initGame () {
   appendElements(gameTiles,
-    genQuads(await newImage('./tilemap2.png'), 16, 16))
+    genQuads(await newImage('./tilemap.png'), 16, 16))
   appendElements(gameTiles,
-    genQuads(await newImage('./characters2.png'), 16, 16))
+    genQuads(await newImage('./characters.png'), 16, 16))
+  appendElements(gameTiles,
+    genQuads(await newImage('./heart.png'), 7, 6))
+
   appendElements(gameFont,
     genQuads(await newImage('./dogica.png '), 7, 8))
 

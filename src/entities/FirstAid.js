@@ -2,8 +2,6 @@
 
 import { Entity } from './Entity'
 
-import { printf, setColor } from '../engine'
-
 export class FirstAid extends Entity {
   originalX: number
   originalY: number
@@ -12,15 +10,12 @@ export class FirstAid extends Entity {
     super({
       x,
       y,
-      width: 10,
-      height: 10,
+      width: 7,
+      height: 6,
 
-      isCollidable: true
+      isCollidable: true,
+
+      tileID: 108
     })
-  }
-
-  render () {
-    setColor('#fff')
-    printf('💚', this.x, this.y)
   }
 }

@@ -4,7 +4,7 @@ import { BaseState } from '../BaseState'
 import { Console } from '../../elements/Console'
 import { CharacterHp, DebugConsole } from '../../shared/constants'
 import { Dialog } from './Dialog'
-import { Dimentions, printf, setColor } from '../../engine'
+import { Dimentions, draw, setColor } from '../../engine'
 import { GameStartState } from './GameStartState'
 import { Joystick } from '../../elements/Joystick'
 import { Player } from '../../entities/Player'
@@ -13,7 +13,7 @@ import { TileMap } from '../../elements/TileMap'
 import { TransitionState } from './TransitionState'
 
 import { collides } from '../../util'
-import { gameStates, print } from '../../shared/game'
+import { gameStates, gameTiles, print } from '../../shared/game'
 
 export class GamePlayState extends BaseState {
   tileMap: TileMap
@@ -49,8 +49,9 @@ export class GamePlayState extends BaseState {
     // infographics
     setColor('#fff')
     const hp = Math.ceil(0.1 * this.player.stats[CharacterHp])
-    if (hp > 0) printf('❤️'.repeat(Math.min(10, hp)), 2, 2)
-    if (hp > 10) printf('❤️'.repeat(hp - 10), 2, 14)
+    for (let i = 0; i < hp; i++) {
+      draw(gameTiles[108], 4 + 9 * (i % 10), 6 + (i > 9 ? 9 : 0))
+    }
 
     setColor('#fff', 0.7)
     print(this.tileMap.enemies + ' enemies', 2, 4, Dimentions.width - 4, 'right')

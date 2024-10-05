@@ -486,6 +486,7 @@ export function renderQuadsForDebug (
   setColor('#11eb11')
   setFont(8)
 
+  setColor('#fff')
   quads.forEach((quad, index) => {
     const tx = x * (size + 1) + 1
     const ty = y * (size + 1) + 1
