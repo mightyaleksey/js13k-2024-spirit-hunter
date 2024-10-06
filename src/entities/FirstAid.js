@@ -10,11 +10,13 @@ export class FirstAid extends Entity {
     super({
       x,
       y,
-      width: 7,
-      height: 6,
+      width: 11,
+      height: 10,
 
       isCollidable: true,
 
+      tileOX: 2,
+      tileOY: 2,
       tileID: 108
     })
   }
