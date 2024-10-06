@@ -1,9 +1,9 @@
 /* @flow */
 
 import { BaseState } from '../BaseState'
-import { Dimentions, printf, rect, setColor, setFont } from '../../engine'
+import { Dimentions, rect, setColor } from '../../engine'
 
-import { gameStates } from '../../shared/game'
+import { gameStates, print } from '../../shared/game'
 
 export class PortraitMode extends BaseState {
   static check () {
@@ -17,12 +17,10 @@ export class PortraitMode extends BaseState {
     rect('fill', 0, 0, Dimentions.width, Dimentions.height)
 
     setColor('#fff')
-    setFont(16)
-
     let dy = 0.5 * Dimentions.height - 60
-    'Please use landscape mode'.split(' ').forEach(word =>
-      printf(word, 8, (dy = dy + 20))
-    )
+    'Please use landscape mode'.split(' ').forEach(word => {
+      print(word, 8, (dy = dy + 20), null, 'left', 1.4)
+    })
   }
 
   update (dt: number) {
