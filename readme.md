@@ -9,6 +9,8 @@ Try demo here: [https://dev.js13kgames.com/2024/games/spirit-hunter](https://dev
 
 Updated version: [https://mightyaleksey.github.io/js13k-2024-spirit-hunter/](https://mightyaleksey.github.io/js13k-2024-spirit-hunter/).
 
+Post-mortem: [https://dev.to/myjsalterego/spirit-hunter-post-mortem-2np8](https://dev.to/myjsalterego/spirit-hunter-post-mortem-2np8).
+
 
 ## Design
 
