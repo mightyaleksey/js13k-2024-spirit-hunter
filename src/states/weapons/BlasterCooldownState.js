@@ -1,6 +1,7 @@
 /* @flow */
 
 import { BaseWeaponState } from './BaseWeaponState'
+import { ReloadDuration } from '../../shared/constants'
 
 export class BlasterCooldownState extends BaseWeaponState {
   timer: number
@@ -8,12 +9,11 @@ export class BlasterCooldownState extends BaseWeaponState {
 
   enter () {
     this.timer = 0
-    this.timerDuration = 0.5
   }
 
   update (dt: number) {
     this.timer += dt
-    if (this.timer >= this.timerDuration) {
+    if (this.timer >= ReloadDuration) {
       this.entity.blasterWeapon.change('aim')
     }
   }

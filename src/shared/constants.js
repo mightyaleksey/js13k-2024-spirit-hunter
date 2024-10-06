@@ -31,6 +31,7 @@ export const DamageDuration = 0.3
 export const EnemyWalkDuration = 0.3
 export const InvulnerabilityDuration = 0.5
 export const LastMomentDuration = 0.2
+export const ReloadDuration = 0.5
 export const StunDuration = 0.15
 
 export const DebugBB = false

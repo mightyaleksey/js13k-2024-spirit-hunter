@@ -1,10 +1,11 @@
 /* @flow */
 
 import { BaseState } from '../BaseState'
+import { BlasterCooldownState } from '../weapons/BlasterCooldownState'
 import { Console } from '../../elements/Console'
-import { CharacterHp, DebugConsole } from '../../shared/constants'
+import { CharacterHp, DebugConsole, ReloadDuration } from '../../shared/constants'
 import { Dialog } from './Dialog'
-import { Dimentions, draw, setColor } from '../../engine'
+import { Dimentions, draw, rect, setColor } from '../../engine'
 import { GameStartState } from './GameStartState'
 import { Joystick } from '../../elements/Joystick'
 import { Player } from '../../entities/Player'
@@ -57,6 +58,20 @@ export class GamePlayState extends BaseState {
     print(this.tileMap.enemies + ' enemies', 2, 4, Dimentions.width - 4, 'right')
     print(this.tileMap.level + ' challenge', 2, 17, Dimentions.width - 4, 'right')
     print(this.player.level + ' level', 2, 30, 56, 'right')
+
+    // show reload duration
+    const barLength = 30
+    const progress = this.player.blasterWeapon.current instanceof BlasterCooldownState
+      ? this.player.blasterWeapon.current.timer / ReloadDuration
+      : 1
+
+    rect(
+      'fill',
+      0.5 * (Dimentions.width - barLength),
+      Dimentions.height - 10,
+      barLength * progress,
+      2
+    )
 
     if (DebugConsole) this.console.render()
     this.joystick.render()
